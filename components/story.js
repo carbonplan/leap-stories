@@ -1,18 +1,13 @@
 import React from 'react'
 import { Row, Column } from '@carbonplan/components'
-import { MDXRemote } from 'next-mdx-remote'
-import Map from '../story/components/map'
+import StoryContent from '../story/story.mdx'
 
-const Story = ({ mdxSource }) => {
-  const mdxComponents = {
-    Map,
-  }
-
+const Story = () => {
   return (
     <>
       <Row>
         <Column start={4} width={5}>
-          <MDXRemote {...mdxSource} components={mdxComponents} />
+          <StoryContent />
         </Column>
       </Row>
     </>
