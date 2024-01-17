@@ -1,4 +1,3 @@
-// components/story.js
 import React from 'react'
 import { Row, Column } from '@carbonplan/components'
 import { MDXRemote } from 'next-mdx-remote'
