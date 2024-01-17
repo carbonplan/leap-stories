@@ -1,0 +1,11 @@
+
+# LEAP Data Story – Ocean Carbon Sink Outline
+As a pilot data story, CarbonPlan will work with members of the McKinley Lab to write a story about how the ocean carbon sink is calculated. We think that this topic is one that could be positioned to speak to a number of audiences. As we refine and then flesh out this outline, we should consider what audience we are trying to speak to (e.g., general public, young scientists, LEAP collaborators?) and what choices in format might speak to them (e.g., story structure, accompanying map, figure choices).
+
+## Outline
+### Scale of ocean carbon sink
+It’s big! 25% uptake of emissions, 40% cumulatively over the industrial era. 
+This absorption keeps carbon away from the atmosphere, thus reduces global warming
+However, as seawater absorbs carbon it becomes more acidic (“Ocean Acidification”)
+Figure 1
+<Map />

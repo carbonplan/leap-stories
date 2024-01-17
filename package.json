@@ -25,9 +25,13 @@
   },
   "homepage": "https://github.com/carbonplan/simple-site#readme",
   "dependencies": {
+    "@carbonplan/colormaps": "^4.0.0",
     "@carbonplan/components": "^12.0.0",
+    "@carbonplan/minimaps": "^2.4.1",
     "@carbonplan/theme": "^7.0.0",
+    "@next/mdx": "^14.0.4",
     "next": "^12.0.7",
+    "next-mdx-remote": "^4.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "theme-ui": "^0.15.3"
