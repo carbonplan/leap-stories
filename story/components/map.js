@@ -13,7 +13,8 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
   const [data, setData] = useState([null])
   const [timeRange, setTimeRange] = useState([0, 0])
   const [timeChunkSize, setTimeChunkSize] = useState(12)
-  const cacheRef = useRef({})
+  const [nullValue, setNullValue] = useState(9.969209968386869e36)
+  const chunkCache = useRef({})
   const groupRef = useRef(null)
 
   useEffect(() => {
@@ -22,9 +23,11 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
         const metadataUrl = sourceUrl + '/.zmetadata'
         const metadata = await fetch(metadataUrl)
         const metadataJson = await metadata.json()
-        const { shape, chunks } = metadataJson.metadata[variable + '/.zarray']
+        const { shape, chunks, fill_value } =
+          metadataJson.metadata[variable + '/.zarray']
         setTimeRange([0, shape[0] - 1])
         setTimeChunkSize(chunks[0])
+        setNullValue(fill_value)
 
         zarr().openGroup(
           sourceUrl,
@@ -59,20 +62,20 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
         console.error('Error loading chunk:', err)
         return
       }
-      cacheRef.current[chunkIndex] = chunk
+      chunkCache.current[chunkIndex] = chunk
       updateData(chunkIndex)
     })
   }
 
   const updateData = (chunkIndex) => {
-    const indexInChunk = time % timeChunkSize
-    const chunk = cacheRef.current[chunkIndex]
-    const chunkData = chunk.pick(indexInChunk, null, null)
+    const timeIndexWithinChunk = time % timeChunkSize
+    const chunk = chunkCache.current[chunkIndex]
+    const chunkData = chunk.pick(timeIndexWithinChunk, null, null)
     setData(chunkData)
   }
 
   const handleChunkLoading = (chunkIndex) => {
-    if (cacheRef.current[chunkIndex]) {
+    if (chunkCache.current[chunkIndex]) {
       updateData(chunkIndex)
     } else if (groupRef.current) {
       loadChunk(groupRef.current[variable], chunkIndex)
@@ -99,7 +102,7 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
             colormap={colormap}
             clim={clim}
             mode={'lut'}
-            nullValue={9.969209968386869e36}
+            nullValue={nullValue}
           />
         )}
       </Minimap>
