@@ -37,7 +37,7 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
               return
             }
             groupRef.current = group
-            handleChunkLoading(time / timeChunkSize)
+            handleChunkLoading(Math.floor(time / timeChunkSize))
           },
           [],
           metadataJson
