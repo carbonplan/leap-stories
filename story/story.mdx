@@ -1,13 +1,21 @@
 
 import Map from './components/map'
 
-# LEAP Data Story – Ocean Carbon Sink Outline
-As a pilot data story, CarbonPlan will work with members of the McKinley Lab to write a story about how the ocean carbon sink is calculated. We think that this topic is one that could be positioned to speak to a number of audiences. As we refine and then flesh out this outline, we should consider what audience we are trying to speak to (e.g., general public, young scientists, LEAP collaborators?) and what choices in format might speak to them (e.g., story structure, accompanying map, figure choices).
-
-## Outline
+# Ocean Carbon Sink
 ### Scale of ocean carbon sink
-It’s big! 25% uptake of emissions, 40% cumulatively over the industrial era. 
-This absorption keeps carbon away from the atmosphere, thus reduces global warming
-However, as seawater absorbs carbon it becomes more acidic (“Ocean Acidification”)
-Figure 1
+From 2013-2022, only half of the CO2 added to the atmosphere by humans has remained in the atmosphere; the other half has been absorbed about equally by land plants and the global oceans. Considering the full industrial era, only the oceans have been a net sink of CO2 from the atmosphere, cumulatively mitigating 37% of all human emissions; the rest of the CO2 has remained in the atmosphere to cause climate warming. If not for the ocean, the atmospheric concentration of CO2 would be about 90 ppm higher than at present. Future climate warming depends first-and-foremost on how much humans choose to emit. The future behavior of these natural sinks will also play critical roles. In this article, we explain the ocean component.
+
+The ocean carbon sink provides a massive climate service, reducing climate warming to date and in the near future to just over 60% that which would've otherwise occurred. This climate service does not come for free. A natural consequence of the absorption of carbon is that the water, naturally slightly alkaline at pH ~ 8, is becoming less alkaline, or more acidic. This process is known as 'Ocean Acidification', and is a major concern because of negative impacts to marine life. 
 <Map sourceUrl="https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr" variable="sfco2" clim={[280, 440]} colormapName='warm' />
+
+### How does the ocean carbon sink work? 
+CO2 dissolves in seawater, and then reacts with the water so that it dissociates into several ions. Cold seawater can hold more CO2 than warm water, so waters that are cooling tend to take up carbon, and waters that are upwelling and warming, such as in coastal zones and the tropics, tend to emit carbon. This contributes to the pattern of the global sea-to-air CO2 flux, as shown in this global air-sea flux map in the next section.
+The ocean is also teeming with plant life that photosynthesizes in the presence of nutrients and sunlight, producing organic matter from carbon extracted from the water. Much of this organic matter is quickly recycled back to dissolved carbon by the surface ocean food web, a small portion{`(<1%)`} of the waste matter sinks down to depth and enriches the abyss with carbon. This process moves carbon from the surface ocean to the deep ocean and stores carbon away from the atmospheric reservoir. Regionally, the high latitude oceans are highly productive, and this is another reason that high latitude oceans absorb large quantities of CO2 (flux map).
+
+As humans increase the atmospheric CO2 concentration, more carbon is driven into the oceans (Figure 2, right). This is Henry's Law – equilibration of gas between air and liquid – here operating at the global scale. Human-derived carbon is almost all in the surface ocean and slowly penetrates to depth with the long timescale of ocean overturning (~1000 years).
+
+### How this is calculated
+How do we know how much carbon is absorbed by the ocean? 
+
+The carbon content of the ocean cannot be observed with satellites - data must be collected directly from the water. However, the ocean is enormous, covering 71% of Earth; and there are only a limited number of research ships for scientists to use to collect data. How can we get enough data to understand how much carbon is going into the whole ocean each month?  
+
