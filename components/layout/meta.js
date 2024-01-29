@@ -30,38 +30,16 @@ const Meta = ({ title, description, card, url }) => {
         type='image/png'
         href='https://leap.columbia.edu/wp-content/uploads/2021/11/cropped-favicon-1-1-32x32.png'
       />
+      <link rel='preconnect' href='https://fonts.googleapis.com' />
+      <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
       <link
-        rel='preload'
-        href='https://fonts.carbonplan.org/relative/relative-book-pro.woff2'
-        as='font'
-        type='font/woff2'
-        crossOrigin='anonymous'
-      />
-      <link
-        rel='preload'
-        href='https://fonts.carbonplan.org/relative/relative-medium-pro.woff2'
-        as='font'
-        type='font/woff2'
-        crossOrigin='anonymous'
-      />
-      <link
-        rel='preload'
-        href='https://fonts.carbonplan.org/relative/relative-mono-11-pitch-pro.woff2'
-        as='font'
-        type='font/woff2'
-        crossOrigin='anonymous'
-      />
-      <link
-        rel='preload'
-        href='https://fonts.carbonplan.org/relative/relative-faux-book-pro.woff2'
-        as='font'
-        type='font/woff2'
-        crossOrigin='anonymous'
+        href='https://fonts.googleapis.com/css2?family=Inter:wght@100;400&display=swap'
+        rel='stylesheet'
       />
       <meta name='theme-color' content={theme.colors.background} />
       <meta
         name='color-scheme'
-        content={colorMode === 'light' ? 'light' : 'dark'}
+        content={colorMode === 'dark' ? 'dark' : 'light'}
       />
       <meta name='msapplication-TileColor' content={theme.colors.background} />
       <meta property='og:title' content={titleProp} />
