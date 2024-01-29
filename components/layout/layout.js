@@ -40,7 +40,7 @@ const Layout = ({
 
   return (
     <>
-      {guide && <Guide color={guide} />}
+      {guide && <Guide color={'teal'} />}
       {scrollbar && <Scrollbar />}
       <Meta card={card} description={description} title={title} url={url} />
       <Flex

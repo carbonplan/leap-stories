@@ -1,4 +1,3 @@
-import React from 'react'
-import Main from '../components/main'
+import Story from '../components/story'
 
-export default Main
+export default Story
