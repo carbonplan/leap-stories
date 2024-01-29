@@ -5,14 +5,33 @@ import theme from '@carbonplan/theme'
 
 const leapTheme = {
   ...theme,
+  fonts: {
+    body: 'Inter, sans-serif',
+    faux: 'Inter, sans-serif',
+    heading: 'Inter, sans-serif',
+    mono: 'Inter, sans-serif',
+  },
   colors: {
-    background: '#fff',
     text: '#000',
+    background: '#FFFFFF',
     primary: '#000',
-    secondary: '#000',
-    accent: '#000',
-    highlight: '#000',
-    muted: '#000',
+    secondary: '#808080',
+    muted: '#b9b9bb',
+    hinted: '#f2f2f1',
+    red: '#f07071',
+    orange: '#ea9755',
+    yellow: '#d4c05e',
+    green: '#7eb36a',
+    teal: '#64b9c4',
+    blue: '#85a2f7',
+    purple: '#bc85d9',
+    pink: '#e587b6',
+    grey: '#a9b4c4',
+  },
+  config: {
+    initialColorModeName: 'light',
+    printColorModeName: 'light',
+    useColorSchemeMediaQuery: false,
   },
 }
 
