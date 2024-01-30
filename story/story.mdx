@@ -1,4 +1,5 @@
 import Map from './components/map'
+import { Figure, FigureCaption } from '@carbonplan/components'
 
 # The ocean carbon sink
 
@@ -6,9 +7,18 @@ From 2013-2022, only half of the CO2 added to the atmosphere by humans has remai
 
 The ocean carbon sink provides a massive climate service, reducing climate warming to date and in the near future to just over 60% that which would’ve otherwise occurred. This climate service does not come for free. A natural consequence of the absorption of carbon is that the water, naturally slightly alkaline at pH ~ 8, is becoming less alkaline, or more acidic. This process is known as ‘Ocean Acidification’, and is a major concern because of negative impacts to marine life.
 
-Figure 1: Animation of globally-summed CO2 sources and sinks (Gigatons of Carbon, GtC). From left to right, cumulative emissions of CO2 from 1850 to the year indicated at middle of (1) carbon from fossil fuels (gray) and (2) land use change (orange); net absorption into (3) land plants and soils (light green) and (4) into the ocean (dark green); and (5) the remaining carbon that has accumulated in the atmosphere (blue). Sources indicated with upward arrows, sinks with downward arrows. Data from
-
-This bar plot as animation
+<Figure>
+  TK{' '}
+  <FigureCaption number={1}>
+    Animation of globally-summed CO2 sources and sinks (Gigatons of Carbon,
+    GtC). From left to right, cumulative emissions of CO2 from 1850 to the year
+    indicated at middle of (1) carbon from fossil fuels (gray) and (2) land use
+    change (orange); net absorption into (3) land plants and soils (light green)
+    and (4) into the ocean (dark green); and (5) the remaining carbon that has
+    accumulated in the atmosphere (blue). Sources indicated with upward arrows,
+    sinks with downward arrows. Data from
+  </FigureCaption>
+</Figure>
 
 ## How does the ocean carbon sink work?
 
@@ -17,7 +27,22 @@ The ocean is also teeming with plant life that photosynthesizes in the presence 
 
 As humans increase the atmospheric CO2 concentration, more carbon is driven into the oceans (Figure 2, right). This is Henry's Law – equilibration of gas between air and liquid – here operating at the global scale. Human-derived carbon is almost all in the surface ocean and slowly penetrates to depth with the long timescale of ocean overturning (~1000 years).
 
-Figure 2: The ocean carbon cycle, surface to depth. On the left is the natural carbon cycle that includes biological production, ocean circulation and air-sea exchange. On the right is the anthropogenic carbon cycle that includes invasion of carbon into the surface ocean due to the growing atmospheric pCO2 (inset on top right), and the ocean circulation that mixes anthropogenic carbon to depth. The total carbon cycle is the sum of the natural and anthropogenic cycles. At center are the observed global-mean profiles of natural, anthropogenic and total carbon in the ocean. The air-sea flux presented in the global map above is for the total carbon cycle. Figure by Galen McKinley and Natalie Renier, with support from the OCB program; also published at Figure 6 in .
+<Figure>
+  TK{' '}
+  <FigureCaption number={2}>
+    The ocean carbon cycle, surface to depth. On the left is the natural carbon
+    cycle that includes biological production, ocean circulation and air-sea
+    exchange. On the right is the anthropogenic carbon cycle that includes
+    invasion of carbon into the surface ocean due to the growing atmospheric
+    pCO2 (inset on top right), and the ocean circulation that mixes
+    anthropogenic carbon to depth. The total carbon cycle is the sum of the
+    natural and anthropogenic cycles. At center are the observed global-mean
+    profiles of natural, anthropogenic and total carbon in the ocean. The
+    air-sea flux presented in the global map above is for the total carbon
+    cycle. Figure by Galen McKinley and Natalie Renier, with support from the
+    OCB program; also published at Figure 6 in .
+  </FigureCaption>
+</Figure>
 
 ## How this is calculated
 
@@ -29,23 +54,30 @@ It’s impossible for scientists to go out to each location around the global oc
 
 Measurements of fCO2 are sparse around the ocean and are predominantly located in the northern hemisphere and along common shipping routes. This is because instruments able to measure fCO2 can be installed on container ships and scientists can monitor and obtain the measurements remotely. Additionally, fCO2 is commonly measured by research ships. Advances in technology also allow fCO2 measurements to be made on buoys and by unmanned vehicles that are deployed in the ocean. Technology is constantly advancing and it is quite possible that in the near future, fCO2 will be measurable from additional autonomous floats and even satellites!
 
-<Map
-  sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
-  variable='sfco2'
-  clim={[280, 440]}
-  colormapName='warm'
-/>
+<Figure>
+  <Map
+    sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/SOCATv2019_tracks_gridded_monthly.zarr'
+    variable='fco2_ave_weighted'
+    clim={[280, 440]}
+    colormapName='warm'
+  />
+  <FigureCaption number={3}>TK</FigureCaption>
+</Figure>
 
 Despite decades of coordinated international efforts by ocean carbon scientists, fCO2 observations are available for only a fraction of the vast global ocean. How do we understand the global ocean carbon sink where we do not have data? Machine Learning (ML) is now being used to extrapolate from these sparse data to build full-coverage fCO2 maps. In the training of ML algorithms, relationships are built between directly-observed fCO2 and other variables that can be measured everywhere, such as surface ocean temperature and chlorophyll from satellites. These additional variables are then used to estimate fCO2 at all points in space and time, going back several decades. From reconstructed fCO2, air-sea CO2 fluxes can be calculated; the global sum of air-sea fluxes is the ocean carbon sink.
 
-Figure 4: animation of 2 maps: global map of fCO2 progressing in time and next to it a global map of mean carbon flux (mol/m2/yr).
-
-<Map
-  sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/SOCATv2019_tracks_gridded_monthly.zarr'
-  variable='fco2_ave_weighted'
-  clim={[280, 440]}
-  colormapName='warm'
-/>
+<Figure>
+  <Map
+    sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
+    variable='sfco2'
+    clim={[280, 440]}
+    colormapName='warm'
+  />
+  <FigureCaption number={4}>
+    animation of 2 maps: global map of fCO2 progressing in time and next to it a
+    global map of mean carbon flux (mol/m2/yr).
+  </FigureCaption>
+</Figure>
 
 There are other methods that are used to estimate how much carbon is going into the ocean. About once per decade, very precise data is collected from the full depth of the ocean to assess the long-term storage of excess carbon in ocean waters below the surface. Estimates for recent decades with full depth data agree with the independent air-sea flux calculations, which increases confidence in these estimates. A third approach to estimating the ocean carbon sink is to use computer simulations of the ocean circulation and carbon processes (Figure 2). Models are essential tools for scientific inquiry and are the only way to make estimates of the future ocean carbon sink. Today’s ocean models underestimate by about 10% the magnitude of the global ocean carbon sink, and have significant regional errors against observation-based air-sea flux estimates, indicating a need for model improvements.
 
@@ -65,6 +97,11 @@ Engineered solutions such as mCDR are projected by the IPCC to be able to fulfil
 
 Put Bathtub Analogy in a Box?: If we think of emissions of carbon as the flow of water into a bathtub. The ocean sink is a drain that can remove 25% of this flow. The atmosphere CO₂ is the water remaining in the bathtub. Because more water is going in than is flowing out, the level of the water keeps going up. Now, if we reduce the flow into the bathtub, the ocean “drain” can take up a greater percent of this inflow, even though the total rate of outflow will be less.
 
-Figure 4: Bathtub analogy (interactive with slider for flow)
+<Figure>
+  TK{' '}
+  <FigureCaption number={5}>
+    Bathtub analogy (interactive with slider for flow){' '}
+  </FigureCaption>
+</Figure>
 
 Effectively managing the global carbon cycle is essential for limiting dangerous levels of climate warming. There is no doubt that the ocean fundamentally modifies the relationship between CO2 emissions and climate warming, but we cannot accurately track change in the ocean carbon sink, and we are yet unable to quantify additional uptake caused by new engineering approaches. Without enough data and knowledge, we cannot rule out surprises. Though it often seems far away, the ocean carbon cycle plays a huge role in the climate that we experience – keeping better tabs on it would be in our best interest.
