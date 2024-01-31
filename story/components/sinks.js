@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import * as d3 from 'd3'
+import React from 'react'
+import { select, easeCubic } from 'd3'
 import { Scrollama, Step } from 'react-scrollama'
 import { Box } from 'theme-ui'
-import { budgets } from './carbon_budget_data'
+import { budgets } from '../data/carbon_budget_data'
 
 const Sinks = () => {
   const maxCircleRadius = 100
@@ -77,7 +77,7 @@ const Sinks = () => {
             .raise()
             .transition()
             .duration(1000)
-            .ease(d3.easeCubic)
+            .ease(easeCubic)
             .attr(
               'cy',
               largerCircleData.sink
@@ -88,7 +88,7 @@ const Sinks = () => {
               largerCircle
                 .transition()
                 .duration(1000)
-                .ease(d3.easeCubic)
+                .ease(easeCubic)
                 .attr('r', finalRadius)
                 .attr(
                   'cy',
@@ -99,7 +99,7 @@ const Sinks = () => {
               smallerCircle
                 .transition()
                 .duration(1000)
-                .ease(d3.easeCubic)
+                .ease(easeCubic)
                 .attr('r', 0)
                 .attr('cy', lineHeight)
                 .on('end', () => {
@@ -241,11 +241,11 @@ const Sinks = () => {
 
   const handleStepEnter = ({ data }) => {
     if (data.progress) return
-    data.animate(d3.select('svg'))
+    data.animate(select('svg'))
   }
   const handleStepProgress = ({ progress, data }) => {
     if (!data.progress) return
-    data.animate(d3.select('svg'), progress)
+    data.animate(select('svg'), progress)
   }
 
   return (
