@@ -1,7 +1,9 @@
 import React from 'react'
 import { Row, Column } from '@carbonplan/components'
+
 import Layout from './layout'
 import StoryContent from '../story/story.mdx'
+
 const Story = () => {
   return (
     <Layout>
