@@ -6,7 +6,6 @@ const Radio = ({ name, checked, label, value, onChange, sx }) => {
       sx={{
         '&:hover': { cursor: 'pointer' },
         fontSize: [1, 1, 1, 2],
-        textTransform: 'uppercase',
         mt: '3px',
         position: 'relative',
       }}

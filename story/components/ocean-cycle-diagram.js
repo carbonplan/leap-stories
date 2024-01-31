@@ -179,7 +179,16 @@ const OceanCycleDiagram = () => {
     <Box>
       <Row columns={6}>
         <Column start={1} width={[6, 2, 2, 2]} sx={{ position: 'relative' }}>
-          <Box sx={{ color: 'secondary' }}>Carbon source</Box>
+          <Box
+            sx={{
+              fontSize: [1, 1, 1, 2],
+              mt: 2,
+              textTransform: 'uppercase',
+              mb: 3,
+            }}
+          >
+            Carbon source
+          </Box>
           <Radio
             name='natural'
             label='Natural'
