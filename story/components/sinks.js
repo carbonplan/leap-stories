@@ -1,7 +1,7 @@
-import React from 'react'
-import { select, easeCubic } from 'd3'
+import React, { useEffect } from 'react'
+import { select, easeCubic, interpolate } from 'd3'
 import { Scrollama, Step } from 'react-scrollama'
-import { Box } from 'theme-ui'
+import { Box, get } from 'theme-ui'
 import { budgets } from '../data/carbon_budget_data'
 
 const Sinks = () => {
@@ -30,6 +30,7 @@ const Sinks = () => {
         sink,
         id,
         category,
+        values,
       }
     })
   }
@@ -47,33 +48,114 @@ const Sinks = () => {
     return Math.abs(area1 - area2)
   }
 
-  const animateCircles = (svg, circle1Id, circle2Id) => {
+  const getCarbonLabel = (value, sink) => {
+    return value.toFixed(0) * (sink ? -1 : 1) + ' GtCO\u00B2'
+  }
+  const buildGraphBase = (svg) => {
+    svg.selectAll('*').remove()
+
+    const graph = svg.append('g').attr('class', 'graph')
+
+    graph
+      .append('line')
+      .attr('x1', 0)
+      .attr('y1', lineHeight)
+      .attr('x2', 700)
+      .attr('y2', lineHeight)
+      .attr('stroke', 'black')
+      .attr('stroke-width', 1)
+
+    graph
+      .append('text')
+      .attr('x', 0)
+      .attr('text-align', 'center')
+      .attr('text-anchor', 'center')
+      .attr('y', lineHeight - 10)
+      .attr('font-size', fontSize)
+      .attr('fill', '#808080')
+      .text('Sources')
+
+    graph
+      .append('text')
+      .attr('x', 0)
+      .attr('text-align', 'center')
+      .attr('text-anchor', 'center')
+      .attr('y', lineHeight + 25)
+      .attr('font-size', fontSize)
+      .attr('fill', '#808080')
+      .text('Sinks')
+    graph
+      .append('text')
+      .attr('class', 'year')
+      .attr('x', width - 100)
+      .attr('y', lineHeight + 6)
+      .attr('font-size', fontSize)
+      .attr('fill', '#808080')
+      .text(startYear)
+
+    circles.forEach((circle) => {
+      svg
+        .append('text')
+        .attr('class', `text-${circle.id}`)
+        .attr('x', circle.cx)
+        .attr('y', circle.sink ? lineHeight + 40 : lineHeight - 40)
+        .attr('font-size', fontSize - 5)
+        .attr('fill', circle.color)
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', circle.sink && 'hanging')
+        .data([circle])
+        .text(circle.category)
+      svg
+        .append('text')
+        .attr('class', `value-${circle.id}`)
+        .attr('x', circle.cx)
+        .attr('y', circle.sink ? lineHeight + 20 : lineHeight - 20)
+        .attr('font-size', fontSize - 5)
+        .attr('font-weight', 'bold')
+        .attr('fill', circle.color)
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', circle.sink && 'hanging')
+        .data([circle])
+        .text(getCarbonLabel(circle.values[startYear], circle.sink))
+
+      svg.append('circle').attr('class', `circle-${circle.id}`).data([circle])
+    })
+  }
+
+  const animateCircles = (svg, largerCircleID, smallerCircleID) => {
     return new Promise((resolve) => {
-      const circle1 = svg.select(`.circle-${circle1Id}`)
-      const circle2 = svg.select(`.circle-${circle2Id}`)
+      const largerCircleSVG = svg.select(`.circle-${largerCircleID}`)
+      const smallerCircleSVG = svg.select(`.circle-${smallerCircleID}`)
 
-      const circle1Data = circle1.datum()
-      const circle2Data = circle2.datum()
+      const largerCircleData = largerCircleSVG.datum()
+      const smallerCircleData = smallerCircleSVG.datum()
 
-      const circle1Radius = parseFloat(circle1.attr('r'))
-      const circle2Radius = parseFloat(circle2.attr('r'))
-
-      const largerCircle = circle1Radius >= circle2Radius ? circle1 : circle2
-      const smallerCircle = circle1Radius < circle2Radius ? circle1 : circle2
-      const largerCircleData =
-        largerCircle === circle1 ? circle1Data : circle2Data
-      const smallerCircleData =
-        smallerCircle === circle1 ? circle1Data : circle2Data
-
-      const finalArea = calculateAreaDifference(circle1Radius, circle2Radius)
+      const largerRadius = parseFloat(largerCircleSVG.attr('r'))
+      const smallerRadius = parseFloat(smallerCircleSVG.attr('r'))
+      const finalArea = calculateAreaDifference(largerRadius, smallerRadius)
       const finalRadius = Math.sqrt(finalArea / Math.PI)
+      const targetX = parseFloat(smallerCircleSVG.attr('cx'))
+      const targetY = largerCircleData.sink
+        ? lineHeight + finalRadius
+        : lineHeight - finalRadius
 
-      largerCircle
+      svg
+        .select(`.text-${largerCircleID}`)
         .transition()
         .duration(1000)
-        .attr('cx', parseFloat(smallerCircle.attr('cx')))
+        .attr('x', targetX)
+      svg
+        .select(`.value-${largerCircleID}`)
+        .transition()
+        .duration(1000)
+        .attr('x', targetX)
+
+      largerCircleSVG
+        .transition()
+        .duration(1000)
+        .attr('cx', parseFloat(smallerCircleSVG.attr('cx')))
         .on('end', () => {
-          smallerCircle
+          smallerCircleSVG
             .raise()
             .transition()
             .duration(1000)
@@ -81,22 +163,64 @@ const Sinks = () => {
             .attr(
               'cy',
               largerCircleData.sink
-                ? lineHeight + parseFloat(smallerCircle.attr('r'))
-                : lineHeight - parseFloat(smallerCircle.attr('r'))
+                ? lineHeight + parseFloat(smallerCircleSVG.attr('r'))
+                : lineHeight - parseFloat(smallerCircleSVG.attr('r'))
             )
             .on('end', () => {
-              largerCircle
+              svg
+                .select(`.text-${smallerCircleID}`)
+                .transition()
+                .duration(1000)
+                .style('opacity', 0)
+              svg
+                .select(`.value-${smallerCircleID}`)
+                .transition()
+                .duration(1000)
+                .tween('text', function () {
+                  const currentValue = parseFloat(
+                    this.textContent.match(/[\d\.]+/)[0]
+                  )
+                  const finalValue = 0
+                  const interpolator = interpolate(currentValue, finalValue)
+                  return function (t) {
+                    this.textContent = getCarbonLabel(
+                      interpolator(t),
+                      smallerCircleData.sink
+                    )
+                  }
+                })
+                .style('opacity', 0)
+
+              svg
+                .select(`.value-${largerCircleID}`)
+                .transition()
+                .duration(1000)
+                .tween('text', function () {
+                  const currentValue = parseFloat(
+                    this.textContent.match(/[\d\.]+/)[0]
+                  )
+                  const finalValue =
+                    currentValue -
+                    svg
+                      .select(`.value-${smallerCircleID}`)
+                      .text()
+                      .match(/[\d\.]+/)[0]
+                  const interpolator = interpolate(currentValue, finalValue)
+                  return function (t) {
+                    this.textContent = getCarbonLabel(
+                      interpolator(t),
+                      largerCircleData.sink
+                    )
+                  }
+                })
+
+              largerCircleSVG
                 .transition()
                 .duration(1000)
                 .ease(easeCubic)
                 .attr('r', finalRadius)
-                .attr(
-                  'cy',
-                  largerCircleData.sink
-                    ? lineHeight + finalRadius
-                    : lineHeight - finalRadius
-                )
-              smallerCircle
+                .attr('cy', targetY)
+              smallerCircleSVG
                 .transition()
                 .duration(1000)
                 .ease(easeCubic)
@@ -110,58 +234,28 @@ const Sinks = () => {
     })
   }
 
+  const updateLabels = (svg, circleId, radius, sink, carbon) => {
+    const textBaseOffset = sink ? 40 : -40
+    const valueBaseOffset = sink ? 20 : -20
+    const circle = svg.select(`.circle-${circleId}`).datum()
+    const text = svg.select(`.text-${circleId}`)
+    const value = svg.select(`.value-${circleId}`)
+    const textTargetY = lineHeight + (sink ? radius * 2 : radius * -2)
+
+    text.attr('x', circle.cx).attr('y', textTargetY + textBaseOffset)
+    value
+      .attr('x', circle.cx)
+      .attr('y', textTargetY + valueBaseOffset)
+      .text(getCarbonLabel(carbon, sink))
+  }
+
   const circles = getCircleData(endYear)
 
   const steps = [
     {
-      text: `Carbon sources and sinks have been estimated for the past 60+ years`,
+      text: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
       progress: false,
-      animate: (svg) => {
-        svg.selectAll('*').remove()
-        svg
-          .append('line')
-          .attr('x1', 0)
-          .attr('y1', lineHeight)
-          .attr('x2', 700)
-          .attr('y2', lineHeight)
-          .attr('stroke', 'black')
-          .attr('stroke-width', 1)
-
-        svg
-          .append('text')
-          .attr('x', 0)
-          .attr('text-align', 'center')
-          .attr('text-anchor', 'center')
-          .attr('y', lineHeight - 10)
-          .attr('font-size', fontSize)
-          .attr('fill', '#808080')
-          .text('Sources')
-
-        svg
-          .append('text')
-          .attr('x', 0)
-          .attr('text-align', 'center')
-          .attr('text-anchor', 'center')
-          .attr('y', lineHeight + 25)
-          .attr('font-size', fontSize)
-          .attr('fill', '#808080')
-          .text('Sinks')
-        svg
-          .append('text')
-          .attr('class', 'year')
-          .attr('x', width - 100)
-          .attr('y', lineHeight + 6)
-          .attr('font-size', fontSize)
-          .attr('fill', '#808080')
-          .text('')
-
-        circles.forEach((circle) => {
-          svg
-            .append('circle')
-            .attr('class', `circle-${circle.id}`)
-            .data([circle])
-        })
-      },
+      animate: (svg) => {},
     },
     {
       text: `Carbon sources and sinks from ${startYear} to ${endYear}`,
@@ -176,21 +270,25 @@ const Sinks = () => {
           lineHeight
         )
         svg.select('.year').text(year)
-        circles.forEach((circle, index) => {
-          svg
-            .select(`.circle-${circle.id}`)
-            .attr('cx', circle.cx)
-            .attr('cy', lineHeight)
-            .attr('r', 0)
-            .attr('fill', circle.color)
-            .attr('r', circle.radius)
-            .attr('cy', circle.cy)
-            .attr('stroke', 'black')
-        })
+        circles.forEach(
+          ({ id, cx, cy, color, radius, sink, values }, index) => {
+            svg
+              .select(`.circle-${id}`)
+              .attr('cx', cx)
+              .attr('cy', lineHeight)
+              .attr('r', 0)
+              .attr('fill', color)
+              .attr('r', radius)
+              .attr('cy', cy)
+              .attr('stroke', 'black')
+
+            updateLabels(svg, id, radius, sink, values[year])
+          }
+        )
       },
     },
     {
-      text: 'Land use emissions and land-related overall remove a relatively small amount of carbon',
+      text: 'Land use emissions and land-related sinks cancel a significant portion of each other out',
       animate: async (svg) => {
         const landUseCircle = circles.filter(
           (circle) => circle.id === 'land-use'
@@ -199,12 +297,11 @@ const Sinks = () => {
           (circle) => circle.id === 'land-sink'
         )[0]
         const finalArea = calculateAreaDifference(landSinkCircle, landUseCircle)
-        const finalRadius = Math.sqrt(finalArea / Math.PI)
-        await animateCircles(svg, 'land-use', 'land-sink')
+        await animateCircles(svg, 'land-sink', 'land-use')
       },
     },
     {
-      text: 'Land related carbon emissions make a relatively small dent in the budget',
+      text: 'Fossil fuel emissions dominate land related sources and sinks',
       animate: async (svg) => {
         const landUseCircle = circles.filter(
           (circle) => circle.id === 'land-use'
@@ -217,7 +314,7 @@ const Sinks = () => {
       },
     },
     {
-      text: 'The ocean accounts for by far the largest carbon sink',
+      text: 'The ocean, however, absorbs a very significant portion of these emissions',
       animate: async (svg) => {
         const landUseCircle = circles.filter(
           (circle) => circle.id === 'land-use'
@@ -227,73 +324,131 @@ const Sinks = () => {
         )[0]
         const finalArea = calculateAreaDifference(landSinkCircle, landUseCircle)
         await animateCircles(svg, 'fossil-fuels', 'ocean-sink')
+
+        svg.select('.graph').transition().duration(1000).style('opacity', 0)
+      },
+      // revert: (svg) => {
+      //   svg.selectAll('*').remove()
+      //   buildGraphBase(svg)
+      // },
+    },
+    {
+      text: 'The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean',
+      animate: async (svg) => {
         svg
           .select('.circle-fossil-fuels')
           .transition()
           .duration(1000)
           .attr('fill', '#64B9C4')
           .attr('cx', width / 2)
-        svg.selectAll('text').remove()
-        svg.selectAll('line').remove()
+        svg
+          .select('.text-fossil-fuels')
+          .transition()
+          .duration(1000)
+          .text('Atmosphere')
+          .attr('fill', '#64B9C4')
+          .attr('x', width / 2)
+        svg
+          .select('.value-fossil-fuels')
+          .transition()
+          .duration(1000)
+          .attr('x', width / 2)
+          .attr('fill', '#64B9C4')
+      },
+    },
+    {
+      text: null,
+      animate: async (svg) => {
+        const currentRadius = parseFloat(
+          svg.select('.circle-fossil-fuels').attr('r')
+        )
+        const newRadius = currentRadius * 4
+        svg
+          .select('.circle-fossil-fuels')
+          .transition()
+          .duration(2000)
+          .attr('r', newRadius)
+          .style('opacity', 0)
+        svg
+          .select('.text-fossil-fuels')
+          .transition()
+          .duration(2000)
+          .style('opacity', 0)
+        svg
+          .select('.value-fossil-fuels')
+          .transition()
+          .duration(2000)
+          .style('opacity', 0)
       },
     },
   ]
 
-  const handleStepEnter = ({ data }) => {
+  const handleStepEnter = ({ data, direction }) => {
     if (data.progress) return
-    data.animate(select('svg'))
+    if (direction === 'up' && data.revert) data.revert(select('svg'))
+    else data.animate(select('svg'))
   }
   const handleStepProgress = ({ progress, data }) => {
     if (!data.progress) return
     data.animate(select('svg'), progress)
   }
 
+  useEffect(() => {
+    const svg = select('svg')
+    buildGraphBase(svg)
+  }, [])
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ position: 'sticky', top: 0, height: '100vh', zIndex: -1 }}>
-        <svg
-          style={{ marginTop: '25vh', width: '100%' }}
+        <Box
+          as={'svg'}
+          sx={{
+            height: '100vh',
+          }}
           width='800'
           height='600'
           viewBox='0 0 800 600'
-        ></svg>
+        ></Box>
       </Box>
       <Scrollama
         onStepEnter={handleStepEnter}
-        offset={1}
+        offset={0.3}
         onStepProgress={handleStepProgress}
       >
         {steps.map((step, index) => (
           <Step data={step} key={index}>
             <Box
               sx={{
-                pb: '100vh',
+                py: '50vh',
               }}
             >
-              <Box
-                sx={{
-                  mr: 'calc(-1 * (3 * (100vw - 32px * 13) / 12 + 32px * 3))',
-                  margin: [
-                    'auto',
-                    'auto',
-                    '0 calc(-1 * (3 * (100vw - 32px * 13) / 12 + 32px * 3)) 0 0',
-                    '0 calc(-1 * (3 * (100vw - 48px * 13) / 12 + 48px * 3)) 0 0',
-                  ],
-                  width: [
-                    '50%',
-                    '50%',
-                    'calc(2 * (100vw - 32px * 13) / 12 + 32px)',
-                    'calc(2 * (100vw - 48px * 13) / 12 + 48px)',
-                  ],
-                  float: ['unset', 'unset', 'right', 'right'],
-                  bg: 'hinted',
-                  fontSize: 1,
-                  padding: 2,
-                  borderRadius: 4,
-                }}
-              >
-                {step.text}
-              </Box>
+              {step.text && (
+                <Box
+                  sx={{
+                    mr: 'calc(-1 * (3 * (100vw - 32px * 13) / 12 + 32px * 3))',
+                    margin: [
+                      'auto',
+                      'auto',
+                      '0 calc(-1 * (3 * (100vw - 32px * 13) / 12 + 32px * 3)) 0 0',
+                      '0 calc(-1 * (3 * (100vw - 48px * 13) / 12 + 48px * 3)) 0 0',
+                    ],
+                    width: [
+                      '50%',
+                      '50%',
+                      'calc(2 * (100vw - 32px * 13) / 12 + 32px)',
+                      'calc(2 * (100vw - 48px * 13) / 12 + 48px)',
+                    ],
+                    float: ['unset', 'unset', 'right', 'right'],
+                    bg: 'hinted',
+                    fontSize: 1,
+                    padding: 2,
+                    borderRadius: 4,
+                  }}
+                >
+                  {step.text}
+                </Box>
+              )}
             </Box>
           </Step>
         ))}
