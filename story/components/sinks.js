@@ -88,9 +88,10 @@ const buildGraphBase = (svg) => {
   graph
     .append('text')
     .attr('class', 'year')
-    .attr('x', width - 100)
-    .attr('y', lineHeight + 6)
+    .attr('x', width - 90)
+    .attr('y', lineHeight)
     .attr('font-size', fontSize)
+    .attr('dominant-baseline', 'middle')
     .attr('fill', '#808080')
     .text(startYear)
 
@@ -116,6 +117,7 @@ const buildGraphBase = (svg) => {
       .attr('fill', circle.color)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', circle.sink && 'hanging')
+      .style('opacity', 0)
       .data([circle])
       .text(getCarbonLabel(circle.values[startYear], circle.sink))
 
@@ -266,6 +268,18 @@ const Sinks = () => {
     {
       text: `Carbon sources and sinks from ${startYear} to ${endYear}`,
       progress: true,
+      init: (svg) => {
+        return new Promise((resolve) => {
+          svg
+            .selectAll("[class^='value-']")
+            .transition()
+            .duration(1000)
+            .style('opacity', 1)
+            .on('end', () => {
+              resolve()
+            })
+        })
+      },
       animate: (svg, percent) => {
         const year = Math.round(
           parseInt(startYear) +
@@ -411,12 +425,13 @@ const Sinks = () => {
   }
 
   const handleStepEnter = ({ data, direction }) => {
-    if (data.progress) return
+    if (data.progress && !data.init) return
     const svg = select('svg')
     if (direction === 'up') {
       if (data.revert) data.revert(svg)
     } else {
-      addToQ(() => data.animate(svg), svg)
+      if (data.init) addToQ(() => data.init(svg), svg)
+      else addToQ(() => data.animate(svg), svg)
     }
   }
 
