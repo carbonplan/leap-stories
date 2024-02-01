@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { select, easeCubic, interpolate } from 'd3'
 import { Scrollama, Step } from 'react-scrollama'
-import { Box, get } from 'theme-ui'
+import { Box } from 'theme-ui'
 import { budgets } from '../data/carbon_budget_data'
 
 const maxCircleRadius = 100
@@ -100,7 +100,7 @@ const buildGraphBase = (svg) => {
       .append('text')
       .attr('class', `text-${circle.id}`)
       .attr('x', circle.cx)
-      .attr('y', circle.sink ? lineHeight + 40 : lineHeight - 40)
+      .attr('y', circle.sink ? lineHeight + 10 : lineHeight - 10)
       .attr('font-size', fontSize - 5)
       .attr('fill', circle.color)
       .attr('text-anchor', 'middle')
@@ -111,7 +111,7 @@ const buildGraphBase = (svg) => {
       .append('text')
       .attr('class', `value-${circle.id}`)
       .attr('x', circle.cx)
-      .attr('y', circle.sink ? lineHeight + 20 : lineHeight - 20)
+      .attr('y', circle.sink ? lineHeight + 30 : lineHeight - 30)
       .attr('font-size', fontSize - 5)
       .attr('font-weight', 'bold')
       .attr('fill', circle.color)
@@ -239,8 +239,8 @@ const animateCircles = (svg, largerCircleID, smallerCircleID) => {
 
 const updateLabels = (svg, circleId, radius, sink, carbon) => {
   return new Promise((resolve) => {
-    const textBaseOffset = sink ? 40 : -40
-    const valueBaseOffset = sink ? 20 : -20
+    const valueBaseOffset = sink ? 30 : -30
+    const textBaseOffset = sink ? 10 : -10
     const circle = svg.select(`.circle-${circleId}`).datum()
     const text = svg.select(`.text-${circleId}`)
     const value = svg.select(`.value-${circleId}`)
