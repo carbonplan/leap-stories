@@ -21,6 +21,36 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
   const groupRef = useRef(null)
   const timeout = useRef(null)
 
+  const loadChunk = (getChunk, chunkIndex, shouldUpdateData) => {
+    getChunk([chunkIndex, 0, 0], (err, chunk) => {
+      if (err) {
+        console.error('Error loading chunk:', err)
+        return
+      }
+      chunkCache.current[chunkIndex] = chunk
+      if (shouldUpdateData) {
+        updateData(chunkIndex)
+      }
+    })
+  }
+
+  const updateData = (chunkIndex) => {
+    const timeIndexWithinChunk = time % timeChunkSize
+    const chunk = chunkCache.current[chunkIndex]
+    const chunkData = chunk.pick(timeIndexWithinChunk, null, null)
+    setData(chunkData)
+  }
+
+  const handleChunkLoading = (chunkIndex, shouldUpdateData = true) => {
+    if (chunkCache.current[chunkIndex]) {
+      if (shouldUpdateData) {
+        updateData(chunkIndex)
+      }
+    } else if (groupRef.current) {
+      loadChunk(groupRef.current[variable], chunkIndex, shouldUpdateData)
+    }
+  }
+
   useEffect(() => {
     const fetchGroup = async () => {
       try {
@@ -96,34 +126,6 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
     },
     [timeRange]
   )
-
-  const loadChunk = (getChunk, chunkIndex, shouldUpdateData) => {
-    getChunk([chunkIndex, 0, 0], (err, chunk) => {
-      if (err) {
-        console.error('Error loading chunk:', err)
-        return
-      }
-      chunkCache.current[chunkIndex] = chunk
-      if (shouldUpdateData) {
-        updateData(chunkIndex)
-      }
-    })
-  }
-
-  const updateData = (chunkIndex) => {
-    const timeIndexWithinChunk = time % timeChunkSize
-    const chunk = chunkCache.current[chunkIndex]
-    const chunkData = chunk.pick(timeIndexWithinChunk, null, null)
-    setData(chunkData)
-  }
-
-  const handleChunkLoading = (chunkIndex, shouldUpdateData = true) => {
-    if (chunkCache.current[chunkIndex] && shouldUpdateData) {
-      updateData(chunkIndex)
-    } else if (groupRef.current) {
-      loadChunk(groupRef.current[variable], chunkIndex, shouldUpdateData)
-    }
-  }
 
   const handleSliderChange = (event) => {
     setTime(parseInt(event.target.value))
