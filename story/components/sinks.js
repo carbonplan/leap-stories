@@ -54,6 +54,27 @@ const getCarbonLabel = (value, sink) => {
   return value.toFixed(0) * (sink ? -1 : 1) + ' GtCO\u00B2'
 }
 
+const incrementYear = (svg, percent) => {
+  const year = Math.round(
+    parseInt(startYear) + (parseInt(endYear) - parseInt(startYear)) * percent
+  )
+  const circles = calculateCirclePositions(getCircleData(year), lineHeight)
+  svg.select('.year').text(year)
+  circles.forEach(({ id, cx, cy, color, radius, sink, values }, index) => {
+    svg
+      .select(`.circle-${id}`)
+      .attr('cx', cx)
+      .attr('cy', lineHeight)
+      .attr('r', 0)
+      .attr('fill', color)
+      .attr('r', radius)
+      .attr('cy', cy)
+      .attr('stroke', 'black')
+
+    updateLabels(svg, id, radius, sink, values[year])
+  })
+}
+
 const buildOpener = (svg) => {
   svg.selectAll('*').remove()
   const graph = svg.append('g').attr('class', 'graph')
@@ -265,8 +286,10 @@ const animateCircles = (svg, largerCircleID, smallerCircleID) => {
               .duration(1000)
               .tween('text', function () {
                 const currentValue = parseFloat(
-                  this.textContent.match(/[\d\.]+/)[0]
+                  this.textContent?.match(/[\d\.]+/)?.[0]
                 )
+                  ? parseFloat(this.textContent?.match(/[\d\.]+/)?.[0])
+                  : 0
                 const finalValue = 0
                 const interpolator = interpolate(currentValue, finalValue)
                 return function (t) {
@@ -367,35 +390,13 @@ const Sinks = () => {
         })
       },
       animate: (svg, percent) => {
-        const year = Math.round(
-          parseInt(startYear) +
-            (parseInt(endYear) - parseInt(startYear)) * percent
-        )
-        const circles = calculateCirclePositions(
-          getCircleData(year),
-          lineHeight
-        )
-        svg.select('.year').text(year)
-        circles.forEach(
-          ({ id, cx, cy, color, radius, sink, values }, index) => {
-            svg
-              .select(`.circle-${id}`)
-              .attr('cx', cx)
-              .attr('cy', lineHeight)
-              .attr('r', 0)
-              .attr('fill', color)
-              .attr('r', radius)
-              .attr('cy', cy)
-              .attr('stroke', 'black')
-
-            updateLabels(svg, id, radius, sink, values[year])
-          }
-        )
+        incrementYear(svg, percent)
       },
     },
     {
       text: 'Land use emissions and land-related sinks cancel a significant portion of each other out',
       animate: async (svg) => {
+        incrementYear(svg, 1) // make sure we always get to the end
         await animateCircles(svg, 'land-sink', 'land-use')
       },
     },
