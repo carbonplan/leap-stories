@@ -1,8 +1,13 @@
+import { Box } from 'theme-ui'
 import { Figure } from '@carbonplan/components'
 import { FigureCaption } from '../components'
 import { Bathtub, Map, Sinks, OceanCycleDiagram } from './components'
 
 # The ocean carbon sink
+
+<Box sx={{ fontStyle: 'italic', mt: 5, mb: 7 }}>
+  by Galen McKinley, Amanda Fay, and Thea Hatlen Heimdal
+</Box>
 
 From 2013-2022, only half of the CO2 added to the atmosphere by humans has remained in the atmosphere; the other half has been absorbed about equally by land plants and the global oceans. Considering the full industrial era, only the oceans have been a net sink of CO2 from the atmosphere, cumulatively mitigating 37% of all human emissions; the rest of the CO2 has remained in the atmosphere to cause climate warming. If not for the ocean, the atmospheric concentration of CO2 would be about 90 ppm higher than at present. Future climate warming depends first-and-foremost on how much humans choose to emit. The future behavior of these natural sinks will also play critical roles. In this article, we explain the ocean component.
 
@@ -61,7 +66,12 @@ Measurements of fCO2 are sparse around the ocean and are predominantly located i
     variable='fco2_ave_weighted'
     clim={[280, 440]}
     colormapName='warm'
-  />
+    label='Measured fCO₂'
+    units='μatm'
+    startYear={1970}
+    delay={100}
+/>
+
   <FigureCaption number={3}>TK</FigureCaption>
 </Figure>
 
@@ -72,7 +82,10 @@ Despite decades of coordinated international efforts by ocean carbon scientists,
     sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
     variable='sfco2'
     clim={[280, 440]}
+    label='Reconstructed fCO₂'
+    units='μatm'
     colormapName='warm'
+    startYear={1959}
   />
   <FigureCaption number={4}>
     animation of 2 maps: global map of fCO2 progressing in time and next to it a
@@ -101,7 +114,11 @@ Put Bathtub Analogy in a Box?: If we think of emissions of carbon as the flow of
 <Figure>
   <Bathtub />
   <FigureCaption number={5}>
-    Bathtub analogy (interactive with slider for flow){' '}
+    Bathtub analogy (interactive with slider for flow; play pause button to show
+    behavior at different flow rates).{' '}
+    <Box as='span' sx={{ color: 'red' }}>
+      Will this figure serve the text?
+    </Box>
   </FigureCaption>
 </Figure>
 
