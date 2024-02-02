@@ -200,7 +200,7 @@ const Map = ({
           range={timeRange}
           setValue={setTime}
           formatter={formatter}
-          sx={{ color: 'secondary', borderColor: 'secondary' }}
+          sx={{ fontSize: 2 }}
         />
       </Flex>
       <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>

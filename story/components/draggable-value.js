@@ -69,7 +69,6 @@ const DraggableValue = ({
         border: 'none',
         color: 'primary',
         px: 0,
-        fontFamily: 'mono',
         letterSpacing: 'smallcaps',
         textTransform: 'uppercase',
         transition: 'border 0.15s',
