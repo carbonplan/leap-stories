@@ -1,3 +1,3 @@
-import Layout from './layout'
+import Story from './story'
 
-export default Layout
+export default Story

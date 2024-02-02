@@ -1,3 +1,3 @@
-import Story from '../components/story'
+import Story from '../story/story.mdx'
 
 export default Story

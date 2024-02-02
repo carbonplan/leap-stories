@@ -1,5 +1,6 @@
 import { Box } from 'theme-ui'
 import { Figure } from '@carbonplan/components'
+import Story from '../components/layout'
 import { FigureCaption } from '../components'
 import { Bathtub, Map, OceanCycleDiagram } from './components'
 
@@ -123,3 +124,5 @@ Put Bathtub Analogy in a Box?: If we think of emissions of carbon as the flow of
 </Figure>
 
 Effectively managing the global carbon cycle is essential for limiting dangerous levels of climate warming. There is no doubt that the ocean fundamentally modifies the relationship between CO2 emissions and climate warming, but we cannot accurately track change in the ocean carbon sink, and we are yet unable to quantify additional uptake caused by new engineering approaches. Without enough data and knowledge, we cannot rule out surprises. Though it often seems far away, the ocean carbon cycle plays a huge role in the climate that we experience – keeping better tabs on it would be in our best interest.
+
+export default ({ children }) => <Story>{children}</Story>
