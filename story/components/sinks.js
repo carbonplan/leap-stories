@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { select, easeCubic, interpolate } from 'd3'
 import { Scrollama, Step } from 'react-scrollama'
 import { Box } from 'theme-ui'
@@ -400,27 +400,24 @@ const Sinks = () => {
     },
   ]
 
-  const [animationQueue, setAnimationQueue] = useState([])
+  const animationQueueRef = useRef([])
 
   const processQueue = async () => {
-    if (animationQueue.length > 0) {
-      const { animation, svg, resolve } = animationQueue[0]
+    if (animationQueueRef.current.length > 0) {
+      const { animation, svg, resolve } = animationQueueRef.current[0]
       await animation(svg)
       resolve()
-      setAnimationQueue((prevQueue) => prevQueue.slice(1))
+      animationQueueRef.current.shift()
+      processQueue()
     }
   }
 
-  useEffect(() => {
-    processQueue()
-  }, [animationQueue])
-
   const addToQ = (animation, svg) => {
     return new Promise((resolve) => {
-      setAnimationQueue((prevQueue) => [
-        ...prevQueue,
-        { animation, svg, resolve },
-      ])
+      animationQueueRef.current.push({ animation, svg, resolve })
+      if (animationQueueRef.current.length === 1) {
+        processQueue()
+      }
     })
   }
 
