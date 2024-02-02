@@ -50,78 +50,149 @@ const calculateAreaDifference = (radius1, radius2) => {
 }
 
 const getCarbonLabel = (value, sink) => {
+  if (value === 0) return ''
   return value.toFixed(0) * (sink ? -1 : 1) + ' GtCO\u00B2'
 }
-const buildGraphBase = (svg) => {
+
+const buildOpener = (svg) => {
   svg.selectAll('*').remove()
-
   const graph = svg.append('g').attr('class', 'graph')
-
   graph
     .append('line')
+    .attr('class', 'line')
     .attr('x1', 0)
     .attr('y1', lineHeight)
     .attr('x2', 700)
     .attr('y2', lineHeight)
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
+    .style('opacity', 0)
 
-  graph
-    .append('text')
-    .attr('x', 0)
-    .attr('text-align', 'center')
-    .attr('text-anchor', 'center')
-    .attr('y', lineHeight - 10)
-    .attr('font-size', fontSize)
-    .attr('fill', '#808080')
-    .text('Sources')
-
-  graph
-    .append('text')
-    .attr('x', 0)
-    .attr('text-align', 'center')
-    .attr('text-anchor', 'center')
-    .attr('y', lineHeight + 25)
-    .attr('font-size', fontSize)
-    .attr('fill', '#808080')
-    .text('Sinks')
   graph
     .append('text')
     .attr('class', 'year')
     .attr('x', width - 90)
     .attr('y', lineHeight)
     .attr('font-size', fontSize)
-    .attr('dominant-baseline', 'middle')
     .attr('fill', '#808080')
     .text(startYear)
+    .style('opacity', 0)
 
-  circles.forEach((circle) => {
+  graph
+    .append('text')
+    .text('Tracking Cumulative Carbon Budgets')
+    .attr('class', 'title')
+    .attr('x', width / 2)
+    .attr('y', 0)
+    .attr('font-size', fontSize + 5)
+    .attr('fill', '#808080')
+    .attr('text-anchor', 'middle')
+
+  graph
+    .append('text')
+    .text('Sources')
+    .attr('class', 'sources')
+    .attr('x', width / 4)
+    .attr('y', 40)
+    .attr('font-size', fontSize)
+    .attr('fill', '#808080')
+    .attr('text-anchor', 'middle')
+
+  graph
+    .append('text')
+    .text('Sinks')
+    .attr('class', 'sinks')
+    .attr('x', width * 0.75)
+    .attr('y', 40)
+    .attr('font-size', fontSize)
+    .attr('fill', '#808080')
+    .attr('text-anchor', 'middle')
+
+  circles.forEach((circle, index) => {
+    const x = circle.sink ? width * 0.75 : width / 4
+    const y = index > 1 ? 50 + (index - 1) * 25 : 50 + (index + 1) * 25
     svg
       .append('text')
       .attr('class', `text-${circle.id}`)
-      .attr('x', circle.cx)
-      .attr('y', circle.sink ? lineHeight + 10 : lineHeight - 10)
+      .attr('x', x)
+      .attr('y', y)
       .attr('font-size', fontSize - 5)
       .attr('fill', circle.color)
       .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', circle.sink && 'hanging')
+      .attr('text-align', 'center')
+      .style('opacity', 0)
+      // .attr('dominant-baseline', circle.sink && 'hanging')
       .data([circle])
       .text(circle.category)
-    svg
-      .append('text')
-      .attr('class', `value-${circle.id}`)
-      .attr('x', circle.cx)
-      .attr('y', circle.sink ? lineHeight + 30 : lineHeight - 30)
-      .attr('font-size', fontSize - 5)
-      .attr('font-weight', 'bold')
-      .attr('fill', circle.color)
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', circle.sink && 'hanging')
-      .style('opacity', 0)
-      .data([circle])
-      .text(getCarbonLabel(circle.values[startYear], circle.sink))
-
+      .transition()
+      .duration(1000)
+      .style('opacity', 1)
     svg.append('circle').attr('class', `circle-${circle.id}`).data([circle])
+  })
+}
+
+const buildGraphBase = (svg) => {
+  return new Promise((resolve) => {
+    svg
+      .select('.sources')
+      .transition()
+      .duration(1000)
+      .attr('x', 0)
+      .attr('y', lineHeight - 10)
+      .attr('text-anchor', 'unset')
+
+    svg
+      .select('.sinks')
+      .transition()
+      .duration(1000)
+      .attr('x', 0)
+      .attr('y', lineHeight + 25)
+      .attr('text-anchor', 'unset')
+
+    circles.forEach((circle) => {
+      svg
+        .select(`.text-${circle.id}`)
+        .transition()
+        .duration(1000)
+        .attr('x', circle.cx)
+        .attr('y', circle.sink ? lineHeight + 10 : lineHeight - 10)
+        .attr('font-size', fontSize - 5)
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', circle.sink && 'hanging')
+        .text(circle.category)
+      svg
+        .select(`.value-${circle.id}`)
+        .transition()
+        .duration(1000)
+        .attr('x', circle.cx)
+        .attr('y', circle.sink ? lineHeight + 30 : lineHeight - 30)
+        .attr('font-size', fontSize - 5)
+        .attr('font-weight', 'bold')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', circle.sink && 'hanging')
+        .text(getCarbonLabel(circle.values[startYear], circle.sink))
+      svg
+        .append('text')
+        .attr('class', `value-${circle.id}`)
+        .attr('x', circle.cx)
+        .attr('y', circle.sink ? lineHeight + 30 : lineHeight - 30)
+        .attr('font-size', fontSize - 5)
+        .attr('font-weight', 'bold')
+        .attr('fill', circle.color)
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', circle.sink && 'hanging')
+        .data([circle])
+        .text(getCarbonLabel(circle.values[startYear], circle.sink))
+    })
+
+    svg
+      .selectAll('.line, .year')
+      .transition()
+      .duration(1000)
+      .style('opacity', 1)
+      .on('end', () => {
+        resolve()
+      })
   })
 }
 
@@ -137,7 +208,8 @@ const animateCircles = (svg, largerCircleID, smallerCircleID) => {
     const smallerRadius = parseFloat(smallerCircleSVG.attr('r'))
     const finalArea = calculateAreaDifference(largerRadius, smallerRadius)
     const finalRadius = Math.sqrt(finalArea / Math.PI)
-    const targetX = parseFloat(smallerCircleSVG.attr('cx'))
+    // const targetX = parseFloat(smallerCircleSVG.attr('cx'))
+    const targetX = width / 2
     const targetY = largerCircleData.sink
       ? lineHeight + finalRadius
       : lineHeight - finalRadius
@@ -272,9 +344,11 @@ const Sinks = () => {
     {
       text: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
       progress: false,
-      animate: (svg) => {},
-      revert: (svg) => {
+      animate: (svg) => {
         buildGraphBase(svg)
+      },
+      revert: (svg) => {
+        buildOpener(svg)
       },
     },
     {
@@ -334,6 +408,23 @@ const Sinks = () => {
     {
       text: 'The ocean, however, absorbs a very significant portion of these emissions',
       animate: async (svg) => {
+        const clonedFossilFuelsCircle = svg
+          .select('.circle-fossil-fuels')
+          .clone(true)
+        clonedFossilFuelsCircle
+          .attr('class', 'cloned-fossil-fuels')
+          .style('opacity', 0)
+          .attr('cx', width / 2)
+          .attr(
+            'cy',
+            lineHeight + parseFloat(clonedFossilFuelsCircle.attr('r'))
+          )
+          .attr('fill', '#00000000')
+          .attr('stroke-dasharray', '5,5')
+          .attr('stroke', '#64B9C4')
+
+        svg.node().appendChild(clonedFossilFuelsCircle.node())
+
         await animateCircles(svg, 'fossil-fuels', 'ocean-sink')
       },
       // revert: (svg) => {
@@ -348,6 +439,7 @@ const Sinks = () => {
           const ffCircle = svg.select('.circle-fossil-fuels')
           const ffText = svg.select('.text-fossil-fuels')
           const ffValue = svg.select('.value-fossil-fuels')
+          const clonedFossilFuelsCircle = svg.select('.cloned-fossil-fuels')
 
           ffText
             .transition()
@@ -364,17 +456,22 @@ const Sinks = () => {
             .on('end', () => {
               ffText.transition().duration(1000).style('opacity', 0)
               ffValue.transition().duration(1000).style('opacity', 0)
+              clonedFossilFuelsCircle
+                .transition()
+                .duration(1000)
+                .style('opacity', 1)
+
               ffText
                 .transition()
                 .duration(1000)
-                .attr('y', lineHeight + 2 * parseFloat(ffCircle.attr('r')) + 20)
+                .attr('y', lineHeight - 20)
                 .text('Atmosphere')
                 .attr('fill', '#64B9C4')
                 .style('opacity', 1)
               ffValue
                 .transition()
                 .duration(1000)
-                .attr('y', lineHeight + 2 * parseFloat(ffCircle.attr('r')) + 40)
+                .attr('y', lineHeight - 40)
                 .attr('fill', '#64B9C4')
                 .style('opacity', 1)
               ffCircle
@@ -400,10 +497,16 @@ const Sinks = () => {
       text: null,
       animate: async (svg) => {
         return new Promise((resolve) => {
+          const clonedFossilFuelsCircle = svg.select('.cloned-fossil-fuels')
           const currentRadius = parseFloat(
             svg.select('.circle-fossil-fuels').attr('r')
           )
           const newRadius = currentRadius * 4
+
+          clonedFossilFuelsCircle
+            .transition()
+            .duration(2000)
+            .style('opacity', 0)
           svg
             .select('.circle-fossil-fuels')
             .transition()
@@ -453,7 +556,7 @@ const Sinks = () => {
     if (data.progress && !data.init) return
     const svg = select('svg')
     if (direction === 'up') {
-      if (data.revert) data.revert(svg)
+      if (data.revert) addToQ(() => data.revert(svg), svg)
     } else {
       if (data.init) addToQ(() => data.init(svg), svg)
       else addToQ(() => data.animate(svg), svg)
@@ -467,7 +570,8 @@ const Sinks = () => {
   }
   useEffect(() => {
     const svg = select('svg')
-    buildGraphBase(svg)
+    // buildGraphBase(svg)
+    buildOpener(svg)
   }, [])
 
   return (
@@ -477,6 +581,7 @@ const Sinks = () => {
           as={'svg'}
           sx={{
             height: '100vh',
+            width: '100%',
           }}
           width='800'
           height='600'
