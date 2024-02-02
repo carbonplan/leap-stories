@@ -4,10 +4,11 @@ import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Colorbar } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Flex } from 'theme-ui'
+import { Box, Flex } from 'theme-ui'
 
 import { datasets } from '../datasets'
 import PlayPause from './play-pause'
+import DraggableValue from './draggable-value'
 
 class ChunkCache {
   constructor() {
@@ -165,8 +166,10 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
 
   return (
     <>
-      <PlayPause playing={playing} setPlaying={handlePlay} />
-
+      <Flex sx={{ justifyContent: 'space-between' }}>
+        <PlayPause playing={playing} setPlaying={handlePlay} />
+        <DraggableValue value={time} range={timeRange} setValue={setTime} />
+      </Flex>
       <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
         <Path
           stroke={'black'}
