@@ -152,11 +152,23 @@ const animateCircles = (svg, largerCircleID, smallerCircleID) => {
       .transition()
       .duration(1000)
       .attr('x', targetX)
+    svg
+      .select(`.text-${smallerCircleID}`)
+      .transition()
+      .duration(1000)
+      .attr('x', targetX)
+    svg
+      .select(`.value-${smallerCircleID}`)
+      .transition()
+      .duration(1000)
+      .attr('x', targetX)
+
+    smallerCircleSVG.transition().duration(1000).attr('cx', targetX)
 
     largerCircleSVG
       .transition()
       .duration(1000)
-      .attr('cx', parseFloat(smallerCircleSVG.attr('cx')))
+      .attr('cx', targetX)
       .on('end', () => {
         smallerCircleSVG
           .raise()
@@ -323,16 +335,6 @@ const Sinks = () => {
       text: 'The ocean, however, absorbs a very significant portion of these emissions',
       animate: async (svg) => {
         await animateCircles(svg, 'fossil-fuels', 'ocean-sink')
-        return new Promise((resolve) => {
-          svg
-            .select('.graph')
-            .transition()
-            .duration(1000)
-            .style('opacity', 0)
-            .on('end', () => {
-              resolve()
-            })
-        })
       },
       // revert: (svg) => {
       //   svg.selectAll('*').remove()
@@ -343,27 +345,53 @@ const Sinks = () => {
       text: 'The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean',
       animate: async (svg) => {
         return new Promise((resolve) => {
-          svg
-            .select('.circle-fossil-fuels')
+          const ffCircle = svg.select('.circle-fossil-fuels')
+          const ffText = svg.select('.text-fossil-fuels')
+          const ffValue = svg.select('.value-fossil-fuels')
+
+          ffText
             .transition()
             .duration(1000)
-            .attr('fill', '#64B9C4')
+            .attr('x', width / 2)
+          ffValue
+            .transition()
+            .duration(1000)
+            .attr('x', width / 2)
+          ffCircle
+            .transition()
+            .duration(1000)
             .attr('cx', width / 2)
-          svg
-            .select('.text-fossil-fuels')
-            .transition()
-            .duration(1000)
-            .text('Atmosphere')
-            .attr('fill', '#64B9C4')
-            .attr('x', width / 2)
-          svg
-            .select('.value-fossil-fuels')
-            .transition()
-            .duration(1000)
-            .attr('x', width / 2)
-            .attr('fill', '#64B9C4')
             .on('end', () => {
-              resolve()
+              ffText.transition().duration(1000).style('opacity', 0)
+              ffValue.transition().duration(1000).style('opacity', 0)
+              ffText
+                .transition()
+                .duration(1000)
+                .attr('y', lineHeight + 2 * parseFloat(ffCircle.attr('r')) + 20)
+                .text('Atmosphere')
+                .attr('fill', '#64B9C4')
+                .style('opacity', 1)
+              ffValue
+                .transition()
+                .duration(1000)
+                .attr('y', lineHeight + 2 * parseFloat(ffCircle.attr('r')) + 40)
+                .attr('fill', '#64B9C4')
+                .style('opacity', 1)
+              ffCircle
+                .transition()
+                .duration(1000)
+                .attr('cy', lineHeight + parseFloat(ffCircle.attr('r')))
+                .attr('fill', '#64B9C4')
+                .on('end', () => {
+                  svg
+                    .select('.graph')
+                    .transition()
+                    .duration(1000)
+                    .style('opacity', 0)
+                    .on('end', () => {
+                      resolve()
+                    })
+                })
             })
         })
       },
