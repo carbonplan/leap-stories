@@ -42,7 +42,7 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
   const [timeChunkSize, setTimeChunkSize] = useState(12)
   const [nullValue, setNullValue] = useState(9.969209968386869e36)
   const chunkCache = useRef(new ChunkCache())
-  const groupRef = useRef(null)
+  const loaders = useRef(null)
   const timeout = useRef(null)
 
   const updateData = () => {
@@ -81,8 +81,8 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
       }
     } else if (chunkCache.current.getLoading(chunkIndex)) {
       // Do nothing
-    } else if (groupRef.current) {
-      loadChunk(groupRef.current[variable], chunkIndex, shouldUpdateData)
+    } else if (loaders.current) {
+      loadChunk(loaders.current[variable], chunkIndex, shouldUpdateData)
     }
   }
 
@@ -100,12 +100,13 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
 
         zarr().openGroup(
           sourceUrl,
-          (err, group) => {
+          (err, loaders) => {
             if (err) {
               console.error('Error opening group:', err)
               return
             }
-            groupRef.current = group
+            loaders.current = loaders
+
             handleChunkLoading(Math.floor(time / timeChunkSize))
           },
           [],
@@ -119,7 +120,7 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
   }, [])
 
   useEffect(() => {
-    if (groupRef.current) {
+    if (loaders.current) {
       const chunkIndex = Math.floor(time / timeChunkSize)
       handleChunkLoading(chunkIndex)
 
