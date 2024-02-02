@@ -61,7 +61,12 @@ Measurements of fCO2 are sparse around the ocean and are predominantly located i
     variable='fco2_ave_weighted'
     clim={[280, 440]}
     colormapName='warm'
-  />
+    label='Measured fCO₂'
+    units='μatm'
+    startYear={1970}
+    delay={100}
+/>
+
   <FigureCaption number={3}>TK</FigureCaption>
 </Figure>
 
@@ -72,7 +77,10 @@ Despite decades of coordinated international efforts by ocean carbon scientists,
     sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
     variable='sfco2'
     clim={[280, 440]}
+    label='Reconstructed fCO₂'
+    units='μatm'
     colormapName='warm'
+    startYear={1959}
   />
   <FigureCaption number={4}>
     animation of 2 maps: global map of fCO2 progressing in time and next to it a
