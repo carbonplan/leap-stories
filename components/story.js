@@ -8,7 +8,7 @@ const Story = () => {
   return (
     <Layout>
       <Row>
-        <Column start={[1, 2, 3, 3]} width={[6]}>
+        <Column start={[1, 2, 3, 3]} width={[6]} sx={{ pt: 6 }}>
           <StoryContent />
         </Column>
       </Row>
