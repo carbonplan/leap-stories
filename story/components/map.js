@@ -57,6 +57,7 @@ const Map = ({
   label,
   units,
   startYear,
+  delay = 500,
 }) => {
   const colormap = useThemedColormap(colormapName)
   const [playing, setPlaying] = useState(false)
@@ -183,12 +184,12 @@ const Map = ({
             if (shouldContinue) {
               incrementTime()
             }
-          }, 500)
+          }, delay)
         }
         incrementTime()
       }
     },
-    [timeRange]
+    [timeRange, delay]
   )
 
   return (
