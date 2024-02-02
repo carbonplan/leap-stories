@@ -9,6 +9,30 @@ import { Box } from 'theme-ui'
 import { datasets } from '../datasets'
 import PlayPause from './play-pause'
 
+class ChunkCache {
+  constructor() {
+    this.cache = {}
+    this.loading = {}
+  }
+
+  addLoading(index) {
+    this.loading[index] = true
+  }
+
+  getLoading(index) {
+    return this.loading[index]
+  }
+
+  add(index, value) {
+    this.cache[index] = value
+    delete this.loading[index]
+  }
+
+  get(index) {
+    return this.cache[index]
+  }
+}
+
 const Map = ({ sourceUrl, variable, clim, colormapName }) => {
   const colormap = useThemedColormap(colormapName)
   const [playing, setPlaying] = useState(false)
@@ -17,35 +41,39 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
   const [timeRange, setTimeRange] = useState([0, 0])
   const [timeChunkSize, setTimeChunkSize] = useState(12)
   const [nullValue, setNullValue] = useState(9.969209968386869e36)
-  const chunkCache = useRef({})
+  const chunkCache = useRef(new ChunkCache())
   const groupRef = useRef(null)
   const timeout = useRef(null)
 
+  const updateData = (chunkIndex) => {
+    // Always grab the most up-to-date time index from state
+    const timeIndexWithinChunk = time % timeChunkSize
+    const chunk = chunkCache.current.get(chunkIndex)
+    const chunkData = chunk.pick(timeIndexWithinChunk, null, null)
+    setData(chunkData)
+  }
+
   const loadChunk = (getChunk, chunkIndex, shouldUpdateData) => {
+    chunkCache.current.addLoading(chunkIndex)
     getChunk([chunkIndex, 0, 0], (err, chunk) => {
       if (err) {
         console.error('Error loading chunk:', err)
         return
       }
-      chunkCache.current[chunkIndex] = chunk
+      chunkCache.current.add(chunkIndex, chunk)
       if (shouldUpdateData) {
         updateData(chunkIndex)
       }
     })
   }
 
-  const updateData = (chunkIndex) => {
-    const timeIndexWithinChunk = time % timeChunkSize
-    const chunk = chunkCache.current[chunkIndex]
-    const chunkData = chunk.pick(timeIndexWithinChunk, null, null)
-    setData(chunkData)
-  }
-
   const handleChunkLoading = (chunkIndex, shouldUpdateData = true) => {
-    if (chunkCache.current[chunkIndex]) {
+    if (chunkCache.current.get(chunkIndex)) {
       if (shouldUpdateData) {
         updateData(chunkIndex)
       }
+    } else if (chunkCache.current.getLoading(chunkIndex)) {
+      // Do nothing
     } else if (groupRef.current) {
       loadChunk(groupRef.current[variable], chunkIndex, shouldUpdateData)
     }
