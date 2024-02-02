@@ -101,12 +101,12 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
 
         zarr().openGroup(
           sourceUrl,
-          (err, loaders) => {
+          (err, l) => {
             if (err) {
               console.error('Error opening group:', err)
               return
             }
-            loaders.current = loaders
+            loaders.current = l
 
             handleChunkLoading(Math.floor(time / timeChunkSize))
           },
