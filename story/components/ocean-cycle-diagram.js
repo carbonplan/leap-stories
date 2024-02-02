@@ -10,8 +10,11 @@ import { Column, Row } from '@carbonplan/components'
 import { Left } from '@carbonplan/icons'
 import { useState } from 'react'
 import { Box, useThemeUI } from 'theme-ui'
+import { animated, useSpring, easings } from '@react-spring/web'
 
 import Radio from './radio'
+
+const AnimatedChart = animated(Chart)
 
 const Diagram = ({ mode }) => {
   const { theme } = useThemeUI()
@@ -175,6 +178,14 @@ const Diagram = ({ mode }) => {
 
 const OceanCycleDiagram = () => {
   const [mode, setMode] = useState('natural')
+  const { domain } = useSpring({
+    domain: mode === 'natural' ? [0, 2400] : [0, 70],
+    config: {
+      duration: 500,
+      easing: easings.easeOut,
+    },
+  })
+
   return (
     <Box>
       <Row columns={6}>
@@ -211,8 +222,9 @@ const OceanCycleDiagram = () => {
               top: `${100 / 3}%`,
             }}
           >
-            <Chart
-              x={mode === 'natural' ? [0, 2400] : [0, 70]}
+            <AnimatedChart
+              clamp={false}
+              x={domain}
               y={[2000, 0]}
               padding={{ bottom: 0 }}
             >
@@ -237,7 +249,7 @@ const OceanCycleDiagram = () => {
               <TickLabels top count={3} />
               <TickLabels left />
               <Grid horizontal />
-            </Chart>
+            </AnimatedChart>
           </Box>
         </Column>
         <Column start={[1, 3, 3, 3]} width={[6, 6, 4, 4]}>
