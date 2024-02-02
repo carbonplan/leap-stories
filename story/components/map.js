@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
@@ -34,7 +34,30 @@ class ChunkCache {
   }
 }
 
-const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
+const formatMonth = (index, startYear) => {
+  const base = new Date(`${startYear}-01-15 00:00:00`)
+  let month = base.getMonth()
+  let year = base.getFullYear()
+
+  const date = new Date(
+    year + Math.floor(index / 12),
+    month + (index % 12),
+    base.getDate()
+  )
+  return `${date.toLocaleString('default', {
+    month: 'short',
+  })} ${date.getFullYear()}`
+}
+
+const Map = ({
+  sourceUrl,
+  variable,
+  clim,
+  colormapName,
+  label,
+  units,
+  startYear,
+}) => {
   const colormap = useThemedColormap(colormapName)
   const [playing, setPlaying] = useState(false)
   const [time, setTime] = useState(0)
@@ -45,6 +68,10 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
   const chunkCache = useRef(new ChunkCache())
   const loaders = useRef(null)
   const timeout = useRef(null)
+  const formatter = useCallback(
+    (index) => formatMonth(index, startYear),
+    [startYear]
+  )
 
   const updateData = () => {
     // Always grab the most up-to-date time index from state
@@ -168,7 +195,12 @@ const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
     <>
       <Flex sx={{ justifyContent: 'space-between' }}>
         <PlayPause playing={playing} setPlaying={handlePlay} />
-        <DraggableValue value={time} range={timeRange} setValue={setTime} />
+        <DraggableValue
+          value={time}
+          range={timeRange}
+          setValue={setTime}
+          formatter={formatter}
+        />
       </Flex>
       <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
         <Path

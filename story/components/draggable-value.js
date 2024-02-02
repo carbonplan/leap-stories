@@ -8,6 +8,7 @@ const DraggableValue = ({
   range,
   step = 1,
   horizontal = true,
+  formatter,
 }) => {
   const ref = useRef()
   let x, y, dx, dy, init
@@ -63,7 +64,7 @@ const DraggableValue = ({
       onMouseDown={handleMouseDown}
       onClick={() => ref.current.focus()}
     >
-      {value}
+      {formatter ? formatter(value) : value}
     </Box>
   )
 }
