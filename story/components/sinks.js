@@ -408,24 +408,27 @@ const Sinks = () => {
     {
       text: 'The ocean, however, absorbs a very significant portion of these emissions',
       animate: async (svg) => {
-        const clonedFossilFuelsCircle = svg
-          .select('.circle-fossil-fuels')
-          .clone(true)
-        clonedFossilFuelsCircle
-          .attr('class', 'cloned-fossil-fuels')
-          .style('opacity', 0)
-          .attr('cx', width / 2)
-          .attr(
-            'cy',
-            lineHeight + parseFloat(clonedFossilFuelsCircle.attr('r'))
-          )
-          .attr('fill', '#00000000')
-          .attr('stroke-dasharray', '5,5')
-          .attr('stroke', '#64B9C4')
+        return new Promise(async (resolve) => {
+          const clonedFossilFuelsCircle = svg
+            .select('.circle-fossil-fuels')
+            .clone(true)
+          clonedFossilFuelsCircle
+            .attr('class', 'cloned-fossil-fuels')
+            .style('opacity', 0)
+            .attr('cx', width / 2)
+            .attr(
+              'cy',
+              lineHeight + parseFloat(clonedFossilFuelsCircle.attr('r'))
+            )
+            .attr('fill', '#00000000')
+            .attr('stroke-dasharray', '5,5')
+            .attr('stroke', '#64B9C4')
 
-        svg.node().appendChild(clonedFossilFuelsCircle.node())
+          svg.node().appendChild(clonedFossilFuelsCircle.node())
 
-        await animateCircles(svg, 'fossil-fuels', 'ocean-sink')
+          await animateCircles(svg, 'fossil-fuels', 'ocean-sink')
+          resolve()
+        })
       },
       // revert: (svg) => {
       //   svg.selectAll('*').remove()
