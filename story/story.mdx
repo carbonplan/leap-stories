@@ -1,5 +1,6 @@
 import { Box } from 'theme-ui'
 import { Figure } from '@carbonplan/components'
+import Story, { Sidenote } from '../components/layout'
 import { FigureCaption } from '../components'
 import { Bathtub, Map, Sinks, OceanCycleDiagram } from './components'
 
@@ -9,21 +10,27 @@ import { Bathtub, Map, Sinks, OceanCycleDiagram } from './components'
   by Galen McKinley, Amanda Fay, and Thea Hatlen Heimdal
 </Box>
 
-From 2013-2022, only half of the CO2 added to the atmosphere by humans has remained in the atmosphere; the other half has been absorbed about equally by land plants and the global oceans. Considering the full industrial era, only the oceans have been a net sink of CO2 from the atmosphere, cumulatively mitigating 37% of all human emissions; the rest of the CO2 has remained in the atmosphere to cause climate warming. If not for the ocean, the atmospheric concentration of CO2 would be about 90 ppm higher than at present. Future climate warming depends first-and-foremost on how much humans choose to emit. The future behavior of these natural sinks will also play critical roles. In this article, we explain the ocean component.
+From 2013-2022, only half of the CO2 added to the atmosphere by humans has remained in the atmosphere; the other half has been absorbed about equally by land plants and the global oceans. Considering the full industrial era, only the oceans have been a net sink of CO2 from the atmosphere, cumulatively mitigating 37% of all human emissions; the rest of the CO2 has remained in the atmosphere to cause climate warming.<Sidenote>Friedlingstein, P., M. O’Sullivan, M.W. Jones, R.M. Andrew, D. C. E. Bakker et al. (2023) Global Carbon Budget 2023, Earth Sys. Sci. Data doi:10.5194/essd-15-5301-2023</Sidenote> If not for the ocean, the atmospheric concentration of CO2 would be about 90 ppm higher than at present. Future climate warming depends first-and-foremost on how much humans choose to emit. The future behavior of these natural sinks will also play critical roles. In this article, we explain the ocean component.
 
-The ocean carbon sink provides a massive climate service, reducing climate warming to date and in the near future to just over 60% that which would’ve otherwise occurred. This climate service does not come for free. A natural consequence of the absorption of carbon is that the water, naturally slightly alkaline at pH ~ 8, is becoming less alkaline, or more acidic. This process is known as ‘Ocean Acidification’, and is a major concern because of negative impacts to marine life.
+The ocean carbon sink provides a massive climate service, reducing climate warming to date and in the near future to just over 60% that which would’ve otherwise occurred. This climate service does not come for free. A natural consequence of the absorption of carbon is that the water, naturally slightly alkaline at pH ~ 8, is becoming less alkaline, or more acidic. This process is known as ‘Ocean Acidification’, and is a major concern because of negative impacts to marine life.<Sidenote>Doney, S. C., Busch, D. S., Cooley, S. R., & Kroeker, K. J. (2020). The Impacts of Ocean Acidification on Marine Ecosystems and Reliant Human Communities. Annual Review of Environment and Resources, 45(1), 1–30. https://doi.org/10.1146/annurev-environ-012320-083019</Sidenote>
 
 <Figure>
   <Sinks />
-  {/* <FigureCaption number={1}>
+  <FigureCaption number={1}>
     Animation of globally-summed CO2 sources and sinks (Gigatons of Carbon,
     GtC). From left to right, cumulative emissions of CO2 from 1850 to the year
     indicated at middle of (1) carbon from fossil fuels (gray) and (2) land use
     change (orange); net absorption into (3) land plants and soils (light green)
     and (4) into the ocean (dark green); and (5) the remaining carbon that has
     accumulated in the atmosphere (blue). Sources indicated with upward arrows,
-    sinks with downward arrows. Data from
-  </FigureCaption> */}
+    sinks with downward arrows. Data from{' '}
+    <Sidenote>
+      Friedlingstein, P., M. O’Sullivan, M.W. Jones, R.M. Andrew, D. C. E.
+      Bakker et al. (2023) Global Carbon Budget 2023, Earth Sys. Sci. Data
+      doi:10.5194/essd-15-5301-2023
+    </Sidenote>
+    .
+  </FigureCaption>
 </Figure>
 
 ## How does the ocean carbon sink work?
@@ -105,7 +112,7 @@ The data feeding machine learning algorithms are taken in all basins and far fro
 
 Despite growing understanding of the climate crisis and the critical role of the ocean in mitigating climate change, there is no operational system for collecting ocean carbon data and turning these into global sink estimates. Instead, we depend on a handful of scientists who volunteer their nights and weekends. This is a fragile system that could fail at any time, and if it does, we would lose our current ability to track the progress of the ocean carbon sink. To address climate change, humans must collectively manage the whole global carbon cycle in which the ocean plays an enormous role. A robust, long-term approach for ocean carbon observing and sink estimation is badly needed.
 
-This massive global ocean carbon sink occurs as a natural response to human CO2 emissions to the atmosphere. In the last few years, it has been proposed that humans might create engineered systems to enhance the ocean’s carbon uptake. There are now many small companies pursuing technologies for “marine Carbon Dioxide Removal (mCDR)”, and carbon credits from mCDR are already being sold as “carbon offsets”. But how will we quantify engineered effects when the huge background sink, as described here, is itself insufficiently quantified, particularly at small spatial scales? The problems with credits for carbon going into forests got a lot of attention in 2023. With mCDR, these challenges are perhaps even larger. The oceans are huge and difficult to access. To attribute change in carbon stocks on land and in soils to human carbon engineering has proven to be very difficult - but at least the land stays in the same place from year to year. In contrast, the ocean is constantly in motion - making it very difficult to measure “the same patch” repeatedly. The mCDR industry is rapidly growing, but it remains to be seen if sufficient measurement and modeling approaches can be developed to demonstrate additional carbon uptake is actually occurring.
+This massive global ocean carbon sink occurs as a natural response to human CO2 emissions to the atmosphere. In the last few years, it has been proposed that humans might create engineered systems to enhance the ocean’s carbon uptake. There are now many small companies pursuing technologies for “marine Carbon Dioxide Removal (mCDR)”, and carbon credits from mCDR are already being sold as “carbon offsets”. But how will we quantify engineered effects when the huge background sink, as described here, is itself insufficiently quantified, particularly at small spatial scales? The problems with credits for carbon going into forests got a lot of attention in 2023.<Sidenote>CarbonPlan piece on this</Sidenote> With mCDR, these challenges are perhaps even larger. The oceans are huge and difficult to access. To attribute change in carbon stocks on land and in soils to human carbon engineering has proven to be very difficult - but at least the land stays in the same place from year to year. In contrast, the ocean is constantly in motion - making it very difficult to measure “the same patch” repeatedly. The mCDR industry is rapidly growing, but it remains to be seen if sufficient measurement and modeling approaches can be developed to demonstrate additional carbon uptake is actually occurring.
 
 Engineered solutions such as mCDR are projected by the IPCC to be able to fulfill no more than 10% of the reductions in atmospheric CO2 required to achieve 1.5C climate targets. This means that 90% of the reductions in atmospheric CO2 will have to come from reductions in human emissions. The ocean sink will change in rough proportion to human emissions. As emissions are reduced, the ocean sink will get smaller in absolute magnitude; however, the ocean will absorb a greater fraction of human emissions (see Box).
 
@@ -123,3 +130,5 @@ Put Bathtub Analogy in a Box?: If we think of emissions of carbon as the flow of
 </Figure>
 
 Effectively managing the global carbon cycle is essential for limiting dangerous levels of climate warming. There is no doubt that the ocean fundamentally modifies the relationship between CO2 emissions and climate warming, but we cannot accurately track change in the ocean carbon sink, and we are yet unable to quantify additional uptake caused by new engineering approaches. Without enough data and knowledge, we cannot rule out surprises. Though it often seems far away, the ocean carbon cycle plays a huge role in the climate that we experience – keeping better tabs on it would be in our best interest.
+
+export default ({ children }) => <Story>{children}</Story>

@@ -1,3 +1,4 @@
-import Layout from './layout'
+import Story from './story'
+export { default as Sidenote } from './sidenote'
 
-export default Layout
+export default Story
