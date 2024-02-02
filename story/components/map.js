@@ -2,9 +2,9 @@ import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
-import { Slider } from '@carbonplan/components'
+import { Colorbar } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Box } from 'theme-ui'
+import { Flex } from 'theme-ui'
 
 import { datasets } from '../datasets'
 import PlayPause from './play-pause'
@@ -33,7 +33,7 @@ class ChunkCache {
   }
 }
 
-const Map = ({ sourceUrl, variable, clim, colormapName }) => {
+const Map = ({ sourceUrl, variable, clim, colormapName, label, units }) => {
   const colormap = useThemedColormap(colormapName)
   const [playing, setPlaying] = useState(false)
   const [time, setTime] = useState(0)
@@ -162,12 +162,10 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
     [timeRange]
   )
 
-  const handleSliderChange = (event) => {
-    setTime(parseInt(event.target.value))
-  }
-
   return (
     <>
+      <PlayPause playing={playing} setPlaying={handlePlay} />
+
       <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
         <Path
           stroke={'black'}
@@ -186,15 +184,15 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
           />
         )}
       </Minimap>
-      <Box sx={{ mt: 3 }}>
-        <PlayPause playing={playing} setPlaying={handlePlay} />
-        <Slider
-          min={timeRange[0]}
-          max={timeRange[1]}
-          value={time}
-          onChange={handleSliderChange}
+      <Flex sx={{ justifyContent: 'flex-end', mt: 1 }}>
+        <Colorbar
+          colormap={colormap}
+          clim={clim}
+          horizontal
+          label={label}
+          units={units}
         />
-      </Box>
+      </Flex>
     </>
   )
 }
