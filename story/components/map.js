@@ -45,10 +45,17 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
   const groupRef = useRef(null)
   const timeout = useRef(null)
 
-  const updateData = (chunkIndex) => {
+  const updateData = () => {
     // Always grab the most up-to-date time index from state
+    const chunkIndex = Math.floor(time / timeChunkSize)
     const timeIndexWithinChunk = time % timeChunkSize
     const chunk = chunkCache.current.get(chunkIndex)
+
+    // Do not update if chunk is not present due to race condition
+    if (!chunk) {
+      return
+    }
+
     const chunkData = chunk.pick(timeIndexWithinChunk, null, null)
     setData(chunkData)
   }
@@ -62,7 +69,7 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
       }
       chunkCache.current.add(chunkIndex, chunk)
       if (shouldUpdateData) {
-        updateData(chunkIndex)
+        updateData()
       }
     })
   }
@@ -70,7 +77,7 @@ const Map = ({ sourceUrl, variable, clim, colormapName }) => {
   const handleChunkLoading = (chunkIndex, shouldUpdateData = true) => {
     if (chunkCache.current.get(chunkIndex)) {
       if (shouldUpdateData) {
-        updateData(chunkIndex)
+        updateData()
       }
     } else if (chunkCache.current.getLoading(chunkIndex)) {
       // Do nothing
