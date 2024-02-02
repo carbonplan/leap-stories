@@ -92,7 +92,7 @@ const buildOpener = (svg) => {
     .append('text')
     .text('Sources')
     .attr('class', 'sources')
-    .attr('x', width / 4)
+    .attr('x', width * (1 / 3))
     .attr('y', 40)
     .attr('font-size', fontSize)
     .attr('fill', '#808080')
@@ -102,14 +102,14 @@ const buildOpener = (svg) => {
     .append('text')
     .text('Sinks')
     .attr('class', 'sinks')
-    .attr('x', width * 0.75)
+    .attr('x', width * (2 / 3))
     .attr('y', 40)
     .attr('font-size', fontSize)
     .attr('fill', '#808080')
     .attr('text-anchor', 'middle')
 
   circles.forEach((circle, index) => {
-    const x = circle.sink ? width * 0.75 : width / 4
+    const x = circle.sink ? width * (2 / 3) : width * (1 / 3)
     const y = index > 1 ? 50 + (index - 1) * 25 : 50 + (index + 1) * 25
     svg
       .append('text')
@@ -597,7 +597,7 @@ const Sinks = () => {
           <Step data={step} key={index}>
             <Box
               sx={{
-                py: '50vh',
+                py: '45vh',
               }}
             >
               {step.text && (
