@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from 'theme-ui'
 
 // Adapted from https://github.com/carbonplan/components/blob/main/src/colorbar.js
@@ -9,36 +9,55 @@ const DraggableValue = ({
   step = 1,
   horizontal = true,
   formatter,
+  sx,
+  sync = false,
 }) => {
+  const [renderedValue, setRenderedValue] = useState(value)
+  const renderedRef = useRef(renderedValue)
   const ref = useRef()
-  let x, y, dx, dy, init
+  const draggingFunction = useRef()
+  const [x, y, init] = [useRef(), useRef(), useRef()]
 
-  const draggingFunction = (e) => {
-    dx = e.pageX - x
-    dy = e.pageY - y
-    const value = horizontal ? init + dx * step : init + dy * step
-    setValue(Math.max(Math.min(value, range[1]), range[0]))
-  }
+  useEffect(() => {
+    setRenderedValue(value)
+  }, [value])
 
-  const handleMouseDown = (e) => {
-    y = e.pageY
-    x = e.pageX
-    init = value
+  useEffect(() => {
+    renderedRef.current = renderedValue
+  }, [renderedValue])
 
-    document.body.setAttribute(
-      'style',
-      horizontal
-        ? 'cursor: ew-resize !important'
-        : 'cursor: ns-resize !important'
-    )
-    document.addEventListener('mousemove', draggingFunction)
-    const updater = () => {
-      document.body.setAttribute('style', 'cursor: unset')
-      document.removeEventListener('mousemove', draggingFunction)
-      window.removeEventListener('mouseup', updater)
-    }
-    window.addEventListener('mouseup', updater)
-  }
+  const handleMouseUp = useCallback(() => {
+    setValue(renderedRef.current)
+    document.body.setAttribute('style', 'cursor: unset')
+    document.removeEventListener('mousemove', draggingFunction.current)
+  }, [setValue])
+
+  const handleMouseDown = useCallback(
+    (e) => {
+      y.current = e.pageY
+      x.current = e.pageX
+      init.current = value
+
+      document.body.setAttribute(
+        'style',
+        horizontal
+          ? 'cursor: ew-resize !important'
+          : 'cursor: ns-resize !important'
+      )
+      draggingFunction.current = (e) => {
+        const dx = e.pageX - x.current
+        const dy = e.pageY - y.current
+        const v = horizontal
+          ? init.current + dx * step
+          : init.current + dy * step
+        const normalizedValue = Math.max(Math.min(v, range[1]), range[0])
+        sync ? setValue(normalizedValue) : setRenderedValue(normalizedValue)
+      }
+      document.addEventListener('mousemove', draggingFunction.current)
+      window.addEventListener('mouseup', handleMouseUp, { once: true })
+    },
+    [horizontal, range, sync, setValue, step]
+  )
 
   return (
     <Box
@@ -51,7 +70,6 @@ const DraggableValue = ({
         color: 'primary',
         px: 0,
         fontFamily: 'mono',
-        fontSize: ['9px', 0, 0, 1],
         letterSpacing: 'smallcaps',
         textTransform: 'uppercase',
         transition: 'border 0.15s',
@@ -60,11 +78,12 @@ const DraggableValue = ({
         minWidth: 'fit-content',
         borderBottom: ({ colors }) => `solid 1px ${colors.primary}`,
         cursor: horizontal ? 'ew-resize' : 'ns-resize',
+        ...sx,
       }}
       onMouseDown={handleMouseDown}
       onClick={() => ref.current.focus()}
     >
-      {formatter ? formatter(value) : value}
+      {formatter ? formatter(renderedValue) : renderedValue}
     </Box>
   )
 }

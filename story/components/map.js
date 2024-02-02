@@ -4,7 +4,7 @@ import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Colorbar } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Box, Flex } from 'theme-ui'
+import { Flex } from 'theme-ui'
 
 import { datasets } from '../datasets'
 import PlayPause from './play-pause'
@@ -193,13 +193,14 @@ const Map = ({
 
   return (
     <>
-      <Flex sx={{ justifyContent: 'space-between' }}>
+      <Flex sx={{ gap: 4 }}>
         <PlayPause playing={playing} setPlaying={handlePlay} />
         <DraggableValue
           value={time}
           range={timeRange}
           setValue={setTime}
           formatter={formatter}
+          sx={{ color: 'secondary', borderColor: 'secondary' }}
         />
       </Flex>
       <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
