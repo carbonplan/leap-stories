@@ -51,7 +51,7 @@ const calculateAreaDifference = (radius1, radius2) => {
 
 const getCarbonLabel = (value, sink) => {
   if (value === 0) return ''
-  return value.toFixed(0) * (sink ? -1 : 1) + ' GtCO\u00B2'
+  return value.toFixed(0) * (sink ? -1 : 1) + ' GtCO\u2082'
 }
 
 const incrementYear = (svg, percent) => {
