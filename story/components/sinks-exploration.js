@@ -58,8 +58,9 @@ const SinksExploration = ({ debug = false }) => {
   const { year } = useSpring({
     year: step === 0 ? 1851 : 2022,
     config: {
-      duration: 500,
-      easing: easings.easeOut,
+      duration: 750,
+      tension: 120,
+      friction: 60,
     },
   })
 
