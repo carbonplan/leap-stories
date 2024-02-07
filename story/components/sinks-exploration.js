@@ -189,6 +189,12 @@ const StepifiedCircle = ({ year, budget, override, x: xProp }) => {
 }
 
 const StepifiedLabel = ({ year, budget, override, x: xProp }) => {
+  // don't override negative for labels
+  if (override?.negative) delete override.negative
+
+  // hide labels for zero values
+  if (override?.value === 0) return // tk animate out
+
   const springValues = calculateSpringValues({
     year,
     budget,
@@ -199,7 +205,6 @@ const StepifiedLabel = ({ year, budget, override, x: xProp }) => {
   const category = budget.category
   const animatedColor = to([color], (c) => c)
   const animatedValue = to([value], (v) => v.toFixed())
-  if (value === 0) return null
 
   return (
     <BudgetLabel
