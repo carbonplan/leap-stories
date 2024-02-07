@@ -8,7 +8,7 @@ import {
 } from '@carbonplan/charts'
 import React, { useState } from 'react'
 import { Box } from 'theme-ui'
-import { animated, useSpring, easings } from '@react-spring/web'
+import { animated, useSpring, to } from '@react-spring/web'
 
 import { budgets } from '../data/carbon_budget_data'
 import { Filter } from '@carbonplan/components'
@@ -20,14 +20,12 @@ const AnimatedLabel = animated(Label)
 const MAX_AREA = Math.PI * Math.pow(HEIGHT / 2, 2)
 const MAX_RADIUS = HEIGHT / 2
 
-const BudgetCircle = animated(({ x, value, negative, ...props }) => {
-  // const value = values[year.toFixed()]
-  const yFactor = negative ? -1 : 1
-  const area = (value / MAX_VALUE) * MAX_AREA
-  const radius = Math.sqrt(area / Math.PI)
-  const ratio = radius / MAX_RADIUS
-  const yPos = (yFactor * ratio * Y_SCALE) / 2
-  return <Circle x={x} y={yPos} size={radius * 2} {...props} />
+const calculateYPos = (yFactor, ratio) => {
+  return yFactor * ratio * Y_SCALE
+}
+
+const BudgetCircle = animated(({ x, y, value, negative, size, ...props }) => {
+  return <Circle x={x} y={y} size={size} {...props} />
 })
 
 const BudgetLabel = animated(
@@ -37,11 +35,12 @@ const BudgetLabel = animated(
     const area = (value / MAX_VALUE) * MAX_AREA
     const radius = Math.sqrt(area / Math.PI)
     const ratio = radius / MAX_RADIUS
+    const yPos = calculateYPos(yFactor, ratio)
 
     return (
       <Label
         x={x}
-        y={yFactor * ratio * Y_SCALE}
+        y={yPos}
         align='center'
         verticalAlign={negative ? 'top' : 'bottom'}
         width={1.2}
@@ -131,7 +130,7 @@ const STEPS = [
         x: 5,
         negative: true,
         value: 270,
-        color: 'teal',
+        color: '#64b9c4',
         category: 'Atmosphere',
       },
       { x: 5, negative: true, value: 0 },
@@ -143,25 +142,43 @@ const STEPS = [
 ]
 
 const StepifiedCircle = ({ year, budget, override, x: xProp }) => {
-  const { category, values, color, sink } = budget
-  const { x, value, negative } = useSpring({
-    x: override.x ?? xProp,
-    value: override.value ?? values[year.toFixed()],
-    negative: override.negative ?? sink,
-    config: {
-      duration: 750,
-      tension: 120,
-      friction: 60,
-    },
+  const { category, values, color: defaultColor } = budget
+  const {
+    value: overrideValue,
+    negative: overrideNegative,
+    x: overrideX,
+    color: overrideColor,
+  } = override
+
+  const value = overrideValue ?? values[year.toFixed()]
+  const yFactor = overrideNegative ?? budget.sink ? -1 : 1
+  const area = (value / MAX_VALUE) * MAX_AREA
+  const radius = Math.sqrt(area / Math.PI)
+  const yPos = calculateYPos(yFactor, radius / MAX_RADIUS) / 2
+  const {
+    x,
+    y,
+    size,
+    value: animatedValue,
+    color,
+  } = useSpring({
+    x: overrideX ?? xProp,
+    y: yPos,
+    size: radius * 2,
+    value,
+    color: overrideColor ?? defaultColor,
+    config: { duration: 750, tension: 120, friction: 60 },
   })
+  const animatedColor = to([color], (c) => c)
 
   return (
     <BudgetCircle
       key={category}
       x={x}
+      y={y}
+      size={size}
       value={value}
-      negative={negative}
-      color={override.color ?? color}
+      color={animatedColor}
     />
   )
 }
