@@ -8,9 +8,9 @@ import {
 } from '@carbonplan/charts'
 import React, { useCallback, useRef, useState } from 'react'
 import { Box } from 'theme-ui'
+import { mix } from '@theme-ui/color'
 import { animated, useSpring, to } from '@react-spring/web'
 import { Filter } from '@carbonplan/components'
-
 import { budgets } from '../data/carbon_budget_data'
 import PlayPause from './play-pause'
 
@@ -79,12 +79,25 @@ const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
 })
 
 const STEPS = [
-  { year: 1851, budgetOverrides: [] }, // begin scrub through time
-  { year: 2022, budgetOverrides: [] }, // end scrub through time
-  { year: 2022, budgetOverrides: [{}, { x: 5 }, { x: 5 }, {}] }, // move land budgets together
+  {
+    year: 1851,
+    budgetOverrides: [],
+    text: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
+  }, // begin scrub through time
+  {
+    year: 2022,
+    budgetOverrides: [],
+    text: `Carbon sources and sinks from 1851 to 2022`,
+  }, // end scrub through time
+  {
+    year: 2022,
+    budgetOverrides: [{}, { x: 5 }, { x: 5 }, {}],
+    text: `Land use emissions and land-related sinks cancel a significant portion of each other out`,
+  }, // move land budgets together
   {
     year: 2022,
     budgetOverrides: [{}, { x: 5, negative: true }, { x: 5 }, {}], // render land source on top of land sink
+    text: `Land use emissions and land-related sinks cancel a significant portion of each other out`,
   },
   {
     year: 2022,
@@ -94,6 +107,7 @@ const STEPS = [
       { x: 5, value: 25 },
       {},
     ], // absorb land source into top of land sink
+    text: `Fossil fuel emissions dominate land related sources and sinks`,
   },
   {
     year: 2022,
@@ -103,6 +117,7 @@ const STEPS = [
       { x: 5, value: 25 },
       {},
     ], // center fossil fuels
+    text: `Fossil fuel emissions dominate land related sources and sinks`,
   },
   {
     year: 2022,
@@ -112,6 +127,7 @@ const STEPS = [
       { x: 5, negative: false, value: 25 },
       {},
     ], // flip land sink
+    text: `Fossil fuel emissions dominate land related sources and sinks`,
   },
   {
     year: 2022,
@@ -121,6 +137,7 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
       {},
     ], // absorb land sink into fossil fuels
+    text: `Fossil fuel emissions dominate land related sources and sinks`,
   },
   {
     year: 2022,
@@ -130,6 +147,7 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
       { x: 5 },
     ], // center ocean sink
+    text: `The ocean, however, absorbs a very significant portion of these emissions`,
   },
   {
     year: 2022,
@@ -139,6 +157,7 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
       { x: 5, negative: false },
     ], // flip ocean sink
+    text: `The ocean, however, absorbs a very significant portion of these emissions`,
   },
   {
     year: 2022,
@@ -148,6 +167,7 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
       { x: 5, negative: false, value: 0 },
     ], // absorb ocean sink into fossils
+    text: `The ocean, however, absorbs a very significant portion of these emissions`,
   },
   {
     year: 2022,
@@ -163,8 +183,24 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
       { x: 5, negative: false, value: 0 },
     ], // show net fossil source as atmospheric "sink" (solid)
+    text: 'The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean',
   },
-  // { year: 2022, budgetOverrides: [] }, // add net fossil source (w/o ocean sink) as atmospheric "sink" (dashed)
+  {
+    year: 2022,
+    budgetOverrides: [
+      {
+        x: 5,
+        negative: true,
+        value: 270,
+        color: '#64b9c4',
+        category: 'Atmosphere',
+      },
+      { x: 5, negative: true, value: 0 },
+      { x: 5, negative: false, value: 0 },
+      { x: 5, negative: false, value: 0 },
+    ],
+    text: 'The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean',
+  }, // add net fossil source (w/o ocean sink) as atmospheric "sink" (dashed)
 ]
 
 const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
@@ -201,7 +237,7 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
     xProp,
   })
   const { x, labelY, color, value } = useSpring(springValues)
-  const category = budget.category
+  const category = labelOverride.category ?? budget.category
 
   // fade labels at zero values
   const opacity = value.to((v) => {
@@ -262,7 +298,7 @@ const SinksExploration = ({ debug = false }) => {
   }, [])
 
   return (
-    <Box>
+    <Box sx={{ pt: 40, position: 'relative' }}>
       <PlayPause playing={playing} setPlaying={handlePlay} sx={{ mb: 7 }} />
       {debug && (
         <Filter
@@ -276,6 +312,20 @@ const SinksExploration = ({ debug = false }) => {
         />
       )}
       <Box sx={{ height: HEIGHT * 2 }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '30%',
+            bg: mix('background', 'muted', 0.9),
+            p: 2,
+            fontSize: 1,
+            color: 'secondary',
+          }}
+        >
+          {STEPS[step].text}
+        </Box>
         <Chart
           x={[0, 10]}
           y={[-Y_SCALE, Y_SCALE]}
