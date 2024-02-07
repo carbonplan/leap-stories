@@ -333,7 +333,7 @@ const SinksExploration = ({ debug = false }) => {
             bg: mix('background', 'muted', 0.9),
             p: 2,
             fontSize: 1,
-            color: 'secondary',
+            color: 'primary',
           }}
         >
           {STEPS[step].text}
