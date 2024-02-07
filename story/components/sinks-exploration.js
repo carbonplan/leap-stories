@@ -6,12 +6,13 @@ import {
   Plot,
   TickLabels,
 } from '@carbonplan/charts'
-import React, { useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { Box } from 'theme-ui'
 import { animated, useSpring, to } from '@react-spring/web'
 import { Filter } from '@carbonplan/components'
 
 import { budgets } from '../data/carbon_budget_data'
+import PlayPause from './play-pause'
 
 const HEIGHT = 150
 const MAX_VALUE = 500
@@ -163,7 +164,7 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
     ], // show net fossil source as atmospheric "sink" (solid)
   },
-  { year: 2022, budgetOverrides: [] }, // add net fossil source (w/o ocean sink) as atmospheric "sink" (dashed)
+  // { year: 2022, budgetOverrides: [] }, // add net fossil source (w/o ocean sink) as atmospheric "sink" (dashed)
 ]
 
 const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
@@ -223,24 +224,57 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
 })
 
 const SinksExploration = ({ debug = false }) => {
+  const [playing, setPlaying] = useState(false)
+  const timeout = useRef()
   const [step, setStep] = useState(0)
   const { year } = useSpring({
     year: STEPS[step].year,
     config: { duration: 750, tension: 120, friction: 60 },
   })
 
+  const handlePlay = useCallback((willPlay) => {
+    if (timeout.current) {
+      clearTimeout(timeout.current)
+      timeout.current = null
+    }
+
+    setPlaying(willPlay)
+    if (willPlay) {
+      const increment = () => {
+        timeout.current = setTimeout(() => {
+          let shouldContinue = true
+          setStep((prev) => {
+            let nextValue = prev + 1
+            if (nextValue > STEPS.length - 1) {
+              nextValue = 0
+              shouldContinue = false
+              setPlaying(false)
+            }
+            return nextValue
+          })
+          if (shouldContinue) {
+            increment()
+          }
+        }, 1000)
+      }
+      increment()
+    }
+  }, [])
+
   return (
     <Box>
-      <Filter
-        values={STEPS.reduce((accum, s, i) => {
-          accum[i] = step === i
-          return accum
-        }, {})}
-        setValues={(obj) =>
-          setStep(parseInt(Object.keys(obj).find((k) => obj[k]) ?? '0'))
-        }
-        sx={{ mb: 7 }}
-      />
+      <PlayPause playing={playing} setPlaying={handlePlay} sx={{ mb: 7 }} />
+      {debug && (
+        <Filter
+          values={STEPS.reduce((accum, s, i) => {
+            accum[i] = step === i
+            return accum
+          }, {})}
+          setValues={(obj) =>
+            setStep(parseInt(Object.keys(obj).find((k) => obj[k]) ?? '0'))
+          }
+        />
+      )}
       <Box sx={{ height: HEIGHT * 2 }}>
         <Chart
           x={[0, 10]}

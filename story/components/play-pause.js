@@ -2,9 +2,9 @@ import { Box, Flex } from 'theme-ui'
 
 import { IconButton, Play, Pause } from './icons'
 
-const PlayPause = ({ playing, setPlaying }) => {
+const PlayPause = ({ playing, setPlaying, sx }) => {
   return (
-    <Flex sx={{ gap: 3 }}>
+    <Flex sx={{ gap: 3, ...sx }}>
       <IconButton
         aria-label={'Play'}
         onClick={() => setPlaying(true)}
