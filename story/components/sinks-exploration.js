@@ -183,7 +183,7 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
       { x: 5, negative: false, value: 0 },
     ], // show net fossil source as atmospheric "sink" (solid)
-    text: 'The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean',
+    text: `The remainder is what we see in today's atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean`,
   },
   {
     year: 2022,
@@ -199,7 +199,7 @@ const STEPS = [
       { x: 5, negative: false, value: 0 },
       { x: 5, negative: false, value: 0 },
     ],
-    text: 'The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean',
+    text: `The remainder is what we see in today's atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean`,
   }, // add net fossil source (w/o ocean sink) as atmospheric "sink" (dashed)
 ]
 
