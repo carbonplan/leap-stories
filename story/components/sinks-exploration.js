@@ -71,7 +71,8 @@ const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
       width={1.2}
       {...props}
     >
-      {category} {value}
+      {category}
+      <div>{value} GtCO₂</div>
     </Label>
   )
 })
@@ -190,19 +191,22 @@ const StepifiedCircle = ({ year, budget, override, x: xProp }) => {
 
 const StepifiedLabel = ({ year, budget, override, x: xProp }) => {
   // don't override negative for labels
-  if (override?.negative) delete override.negative
-
-  // hide labels for zero values
-  if (override?.value === 0) return // tk animate out
+  const labelOverride = { ...override, negative: undefined }
 
   const springValues = calculateSpringValues({
     year,
     budget,
-    override,
+    override: labelOverride,
     xProp,
   })
   const { x, labelY, color, value } = useSpring(springValues)
   const category = budget.category
+
+  // fade labels at zero values
+  const opacity = value.to((v) => {
+    return v <= 1 ? 0 : v < 20 ? 0.5 : 1
+  })
+
   const animatedColor = to([color], (c) => c)
   const animatedValue = to([value], (v) => v.toFixed())
 
@@ -213,6 +217,7 @@ const StepifiedLabel = ({ year, budget, override, x: xProp }) => {
       value={animatedValue}
       category={category}
       color={animatedColor}
+      style={{ opacity }}
     />
   )
 }
@@ -222,16 +227,6 @@ const SinksExploration = ({ debug = true }) => {
 
   return (
     <Box>
-      <Filter
-        values={STEPS.reduce((accum, s, i) => {
-          accum[i] = step === i
-          return accum
-        }, {})}
-        setValues={(obj) =>
-          setStep(parseInt(Object.keys(obj).find((k) => obj[k]) ?? '0'))
-        }
-        sx={{ mb: 3 }}
-      />
       <Box sx={{ height: HEIGHT * 2 }}>
         <Chart
           x={[0, 10]}
@@ -292,6 +287,16 @@ const SinksExploration = ({ debug = true }) => {
           })}
         </Chart>
       </Box>
+      <Filter
+        values={STEPS.reduce((accum, s, i) => {
+          accum[i] = step === i
+          return accum
+        }, {})}
+        setValues={(obj) =>
+          setStep(parseInt(Object.keys(obj).find((k) => obj[k]) ?? '0'))
+        }
+        sx={{ mb: 3 }}
+      />
     </Box>
   )
 }
