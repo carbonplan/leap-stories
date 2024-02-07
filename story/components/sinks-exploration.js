@@ -17,31 +17,31 @@ const HEIGHT = 150
 const MAX_VALUE = 500
 const Y_SCALE = 10
 const AnimatedLabel = animated(Label)
+const MAX_AREA = Math.PI * Math.pow(HEIGHT / 2, 2)
+const MAX_RADIUS = HEIGHT / 2
 
 const BudgetCircle = animated(({ x, values, year, negative, ...props }) => {
   const value = values[year.toFixed()]
   const yFactor = negative ? -1 : 1
-  const ratio = value / MAX_VALUE
-
-  return (
-    <Circle
-      x={x}
-      y={(yFactor * ratio * Y_SCALE) / 2}
-      size={ratio * HEIGHT}
-      {...props}
-    />
-  )
+  const area = (value / MAX_VALUE) * MAX_AREA
+  const radius = Math.sqrt(area / Math.PI)
+  const ratio = radius / MAX_RADIUS
+  const yPos = (yFactor * ratio * Y_SCALE) / 2
+  return <Circle x={x} y={yPos} size={radius * 2} {...props} />
 })
 
 const BudgetLabel = animated(
   ({ x, values, year, negative, children, ...props }) => {
     const value = values[year.toFixed()]
     const yFactor = negative ? -1 : 1
+    const area = (value / MAX_VALUE) * MAX_AREA
+    const radius = Math.sqrt(area / Math.PI)
+    const ratio = radius / MAX_RADIUS
 
     return (
       <Label
         x={x}
-        y={((yFactor * value) / MAX_VALUE) * Y_SCALE}
+        y={yFactor * ratio * Y_SCALE}
         align='center'
         verticalAlign={negative ? 'top' : 'bottom'}
         width={1.2}
@@ -53,7 +53,7 @@ const BudgetLabel = animated(
   }
 )
 
-const SinksExploration = ({ debug = false }) => {
+const SinksExploration = ({ debug = true }) => {
   const [step, setStep] = useState(0)
   const { year } = useSpring({
     year: step === 0 ? 1851 : 2022,
