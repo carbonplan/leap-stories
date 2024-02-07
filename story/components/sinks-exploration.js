@@ -265,38 +265,49 @@ const SinksExploration = ({ debug = false }) => {
   const [step, setStep] = useState(0)
   const { year } = useSpring({
     year: STEPS[step].year,
-    config: { duration: 750, tension: 120, friction: 60 },
+    config: {
+      duration: 750,
+      tension: 120,
+      friction: 60,
+    },
   })
 
-  const handlePlay = useCallback((willPlay) => {
-    if (timeout.current) {
-      clearTimeout(timeout.current)
-      timeout.current = null
-    }
-
-    setPlaying(willPlay)
-    if (willPlay) {
-      const increment = () => {
-        timeout.current = setTimeout(() => {
-          let shouldContinue = true
-          setStep((prev) => {
-            let nextValue = prev + 1
-            if (nextValue > STEPS.length - 1) {
-              nextValue = 0
-              shouldContinue = false
-              setPlaying(false)
-            }
-
-            if (shouldContinue) {
-              increment()
-            }
-            return nextValue
-          })
-        }, 1000)
+  const handlePlay = useCallback(
+    (willPlay) => {
+      if (willPlay && step === STEPS.length - 1) {
+        setStep(0)
       }
-      increment()
-    }
-  }, [])
+
+      if (timeout.current) {
+        clearTimeout(timeout.current)
+        timeout.current = null
+      }
+
+      setPlaying(willPlay)
+      if (willPlay) {
+        const increment = () => {
+          timeout.current = setTimeout(() => {
+            let shouldContinue = true
+            setStep((prev) => {
+              let nextValue = prev + 1
+              if (nextValue > STEPS.length - 1) {
+                nextValue = prev
+                shouldContinue = false
+                setPlaying(false)
+              }
+
+              if (shouldContinue) {
+                increment()
+              }
+              return nextValue
+            })
+          }, 1500)
+        }
+        increment()
+      }
+    },
+    [step]
+  )
 
   return (
     <Box sx={{ pt: 40, position: 'relative' }}>
