@@ -1,0 +1,62 @@
+{
+  "friedlingstein.2023": {
+    "authors": "Friedlingstein, P., M. O’Sullivan, M.W. Jones, R.M. Andrew, D. C. E. Bakker et al.",
+    "year": 2023,
+    "title": "Global Carbon Budget 2023",
+    "journal": "Earth Sys. Sci. Data",
+    "url": "https://doi.org/10.5194/essd-15-5301-2023"
+  },
+  "doney.2020": {
+    "authors": "Doney, S. C., Busch, D. S., Cooley, S. R., & Kroeker, K. J.",
+    "year": 2020,
+    "title": "The Impacts of Ocean Acidification on Marine Ecosystems and Reliant Human Communities",
+    "journal": "Annual Review of Environment and Resources, 45(1), 1–30",
+    "url": "https://doi.org/10.1146/annurev-environ-012320-083019"
+  },
+  "crisp.2022": {
+    "authors": "Crisp, D., Dolman, H., Tanhua, T., McKinley, G. A., Hauck, J., Bastos, A., et al.",
+    "year": 2022,
+    "title": "How Well Do We Understand the Land-Ocean-Atmosphere Carbon Cycle?",
+    "journal": "Reviews of Geophysics, 60(2)",
+    "url": "https://doi.org/10.1029/2021rg000736"
+  },
+  "fay.2021": {
+    "authors": "Fay, A. R., & McKinley, G. A.",
+    "year": 2021,
+    "title": "Observed Regional Fluxes to Constrain Modeled Estimates of the Ocean Carbon Sink",
+    "journal": "Geophysical Research Letters, 48(20)",
+    "url": "https://doi.org/10.1029/2021gl095325"
+  },
+  "bakker.2016": {
+    "authors": "Bakker et al.",
+    "year": 2016,
+    "title": "A multi-decade record of high quality fCO₂ data in version 3 of the Surface Ocean CO₂ Atlas (SOCAT)",
+    "journal": "Earth System Science Data, 8: 383-413",
+    "url": "https://doi.org/10.5194/essd-8-383-2016"
+  },
+  "heimdal.2024": {
+    "authors": "Heimdal, T.H., G.A. McKinley, A.J. Sutton, A.R. Fay, and L. Gloege",
+    "year": 2024,
+    "title": "Assessing improvements in global ocean pCO₂ machine learning reconstructions with Southern Ocean autonomous sampling",
+    "journal": "Biogeosciences Discussions / Biogeosciences in review"
+  },
+  "nasem.2022": {
+    "authors": "National Academies of Sciences, Engineering, and Medicine",
+    "year": 2022,
+    "title": "A Research Strategy for Ocean-based Carbon Dioxide Removal and Sequestration",
+    "url": "https://doi.org/10.17226/26278"
+  },
+  "ipcc.2022": {
+    "note": "IPCC, 2022: Summary for Policymakers ",
+    "authors": "P.R. Shukla, J. Skea, A. Reisinger, R. Slade, R. Fradera, M. Pathak, A. Al Khourdajie,M. Belkacemi, R. van Diemen, A. Hasija, G. Lisboa, S. Luz, J. Malley, D. McCollum, S. Some, P. Vyas",
+    "journal": "ClimateChange 2022: Mitigation of Climate Change. Contribution of Working Group III to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change",
+    "url": "https://doi.org/10.1017/9781009157926.001"
+  },
+  "mckinley.2023": {
+    "authors": "McKinley, G. A., Bennington, V., Meinshausen, M., & Nicholls, Z.",
+    "year": 2023,
+    "title": "Modern air-sea ﬂux distributions reduce uncertainty in the future ocean carbon sink",
+    "journal": "Environmental Research Letters",
+    "url": "https://doi.org/10.1088/1748-9326/acc195"
+  }
+}
