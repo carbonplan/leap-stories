@@ -9,9 +9,9 @@ import {
 import React, { useState } from 'react'
 import { Box } from 'theme-ui'
 import { animated, useSpring, to } from '@react-spring/web'
+import { Filter } from '@carbonplan/components'
 
 import { budgets } from '../data/carbon_budget_data'
-import { Filter } from '@carbonplan/components'
 
 const HEIGHT = 150
 const MAX_VALUE = 500
@@ -222,7 +222,7 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
   )
 })
 
-const SinksExploration = ({ debug = true }) => {
+const SinksExploration = ({ debug = false }) => {
   const [step, setStep] = useState(0)
   const { year } = useSpring({
     year: STEPS[step].year,
@@ -231,6 +231,16 @@ const SinksExploration = ({ debug = true }) => {
 
   return (
     <Box>
+      <Filter
+        values={STEPS.reduce((accum, s, i) => {
+          accum[i] = step === i
+          return accum
+        }, {})}
+        setValues={(obj) =>
+          setStep(parseInt(Object.keys(obj).find((k) => obj[k]) ?? '0'))
+        }
+        sx={{ mb: 7 }}
+      />
       <Box sx={{ height: HEIGHT * 2 }}>
         <Chart
           x={[0, 10]}
@@ -291,16 +301,6 @@ const SinksExploration = ({ debug = true }) => {
           })}
         </Chart>
       </Box>
-      <Filter
-        values={STEPS.reduce((accum, s, i) => {
-          accum[i] = step === i
-          return accum
-        }, {})}
-        setValues={(obj) =>
-          setStep(parseInt(Object.keys(obj).find((k) => obj[k]) ?? '0'))
-        }
-        sx={{ mb: 3 }}
-      />
     </Box>
   )
 }
