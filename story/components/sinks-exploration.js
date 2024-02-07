@@ -58,7 +58,7 @@ const calculateSpringValues = ({ year, budget, override, xProp }) => {
 }
 
 const BudgetCircle = animated(({ x, y, value, negative, size, ...props }) => {
-  return <Circle x={x} y={y} size={size} {...props} />
+  return <Circle x={x} y={y} size={size} opacity={0.8} {...props} />
 })
 
 const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
@@ -166,7 +166,7 @@ const STEPS = [
   { year: 2022, budgetOverrides: [] }, // add net fossil source (w/o ocean sink) as atmospheric "sink" (dashed)
 ]
 
-const StepifiedCircle = ({ year, budget, override, x: xProp }) => {
+const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
   const springValues = calculateSpringValues({
     year,
     budget,
@@ -187,9 +187,9 @@ const StepifiedCircle = ({ year, budget, override, x: xProp }) => {
       color={animatedColor}
     />
   )
-}
+})
 
-const StepifiedLabel = ({ year, budget, override, x: xProp }) => {
+const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
   // don't override negative for labels
   const labelOverride = { ...override, negative: undefined }
 
@@ -220,10 +220,14 @@ const StepifiedLabel = ({ year, budget, override, x: xProp }) => {
       style={{ opacity }}
     />
   )
-}
+})
 
 const SinksExploration = ({ debug = true }) => {
   const [step, setStep] = useState(0)
+  const { year } = useSpring({
+    year: STEPS[step].year,
+    config: { duration: 750, tension: 120, friction: 60 },
+  })
 
   return (
     <Box>
@@ -242,7 +246,7 @@ const SinksExploration = ({ debug = true }) => {
           )}
           <Plot>
             {budgets.map((budget, i) => {
-              const { year, budgetOverrides } = STEPS[step]
+              const { budgetOverrides } = STEPS[step]
               const override = budgetOverrides[i] ?? {}
 
               return (
@@ -269,10 +273,10 @@ const SinksExploration = ({ debug = true }) => {
             height={2}
             sx={{ pl: 2 }}
           >
-            {STEPS[step].year}
+            {year.to((x) => x.toFixed())}
           </AnimatedLabel>
           {budgets.map((budget, i) => {
-            const { year, budgetOverrides } = STEPS[step]
+            const { budgetOverrides } = STEPS[step]
             const override = budgetOverrides[i] ?? {}
 
             return (
