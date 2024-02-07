@@ -286,11 +286,12 @@ const SinksExploration = ({ debug = false }) => {
               shouldContinue = false
               setPlaying(false)
             }
+
+            if (shouldContinue) {
+              increment()
+            }
             return nextValue
           })
-          if (shouldContinue) {
-            increment()
-          }
         }, 1000)
       }
       increment()
