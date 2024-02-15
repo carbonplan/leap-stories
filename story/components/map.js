@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Colorbar } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Flex } from 'theme-ui'
+import { Flex, useThemeUI } from 'theme-ui'
 
-import { datasets } from '../datasets'
 import PlayPause from './play-pause'
 import DraggableValue from './draggable-value'
 
@@ -59,6 +58,7 @@ const Map = ({
   startYear,
   delay = 500,
 }) => {
+  const { theme } = useThemeUI()
   const colormap = useThemedColormap(colormapName)
   const [playing, setPlaying] = useState(false)
   const [time, setTime] = useState(0)
@@ -206,12 +206,17 @@ const Map = ({
       </Flex>
       <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
         <Path
-          stroke={'black'}
-          source={datasets['land-110m.json']}
+          stroke={theme.colors.primary}
+          source={'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'}
           feature={'land'}
-          fill={'#fff'}
+          opacity={0.3}
+          fill={theme.colors.muted}
         />
-        <Sphere stroke={'black'} fill={'#fff'} strokeWidth={1} />
+        <Sphere
+          stroke={theme.colors.primary}
+          fill={theme.colors.background}
+          strokeWidth={1}
+        />
         {data && (
           <Raster
             source={data}
