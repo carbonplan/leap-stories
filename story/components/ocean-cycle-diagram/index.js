@@ -22,9 +22,8 @@ const AnimatedChart = animated(Chart)
 
 const OceanCycleDiagram = () => {
   const [mode, setMode] = useState('natural')
-  const xMax = mode === 'natural' ? 2400 : 70
   const { domain } = useSpring({
-    domain: [0, xMax],
+    domain: mode === 'natural' ? [0, 2400] : [0, 70],
     config: {
       duration: 500,
       easing: easings.easeOut,
