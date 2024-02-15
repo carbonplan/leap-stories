@@ -16,7 +16,7 @@ import { animated, useSpring, easings } from '@react-spring/web'
 
 import Radio from '../radio'
 import Diagram from './diagram'
-import { C_NAT, C_ANT } from './data'
+import { C_NAT, C_ANT, C_TOTAL } from './data'
 
 const AnimatedChart = animated(Chart)
 
@@ -95,7 +95,11 @@ const OceanCycleDiagram = () => {
               <TickLabels left />
               <Grid horizontal />
               <Plot sx={{ overflow: 'hidden' }}>
-                <Line data={mode === 'natural' ? C_NAT : C_ANT} />
+                <Line
+                  data={mode === 'natural' ? C_NAT : C_ANT}
+                  color='#232d61'
+                  width={2}
+                />
               </Plot>
             </AnimatedChart>
           </Box>
