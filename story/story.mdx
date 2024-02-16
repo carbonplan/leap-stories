@@ -1,15 +1,13 @@
 import { Box } from 'theme-ui'
 import { Figure } from '@carbonplan/components'
-import Story, { Cite, Sidenote } from '../components/layout'
+import Story, { Authors, Cite, Sidenote } from '../components/layout'
 import { FigureCaption } from '../components'
 import { Map, Sinks, OceanCycleDiagram } from './components'
 import references from './references.json'
 
 # The ocean carbon sink
 
-<Box sx={{ fontStyle: 'italic', mt: 5, mb: 7 }}>
-  by Galen McKinley, Amanda Fay, and Thea Hatlen Heimdal
-</Box>
+<Authors authors={['Galen McKinley', 'Amanda Fay', 'Thea Hatlen Heimdal']} />
 
 From 2013-2022, only half of the CO2 added to the atmosphere by humans has remained in the atmosphere; the other half has been absorbed about equally by land plants and the global oceans. Considering the full industrial era, only the oceans have been a net sink of CO2 from the atmosphere, cumulatively mitigating 37% of all human emissions; the rest of the CO2 has remained in the atmosphere to cause climate warming.<Cite id='friedlingstein.2023' /> If not for the ocean, the atmospheric concentration of CO2 would be about 90 ppm higher than at present. Future climate warming depends first-and-foremost on how much humans choose to emit. The future behavior of these natural sinks will also play critical roles. In this article, we explain the ocean component.
 
