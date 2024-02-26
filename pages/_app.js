@@ -31,6 +31,7 @@ const leapTheme = {
   config: {
     initialColorModeName: 'light',
     printColorModeName: 'light',
+    useLocalStorage: false,
     useColorSchemeMediaQuery: false,
   },
 }
