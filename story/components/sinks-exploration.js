@@ -310,8 +310,7 @@ const SinksExploration = ({ debug = false }) => {
   )
 
   return (
-    <Box sx={{ pt: 40, position: 'relative' }}>
-      <PlayPause playing={playing} setPlaying={handlePlay} sx={{ mb: 7 }} />
+    <PlayPause playing={playing} setPlaying={handlePlay}>
       {debug && (
         <Filter
           values={STEPS.reduce((accum, s, i) => {
@@ -326,10 +325,8 @@ const SinksExploration = ({ debug = false }) => {
       <Box sx={{ height: HEIGHT * 2 }}>
         <Box
           sx={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
             width: '30%',
+            float: 'right',
             bg: mix('background', 'muted', 0.9),
             p: 2,
             fontSize: 1,
@@ -397,7 +394,7 @@ const SinksExploration = ({ debug = false }) => {
           })}
         </Chart>
       </Box>
-    </Box>
+    </PlayPause>
   )
 }
 

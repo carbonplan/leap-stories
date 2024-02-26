@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Flex } from 'theme-ui'
+import { Flex, Box } from 'theme-ui'
 import useInViewPlayPause from '../../hooks/useInViewPlayPause'
 import { IconButton, Play, Pause } from './icons'
 
-const PlayPause = ({ playing, setPlaying, sx }) => {
+const PlayPause = ({ playing, setPlaying, sx, controls = <></>, children }) => {
   const [shouldAnimate, ref] = useInViewPlayPause()
   const [isManuallyPaused, setIsManuallyPaused] = useState(false)
 
@@ -28,25 +28,34 @@ const PlayPause = ({ playing, setPlaying, sx }) => {
   }, [shouldAnimate, isManuallyPaused, setPlaying])
 
   return (
-    <Flex ref={ref} sx={{ gap: 3, ...sx }}>
-      <IconButton
-        aria-label={'Play'}
-        onClick={handlePlayClick}
-        disabled={playing}
-        sx={{ width: 14, height: 16 }}
+    <Box ref={ref}>
+      <Flex
+        sx={{
+          gap: 3,
+          ...sx,
+        }}
       >
-        <Play />
-      </IconButton>
+        <IconButton
+          aria-label={'Play'}
+          onClick={handlePlayClick}
+          disabled={playing}
+          sx={{ width: 14, height: 16 }}
+        >
+          <Play />
+        </IconButton>
 
-      <IconButton
-        aria-label={'Pause'}
-        onClick={handlePauseClick}
-        disabled={!playing}
-        sx={{ width: 14, height: 16 }}
-      >
-        <Pause />
-      </IconButton>
-    </Flex>
+        <IconButton
+          aria-label={'Pause'}
+          onClick={handlePauseClick}
+          disabled={!playing}
+          sx={{ width: 14, height: 16 }}
+        >
+          <Pause />
+        </IconButton>
+        {controls}
+      </Flex>
+      {children}
+    </Box>
   )
 }
 
