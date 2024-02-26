@@ -16,7 +16,7 @@ const useInViewPlayPause = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0.1 }
+      { threshold: 1 }
     )
 
     if (ref.current) {
