@@ -197,15 +197,13 @@ const Map = ({
       playing={playing}
       setPlaying={handlePlay}
       controls={
-        <Flex sx={{ gap: 4 }}>
-          <DraggableValue
-            value={time}
-            range={timeRange}
-            setValue={setTime}
-            formatter={formatter}
-            sx={{ fontSize: 2 }}
-          />
-        </Flex>
+        <DraggableValue
+          value={time}
+          range={timeRange}
+          setValue={setTime}
+          formatter={formatter}
+          sx={{ fontSize: 2 }}
+        />
       }
     >
       <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
