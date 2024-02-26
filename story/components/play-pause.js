@@ -1,10 +1,22 @@
-import { Box, Flex } from 'theme-ui'
+import React, { useEffect } from 'react'
+import { Flex } from 'theme-ui'
+import useInViewPlayPause from '../../hooks/useInViewPlayPause'
 
 import { IconButton, Play, Pause } from './icons'
 
 const PlayPause = ({ playing, setPlaying, sx }) => {
+  const [shouldAnimate, ref] = useInViewPlayPause()
+
+  useEffect(() => {
+    if (shouldAnimate) {
+      setPlaying(true)
+    } else {
+      setPlaying(false)
+    }
+  }, [shouldAnimate, setPlaying])
+
   return (
-    <Flex sx={{ gap: 3, ...sx }}>
+    <Flex ref={ref} sx={{ gap: 3, ...sx }}>
       <IconButton
         aria-label={'Play'}
         onClick={() => setPlaying(true)}
