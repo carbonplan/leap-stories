@@ -91,7 +91,25 @@ Despite decades of coordinated international efforts by ocean carbon scientists,
     startYear={1959}
   />
   <FigureCaption number={4}>
-    animation of 2 maps: global map of fCO₂ progressing in time and next to it a
+    global map of fCO₂ progressing in time
+  </FigureCaption>
+</Figure>
+
+<Figure>
+  <Map
+    sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
+    variable='fgco2'
+    clim={
+      /* Convert clim of [-3, 3] from seconds to year  */
+      [-9.5129376e-8, 9.5129376e-8]
+    }
+    climDisplay={[-3, 3]}
+    label='Reconstructed fCO₂'
+    units='mol / m² / yr'
+    colormapName='redteal'
+    startYear={1959}
+  />
+  <FigureCaption number={5}>
     global map of mean carbon flux (mol/m2/yr).
   </FigureCaption>
 </Figure>

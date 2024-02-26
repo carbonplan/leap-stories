@@ -52,6 +52,7 @@ const Map = ({
   sourceUrl,
   variable,
   clim,
+  climDisplay,
   colormapName,
   label,
   units,
@@ -232,7 +233,7 @@ const Map = ({
       <Flex sx={{ justifyContent: 'flex-end', mt: 1 }}>
         <Colorbar
           colormap={colormap}
-          clim={clim}
+          clim={climDisplay ?? clim}
           horizontal
           label={label}
           units={units}
