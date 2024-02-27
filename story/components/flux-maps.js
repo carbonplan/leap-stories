@@ -4,7 +4,7 @@ import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Colorbar, Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Flex, useThemeUI } from 'theme-ui'
+import { Box, Flex, useThemeUI } from 'theme-ui'
 
 import PlayPause from './play-pause'
 import DraggableValue from './draggable-value'
@@ -16,8 +16,6 @@ const CLIM = [
   /* Convert clim of [-3, 3] from seconds to year  */
   -9.5129376e-8, 9.5129376e-8,
 ]
-const START_YEAR = 1959
-const END_YEAR = 2022
 const FILL_VALUE = 9.969209968386869e36
 
 const formatMonth = (month) => {
@@ -126,62 +124,68 @@ const FluxMaps = ({ delay = 500 }) => {
         />
       }
     >
-      <Row columns={[6]} sx={{ mt: 2 }}>
-        <Column start={1} width={[6, 3]}>
-          <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
-            <Path
-              stroke={theme.colors.primary}
-              source={
-                'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
-              }
-              feature={'land'}
-              opacity={0.3}
-              fill={theme.colors.muted}
-            />
-            <Sphere
-              stroke={theme.colors.primary}
-              fill={theme.colors.background}
-              strokeWidth={1}
-            />
-            {data.start && (
-              <Raster
-                source={data.start}
-                colormap={colormap}
-                clim={CLIM}
-                mode={'lut'}
-                nullValue={FILL_VALUE}
+      <Row columns={[6]} sx={{ mt: 3 }}>
+        <Column start={1} width={[6, 3, 3, 3]}>
+          <Box sx={{ color: 'secondary' }}>1959</Box>
+
+          <Box sx={{ mx: [-3, -3, -3, -5] }}>
+            <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
+              <Path
+                stroke={theme.colors.primary}
+                source={
+                  'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
+                }
+                feature={'land'}
+                opacity={0.3}
+                fill={theme.colors.muted}
               />
-            )}
-          </Minimap>
-          {START_YEAR}
+              <Sphere
+                stroke={theme.colors.primary}
+                fill={theme.colors.background}
+                strokeWidth={1}
+              />
+              {data.start && (
+                <Raster
+                  source={data.start}
+                  colormap={colormap}
+                  clim={CLIM}
+                  mode={'lut'}
+                  nullValue={FILL_VALUE}
+                />
+              )}
+            </Minimap>
+          </Box>
         </Column>
-        <Column start={[1, 4]} width={[6, 3]}>
-          <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
-            <Path
-              stroke={theme.colors.primary}
-              source={
-                'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
-              }
-              feature={'land'}
-              opacity={0.3}
-              fill={theme.colors.muted}
-            />
-            <Sphere
-              stroke={theme.colors.primary}
-              fill={theme.colors.background}
-              strokeWidth={1}
-            />
-            {data.end && (
-              <Raster
-                source={data.end}
-                colormap={colormap}
-                clim={CLIM}
-                mode={'lut'}
-                nullValue={FILL_VALUE}
+        <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
+          <Box sx={{ color: 'secondary' }}>2022</Box>
+
+          <Box sx={{ mx: [-3, -3, -3, -5] }}>
+            <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
+              <Path
+                stroke={theme.colors.primary}
+                source={
+                  'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
+                }
+                feature={'land'}
+                opacity={0.3}
+                fill={theme.colors.muted}
               />
-            )}
-          </Minimap>
-          {END_YEAR}
+              <Sphere
+                stroke={theme.colors.primary}
+                fill={theme.colors.background}
+                strokeWidth={1}
+              />
+              {data.end && (
+                <Raster
+                  source={data.end}
+                  colormap={colormap}
+                  clim={CLIM}
+                  mode={'lut'}
+                  nullValue={FILL_VALUE}
+                />
+              )}
+            </Minimap>
+          </Box>
         </Column>
       </Row>
       <Flex sx={{ justifyContent: 'flex-end', mt: 3 }}>
