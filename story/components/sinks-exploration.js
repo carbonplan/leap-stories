@@ -8,6 +8,8 @@ import {
 } from '@carbonplan/charts'
 import React, { useCallback, useRef, useState } from 'react'
 import { Box, Flex } from 'theme-ui'
+import { keyframes } from '@emotion/react'
+
 import { mix } from '@theme-ui/color'
 import { animated, useSpring, to } from '@react-spring/web'
 import { Filter } from '@carbonplan/components'
@@ -45,10 +47,11 @@ const STEPS = [
     ],
   },
   {
-    description: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
+    description: `Carbon is added to the atmosphere from various sources and removed by various sinks.`,
     subSteps: [
       {
         year: 1851,
+        description: `We'll explore the largest.`,
         budgetOverrides: [
           { x: 4, value: 0, duration: 0 },
           { x: 6, value: 0, duration: 0 },
@@ -58,6 +61,7 @@ const STEPS = [
       },
       {
         year: 1851,
+        description: `We'll explore the largest.`,
         duration: 0,
         budgetOverrides: [
           { duration: 0 },
@@ -68,6 +72,7 @@ const STEPS = [
       }, // begin scrub through time
       {
         year: 2022,
+        description: `We'll explore the largest.`,
         budgetOverrides: [
           { duration: 0 },
           { duration: 0 },
@@ -207,6 +212,8 @@ const Y_SCALE = 10
 const AnimatedLabel = animated(Label)
 const MAX_AREA = Math.PI * Math.pow(HEIGHT / 2, 2)
 const MAX_RADIUS = HEIGHT / 2
+
+const fadeIn = keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
 
 const calculateYPos = (yFactor, ratio) => {
   return yFactor * ratio * Y_SCALE
@@ -393,7 +400,7 @@ const SinksExploration = ({ debug = false }) => {
 
   return (
     <PlayPause
-      sx={{ mb: 7 }}
+      sx={{ pb: 2 }}
       playing={playing}
       setPlaying={handlePlay}
       controls={
@@ -433,18 +440,29 @@ const SinksExploration = ({ debug = false }) => {
           }
         />
       )}
-      <Box sx={{ height: HEIGHT * 2 }}>
+      <Box sx={{ height: HEIGHT * 2, mb: 10 }}>
         <Box
+          key={currentStep.description}
           sx={{
-            width: '30%',
-            float: 'right',
-            bg: mix('background', 'muted', 0.9),
-            p: 2,
-            fontSize: 1,
-            color: 'primary',
+            mb: 8,
+            fontSize: 2,
+            color: 'secondary',
+            animation: `${fadeIn} 1s ease-in-out`,
           }}
         >
-          {currentStep.description}
+          {currentStep.description}{' '}
+          <Box
+            key={currentSubStep.description}
+            as={'span'}
+            sx={{
+              fontSize: 2,
+              color: 'primary',
+              opacity: 0,
+              animation: `${fadeIn} 1s ease-in-out 1s forwards`,
+            }}
+          >
+            {currentSubStep.description ?? ''}
+          </Box>
         </Box>
         <Chart
           x={[0, 10]}
