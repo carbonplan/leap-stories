@@ -49,15 +49,20 @@ const STEPS = [
     subSteps: [
       {
         year: 1851,
-        budgetOverrides: [],
-      },
-      {
-        year: 1851,
         budgetOverrides: [
           { value: 0, duration: 0 },
           { value: 0, duration: 0 },
           { value: 0, duration: 0 },
           { value: 0, duration: 0 },
+        ],
+      },
+      {
+        year: 1851,
+        budgetOverrides: [
+          { duration: 0 },
+          { duration: 0 },
+          { duration: 0 },
+          { duration: 0 },
         ],
       }, // begin scrub through time
       {
@@ -198,7 +203,6 @@ const STEPS = [
           {
             x: 5,
             // y: 0,
-            negative: true,
             value: 270,
             color: 'red',
             category: 'Current Atmosphere',
@@ -377,7 +381,7 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
   )
 })
 
-const animationDuration = 1000
+const animationDuration = 750
 
 const SinksExploration = ({ debug = false }) => {
   const [playing, setPlaying] = useState(false)
@@ -413,6 +417,9 @@ const SinksExploration = ({ debug = false }) => {
             if (nextSub >= STEPS[prev.main].subSteps.length) {
               if (playCurrentStepOnly) {
                 setPlaying(false)
+                if (prev.main === STEPS.length - 1) {
+                  return { main: 0, sub: 0 }
+                }
                 return prev
               } else {
                 nextSub = 0
@@ -440,7 +447,36 @@ const SinksExploration = ({ debug = false }) => {
   }
 
   return (
-    <PlayPause playing={playing} setPlaying={handlePlay}>
+    <PlayPause
+      sx={{ mb: 7 }}
+      playing={playing}
+      setPlaying={handlePlay}
+      controls={
+        <Flex sx={{ justifyContent: 'flex-start' }}>
+          {STEPS.map((_, i) => (
+            <Box
+              key={`step-${i}`}
+              onClick={() => handleStepClick(i)}
+              sx={{
+                transition: 'all 0.2s ease-in-out',
+                cursor: 'pointer',
+                bg: stepIndex.main === i ? 'muted' : 'hinted',
+                color: stepIndex.main === i ? 'primary' : 'secondary',
+                ml: 1,
+                fontSize: 0,
+                width: '20px',
+                height: '20px',
+                lineHeight: '20px',
+                textAlign: 'center',
+                '&:hover': { bg: 'muted' },
+              }}
+            >
+              {i + 1}
+            </Box>
+          ))}
+        </Flex>
+      }
+    >
       {debug && (
         <Filter
           values={STEPS.reduce((accum, s, i) => {
@@ -548,27 +584,6 @@ const SinksExploration = ({ debug = false }) => {
           })}
         </Chart>
       </Box>
-      <Flex sx={{ justifyContent: 'flex-start', mt: 1 }}>
-        {STEPS.map((_, i) => (
-          <Box
-            key={`step-${i}`}
-            onClick={() => handleStepClick(i)}
-            sx={{
-              transition: 'all 0.2s ease-in-out',
-              cursor: 'pointer',
-              border: stepIndex.main === i ? '2px solid' : '1px solid',
-              borderColor: 'secondary',
-              color: 'secondary',
-              ml: 1,
-              width: '25px',
-              height: '25px',
-              textAlign: 'center',
-            }}
-          >
-            {i + 1}
-          </Box>
-        ))}
-      </Flex>
     </PlayPause>
   )
 }
