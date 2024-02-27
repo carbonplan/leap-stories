@@ -18,7 +18,8 @@ import PlayPause from './play-pause'
 
 const STEPS = [
   {
-    description: 'Our situation would be much worse without the ocean',
+    description: 'Our situation would be much worse without the ocean.',
+    secondDescription: `It has obsorbed a significant amount of carbon from the atmosphere.`,
     subSteps: [
       {
         year: 2022,
@@ -48,10 +49,10 @@ const STEPS = [
   },
   {
     description: `Carbon is added to the atmosphere from various sources and removed by various sinks.`,
+    secondDescription: `We'll explore the largest.`,
     subSteps: [
       {
         year: 1851,
-        description: `We'll explore the largest.`,
         budgetOverrides: [
           { x: 4, value: 0, duration: 0 },
           { x: 6, value: 0, duration: 0 },
@@ -61,7 +62,6 @@ const STEPS = [
       },
       {
         year: 1851,
-        description: `We'll explore the largest.`,
         duration: 0,
         budgetOverrides: [
           { duration: 0 },
@@ -72,7 +72,6 @@ const STEPS = [
       }, // begin scrub through time
       {
         year: 2022,
-        description: `We'll explore the largest.`,
         budgetOverrides: [
           { duration: 0 },
           { duration: 0 },
@@ -83,7 +82,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Land use emissions and land-related sinks cancel a significant portion of each other out`,
+    description: `Land use emissions and land-related sinks cancel a significant portion of each other out.`,
     subSteps: [
       {
         year: 2022,
@@ -109,7 +108,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Fossil fuel emissions dominate land related sources and sinks`,
+    description: `Fossil fuel emissions dominate land related sources and sinks.`,
     subSteps: [
       {
         year: 2022,
@@ -150,7 +149,7 @@ const STEPS = [
     ],
   },
   {
-    description: `The ocean, however, absorbs a very significant portion of these emissions`,
+    description: `The ocean, however, absorbs a very significant portion of these emissions.`,
     subSteps: [
       {
         year: 2022,
@@ -446,13 +445,13 @@ const SinksExploration = ({ debug = false }) => {
           sx={{
             mb: 8,
             fontSize: 2,
-            color: 'secondary',
+            color: 'primary',
             animation: `${fadeIn} 1s ease-in-out`,
           }}
         >
           {currentStep.description}{' '}
           <Box
-            key={currentSubStep.description}
+            key={currentStep.secondDescription}
             as={'span'}
             sx={{
               fontSize: 2,
@@ -461,7 +460,7 @@ const SinksExploration = ({ debug = false }) => {
               animation: `${fadeIn} 1s ease-in-out 1s forwards`,
             }}
           >
-            {currentSubStep.description ?? ''}
+            {currentStep.secondDescription ?? ''}
           </Box>
         </Box>
         <Chart
