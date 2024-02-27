@@ -14,102 +14,32 @@ import { Filter } from '@carbonplan/components'
 import { budgets } from '../data/carbon_budget_data'
 import PlayPause from './play-pause'
 
-const HEIGHT = 150
-const MAX_VALUE = 500
-const Y_SCALE = 10
-const AnimatedLabel = animated(Label)
-const MAX_AREA = Math.PI * Math.pow(HEIGHT / 2, 2)
-const MAX_RADIUS = HEIGHT / 2
-
-const calculateYPos = (yFactor, ratio) => {
-  return yFactor * ratio * Y_SCALE
-}
-
-const calculateSpringValues = ({ year, budget, override, xProp }) => {
-  const { values, color: defaultColor, sink } = budget
-  const {
-    value: overrideValue,
-    negative: overrideNegative,
-    x: overrideX,
-    color: overrideColor,
-  } = override
-
-  const value = overrideValue ?? values[year.toFixed()]
-  const negative = overrideNegative ?? sink
-  const yFactor = negative ? -1 : 1
-
-  const area = (value / MAX_VALUE) * MAX_AREA
-  const radius = Math.sqrt(area / Math.PI)
-  const ratio = radius / MAX_RADIUS
-  const yPos = calculateYPos(yFactor, ratio)
-
-  const colorValue = overrideColor ?? defaultColor
-
-  const springValues = {
-    x: overrideX ?? xProp,
-    y: yPos / 2,
-    labelY: yPos,
-    value: value,
-    size: radius * 2,
-    color: colorValue,
-    config: { duration: 750, tension: 120, friction: 60 },
-  }
-
-  return springValues
-}
-
-const BudgetCircle = animated(({ x, y, value, negative, size, ...props }) => {
-  return <Circle x={x} y={y} size={size} opacity={0.8} {...props} />
-})
-
-const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
-  return (
-    <Label
-      x={x}
-      y={y}
-      align='center'
-      verticalAlign={y < 0 ? 'top' : 'bottom'}
-      width={1.2}
-      {...props}
-    >
-      {category}
-      <div>{value} GtCO₂</div>
-    </Label>
-  )
-})
-
 const STEPS = [
   {
     description: 'Our situation would be much worse without the ocean',
     subSteps: [
       {
         year: 2022,
+        hideAxis: true,
+        duration: 0,
         budgetOverrides: [
           {
-            x: 5,
-            negative: true,
+            x: 4,
+            // y: 0,
             value: 270,
-            color: '#64b9c4',
-            category: 'Atmosphere',
+            color: 'red',
+            category: 'Current Atmosphere',
           },
-          { x: 5, negative: true, value: 0 },
-          { x: 5, negative: false, value: 0 },
-          { x: 5, negative: false, value: 0 },
-        ],
-      },
-      {
-        year: 1851,
-        budgetOverrides: [
           {
-            x: 5,
-            negative: true,
-            value: 0,
-            color: '#64b9c4',
-            category: 'Atmosphere',
+            x: 6,
+            // y: 0,
+            value: 452,
+            color: 'orange',
+            category: 'Atmosphere without Ocean',
           },
-          { x: 5, negative: true, value: 0 },
-          { x: 5, negative: false, value: 0 },
-          { x: 5, negative: false, value: 0 },
+          { value: 0 },
+          { value: 0 },
+          { value: 0 },
         ],
       },
     ],
@@ -120,10 +50,24 @@ const STEPS = [
       {
         year: 1851,
         budgetOverrides: [],
+      },
+      {
+        year: 1851,
+        budgetOverrides: [
+          { value: 0, duration: 0 },
+          { value: 0, duration: 0 },
+          { value: 0, duration: 0 },
+          { value: 0, duration: 0 },
+        ],
       }, // begin scrub through time
       {
         year: 2022,
-        budgetOverrides: [],
+        budgetOverrides: [
+          { duration: 0 },
+          { duration: 0 },
+          { duration: 0 },
+          { duration: 0 },
+        ],
       }, // end scrub through time
     ],
   },
@@ -233,6 +177,15 @@ const STEPS = [
           { x: 5, negative: false, value: 0 },
         ], // absorb ocean sink into fossils
       },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 270, color: 'red', category: 'Current Atmosphere' },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ], // absorb ocean sink into fossils
+      },
     ],
   },
   {
@@ -240,13 +193,15 @@ const STEPS = [
     subSteps: [
       {
         year: 2022,
+        hideAxis: true,
         budgetOverrides: [
           {
             x: 5,
+            // y: 0,
             negative: true,
             value: 270,
-            color: '#64b9c4',
-            category: 'Atmosphere',
+            color: 'red',
+            category: 'Current Atmosphere',
           },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
@@ -255,12 +210,14 @@ const STEPS = [
       },
       {
         year: 2022,
+        hideAxis: true,
         budgetOverrides: [
           {
             x: 5,
-            negative: true,
+            // y: 0,
+            // negative: true,
             value: 270,
-            color: '#64b9c4',
+            color: 'red',
             category: 'Atmosphere',
           },
           { x: 5, negative: true, value: 0 },
@@ -268,9 +225,101 @@ const STEPS = [
           { x: 5, negative: false, value: 0 },
         ],
       },
+      {
+        year: 2022,
+        hideAxis: true,
+        budgetOverrides: [
+          {
+            x: 4,
+            // y: 0,
+            value: 270,
+            color: 'red',
+            category: 'Current Atmosphere',
+          },
+          {
+            x: 6,
+            // y: 0,
+            value: 452,
+            color: 'orange',
+            category: 'Atmosphere without Ocean',
+          },
+          { negative: false, value: 0 },
+          { negative: false, value: 0 },
+          { negative: false, value: 0 },
+        ],
+      },
     ],
   },
 ]
+
+const HEIGHT = 150
+const MAX_VALUE = 500
+const Y_SCALE = 10
+const AnimatedLabel = animated(Label)
+const MAX_AREA = Math.PI * Math.pow(HEIGHT / 2, 2)
+const MAX_RADIUS = HEIGHT / 2
+
+const calculateYPos = (yFactor, ratio) => {
+  return yFactor * ratio * Y_SCALE
+}
+
+const calculateSpringValues = ({ year, budget, override, xProp }) => {
+  const { values, color: defaultColor, sink } = budget
+  const {
+    value: overrideValue,
+    negative: overrideNegative,
+    duration: durationOverride,
+    x: overrideX,
+    y: overrideY,
+    color: overrideColor,
+  } = override
+
+  const value = overrideValue ?? values[year.toFixed()]
+  const negative = overrideNegative ?? sink
+  const yFactor = negative ? -1 : 1
+
+  const area = (value / MAX_VALUE) * MAX_AREA
+  const radius = Math.sqrt(area / Math.PI)
+  const ratio = radius / MAX_RADIUS
+  const yPos = calculateYPos(yFactor, ratio)
+
+  const colorValue = overrideColor ?? defaultColor
+
+  const springValues = {
+    x: overrideX ?? xProp,
+    y: overrideY ?? yPos / 2,
+    labelY: yPos,
+    value: value,
+    size: radius * 2,
+    color: colorValue,
+    config: {
+      duration: durationOverride ?? animationDuration,
+      easing: (t) => t,
+    },
+  }
+
+  return springValues
+}
+
+const BudgetCircle = animated(({ x, y, value, negative, size, ...props }) => {
+  return <Circle x={x} y={y} size={size} opacity={0.8} {...props} />
+})
+
+const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
+  return (
+    <Label
+      x={x}
+      y={y}
+      align='center'
+      verticalAlign={y < 0 ? 'top' : 'bottom'}
+      width={1.2}
+      {...props}
+    >
+      {category}
+      <div>{value} GtCO₂</div>
+    </Label>
+  )
+})
 
 const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
   const springValues = calculateSpringValues({
@@ -328,7 +377,7 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
   )
 })
 
-const animationDuration = 750
+const animationDuration = 1000
 
 const SinksExploration = ({ debug = false }) => {
   const [playing, setPlaying] = useState(false)
@@ -337,13 +386,13 @@ const SinksExploration = ({ debug = false }) => {
 
   const currentStep = STEPS[stepIndex.main]
   const currentSubStep = currentStep.subSteps[stepIndex.sub]
+  const axisOpacity = currentSubStep.hideAxis ? 0 : 1
 
   const { year } = useSpring({
     year: currentSubStep.year,
     config: {
       duration: animationDuration,
-      tension: 120,
-      friction: 60,
+      easing: (t) => t,
     },
   })
 
@@ -421,7 +470,15 @@ const SinksExploration = ({ debug = false }) => {
           y={[-Y_SCALE, Y_SCALE]}
           padding={{ left: 0, bottom: 0 }}
         >
-          <Grid horizontal values={[0]} sx={{ borderColor: 'primary' }} />
+          <Grid
+            horizontal
+            values={[0]}
+            sx={{
+              borderColor: 'primary',
+              transition: 'opacity 0.2s ease-in-out',
+              opacity: axisOpacity,
+            }}
+          />
           {debug && (
             <>
               <Grid horizontal vertical />
@@ -443,10 +500,24 @@ const SinksExploration = ({ debug = false }) => {
               )
             })}
           </Plot>
-          <Label x={0} y={1.5}>
+          <Label
+            x={0}
+            y={1.5}
+            sx={{
+              opacity: axisOpacity,
+              transition: 'opacity 0.2s ease-in-out',
+            }}
+          >
             Sources
           </Label>
-          <Label x={0} y={-0.5}>
+          <Label
+            x={0}
+            y={-0.5}
+            sx={{
+              opacity: axisOpacity,
+              transition: 'opacity 0.2s ease-in-out',
+            }}
+          >
             Sinks
           </Label>
           <AnimatedLabel
@@ -454,7 +525,11 @@ const SinksExploration = ({ debug = false }) => {
             y={0}
             verticalAlign='middle'
             height={2}
-            sx={{ pl: 2 }}
+            sx={{
+              pl: 2,
+              opacity: axisOpacity,
+              transition: 'opacity 0.2s ease-in-out',
+            }}
           >
             {year.to((x) => x.toFixed())}
           </AnimatedLabel>
