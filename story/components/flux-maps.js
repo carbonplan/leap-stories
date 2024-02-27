@@ -17,6 +17,7 @@ const CLIM = [
   -9.5129376e-8, 9.5129376e-8,
 ]
 const FILL_VALUE = 9.969209968386869e36
+const BASE_YEAR = 1959
 
 const formatMonth = (month) => {
   const date = new Date(2024, month, 1)
@@ -43,7 +44,7 @@ const FluxMaps = ({ delay = 500 }) => {
             return
           }
           const loader = l[VARIABLE]
-          loader([0, 0, 0], (err, chunk) => {
+          loader([1990 - BASE_YEAR, 0, 0], (err, chunk) => {
             if (err) {
               console.error('Error loading chunk:', err)
               return
@@ -51,7 +52,7 @@ const FluxMaps = ({ delay = 500 }) => {
 
             setChunks((prev) => ({ ...prev, start: chunk }))
           })
-          loader([63, 0, 0], (err, chunk) => {
+          loader([2020 - BASE_YEAR, 0, 0], (err, chunk) => {
             if (err) {
               console.error('Error loading chunk:', err)
               return
@@ -126,7 +127,7 @@ const FluxMaps = ({ delay = 500 }) => {
     >
       <Row columns={[6]} sx={{ mt: 3 }}>
         <Column start={1} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>1959</Box>
+          <Box sx={{ color: 'secondary' }}>1990</Box>
 
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
@@ -157,7 +158,7 @@ const FluxMaps = ({ delay = 500 }) => {
           </Box>
         </Column>
         <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>2022</Box>
+          <Box sx={{ color: 'secondary' }}>2020</Box>
 
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
