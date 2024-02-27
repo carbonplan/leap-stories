@@ -27,14 +27,14 @@ const STEPS = [
             x: 4,
             // y: 0,
             value: 270,
-            color: 'red',
+            color: '#F07071',
             category: 'Current Atmosphere',
           },
           {
             x: 6,
             // y: 0,
             value: 452,
-            color: 'orange',
+            color: '#EA9755',
             category: 'Atmosphere without Ocean',
           },
           { value: 0 },
@@ -50,14 +50,15 @@ const STEPS = [
       {
         year: 1851,
         budgetOverrides: [
-          { value: 0, duration: 0 },
-          { value: 0, duration: 0 },
+          { x: 4, value: 0, duration: 0 },
+          { x: 6, value: 0, duration: 0 },
           { value: 0, duration: 0 },
           { value: 0, duration: 0 },
         ],
       },
       {
         year: 1851,
+        duration: 0,
         budgetOverrides: [
           { duration: 0 },
           { duration: 0 },
@@ -185,7 +186,12 @@ const STEPS = [
       {
         year: 2022,
         budgetOverrides: [
-          { x: 5, value: 270, color: 'red', category: 'Current Atmosphere' },
+          {
+            x: 5,
+            value: 270,
+            color: '#F07071',
+            category: 'Current Atmosphere',
+          },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
           { x: 5, negative: false, value: 0 },
@@ -334,7 +340,7 @@ const SinksExploration = ({ debug = false }) => {
   const { year } = useSpring({
     year: currentSubStep.year,
     config: {
-      duration: animationDuration,
+      duration: currentSubStep.duration ?? animationDuration,
       easing: (t) => t,
     },
   })
