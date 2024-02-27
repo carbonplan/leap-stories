@@ -193,67 +193,6 @@ const STEPS = [
       },
     ],
   },
-  {
-    description: `The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean`,
-    subSteps: [
-      {
-        year: 2022,
-        hideAxis: true,
-        budgetOverrides: [
-          {
-            x: 5,
-            // y: 0,
-            value: 270,
-            color: 'red',
-            category: 'Current Atmosphere',
-          },
-          { x: 5, negative: true, value: 0 },
-          { x: 5, negative: false, value: 0 },
-          { x: 5, negative: false, value: 0 },
-        ], // show net fossil source as atmospheric "sink" (solid)
-      },
-      {
-        year: 2022,
-        hideAxis: true,
-        budgetOverrides: [
-          {
-            x: 5,
-            // y: 0,
-            // negative: true,
-            value: 270,
-            color: 'red',
-            category: 'Atmosphere',
-          },
-          { x: 5, negative: true, value: 0 },
-          { x: 5, negative: false, value: 0 },
-          { x: 5, negative: false, value: 0 },
-        ],
-      },
-      {
-        year: 2022,
-        hideAxis: true,
-        budgetOverrides: [
-          {
-            x: 4,
-            // y: 0,
-            value: 270,
-            color: 'red',
-            category: 'Current Atmosphere',
-          },
-          {
-            x: 6,
-            // y: 0,
-            value: 452,
-            color: 'orange',
-            category: 'Atmosphere without Ocean',
-          },
-          { negative: false, value: 0 },
-          { negative: false, value: 0 },
-          { negative: false, value: 0 },
-        ],
-      },
-    ],
-  },
 ]
 
 const HEIGHT = 150
