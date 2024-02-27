@@ -142,6 +142,15 @@ const STEPS = [
         year: 2022,
         budgetOverrides: [{}, { x: 5, negative: true }, { x: 5 }, {}], // render land source on top of land sink
       },
+      {
+        year: 2022,
+        budgetOverrides: [
+          {},
+          { x: 5, negative: true, value: 0 },
+          { x: 5, value: 25 },
+          {},
+        ], // render land source on top of land sink
+      },
     ],
   },
   {
@@ -196,6 +205,15 @@ const STEPS = [
           { x: 5, negative: false, value: 0 },
           { x: 5 },
         ], // center ocean sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5 },
+        ], // flip ocean sink
       },
       {
         year: 2022,
@@ -328,14 +346,14 @@ const SinksExploration = ({ debug = false }) => {
       friction: 60,
     },
   })
+
   const handlePlay = useCallback(
-    (willPlay) => {
+    (willPlay, playCurrentStepOnly = false) => {
       if (timeout.current) {
         clearTimeout(timeout.current)
         timeout.current = null
       }
 
-      // Set the playing state
       setPlaying(willPlay)
 
       if (willPlay) {
@@ -344,15 +362,19 @@ const SinksExploration = ({ debug = false }) => {
             let nextSub = prev.sub + 1
             let nextMain = prev.main
             if (nextSub >= STEPS[prev.main].subSteps.length) {
-              nextSub = 0
-              nextMain += 1
-              if (nextMain >= STEPS.length) {
+              if (playCurrentStepOnly) {
                 setPlaying(false)
-                return { main: 0, sub: 0 }
+                return prev
+              } else {
+                nextSub = 0
+                nextMain += 1
+                if (nextMain >= STEPS.length) {
+                  setPlaying(false)
+                  return { main: 0, sub: 0 }
+                }
               }
             }
             timeout.current = setTimeout(increment, animationDuration)
-
             return { main: nextMain, sub: nextSub }
           })
         }
@@ -365,7 +387,7 @@ const SinksExploration = ({ debug = false }) => {
 
   const handleStepClick = (i) => {
     setStepIndex({ main: i, sub: 0 })
-    setPlaying(false)
+    handlePlay(true, true)
   }
 
   return (
