@@ -439,13 +439,13 @@ const SinksExploration = ({ debug = false }) => {
           }
         />
       )}
-      <Box sx={{ height: HEIGHT * 2, mb: 10 }}>
+      <Box sx={{ height: HEIGHT * 2, mb: 8 }}>
         <Box
           key={currentStep.description}
           sx={{
-            mb: 8,
+            mb: 7,
             fontSize: 2,
-            color: 'primary',
+            color: 'secondary',
             animation: `${fadeIn} 1s ease-in-out`,
           }}
         >
@@ -454,8 +454,6 @@ const SinksExploration = ({ debug = false }) => {
             key={currentStep.secondDescription}
             as={'span'}
             sx={{
-              fontSize: 2,
-              color: 'primary',
               opacity: 0,
               animation: `${fadeIn} 1s ease-in-out 1s forwards`,
             }}
