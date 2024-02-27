@@ -22,7 +22,7 @@ const STEPS = [
     secondDescription: `It has obsorbed a significant amount of carbon from the atmosphere.`,
     subSteps: [
       {
-        year: 2022,
+        year: 1851,
         hideAxis: true,
         duration: 0,
         budgetOverrides: [
@@ -54,10 +54,10 @@ const STEPS = [
       {
         year: 1851,
         budgetOverrides: [
-          { x: 4, value: 0, duration: 0 },
-          { x: 6, value: 0, duration: 0 },
-          { value: 0, duration: 0 },
-          { value: 0, duration: 0 },
+          { x: 4, value: 0 },
+          { x: 6, value: 0 },
+          { value: 0 },
+          { value: 0 },
         ],
       },
       {
@@ -471,7 +471,7 @@ const SinksExploration = ({ debug = false }) => {
             values={[0]}
             sx={{
               borderColor: 'primary',
-              transition: 'opacity 0.2s ease-in-out',
+              transition: 'opacity 1s ease-in-out',
               opacity: axisOpacity,
             }}
           />
@@ -501,7 +501,7 @@ const SinksExploration = ({ debug = false }) => {
             y={1.5}
             sx={{
               opacity: axisOpacity,
-              transition: 'opacity 0.2s ease-in-out',
+              transition: 'opacity 0.5s ease-in-out',
             }}
           >
             Sources
@@ -511,7 +511,7 @@ const SinksExploration = ({ debug = false }) => {
             y={-0.5}
             sx={{
               opacity: axisOpacity,
-              transition: 'opacity 0.2s ease-in-out',
+              transition: 'opacity 0.5s ease-in-out',
             }}
           >
             Sinks
@@ -524,7 +524,7 @@ const SinksExploration = ({ debug = false }) => {
             sx={{
               pl: 2,
               opacity: axisOpacity,
-              transition: 'opacity 0.2s ease-in-out',
+              transition: 'opacity 0.5s ease-in-out',
             }}
           >
             {year.to((x) => x.toFixed())}
