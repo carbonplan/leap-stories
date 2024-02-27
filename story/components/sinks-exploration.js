@@ -27,14 +27,14 @@ const STEPS = [
         duration: 0,
         budgetOverrides: [
           {
-            x: 4,
+            x: 3,
             // y: 0,
             value: 270,
             color: '#F07071',
             category: 'Current Atmosphere',
           },
           {
-            x: 6,
+            x: 7,
             // y: 0,
             value: 452,
             color: '#EA9755',
