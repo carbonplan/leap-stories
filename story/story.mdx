@@ -2,7 +2,7 @@ import { Box } from 'theme-ui'
 import { Figure } from '@carbonplan/components'
 import Story, { Authors, Cite, Sidenote } from '../components/layout'
 import { FigureCaption } from '../components'
-import { Map, Sinks, OceanCycleDiagram } from './components'
+import { Map, FluxMaps, Sinks, OceanCycleDiagram } from './components'
 import references from './references.json'
 
 # The ocean carbon sink
@@ -96,19 +96,7 @@ Despite decades of coordinated international efforts by ocean carbon scientists,
 </Figure>
 
 <Figure>
-  <Map
-    sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
-    variable='fgco2'
-    clim={
-      /* Convert clim of [-3, 3] from seconds to year  */
-      [-9.5129376e-8, 9.5129376e-8]
-    }
-    climDisplay={[-3, 3]}
-    label='Carbon flux'
-    units='mol / m² / yr'
-    colormapName='redteal'
-    startYear={1959}
-  />
+  <FluxMaps />
   <FigureCaption number={5}>
     global map of mean carbon flux (mol/m2/yr).
   </FigureCaption>
