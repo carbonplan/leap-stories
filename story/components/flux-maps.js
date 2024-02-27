@@ -22,7 +22,7 @@ const formatMonth = (month) => {
   const date = new Date(2024, month, 1)
 
   return date.toLocaleString('default', {
-    month: 'short',
+    month: 'long',
   })
 }
 
