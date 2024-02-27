@@ -7,7 +7,7 @@ import {
   TickLabels,
 } from '@carbonplan/charts'
 import React, { useCallback, useRef, useState } from 'react'
-import { Box } from 'theme-ui'
+import { Box, Flex } from 'theme-ui'
 import { mix } from '@theme-ui/color'
 import { animated, useSpring, to } from '@react-spring/web'
 import { Filter } from '@carbonplan/components'
@@ -80,127 +80,178 @@ const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
 
 const STEPS = [
   {
-    year: 1851,
-    budgetOverrides: [],
-    text: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
-  }, // begin scrub through time
-  {
-    year: 2022,
-    budgetOverrides: [],
-    text: `Carbon sources and sinks from 1851 to 2022`,
-  }, // end scrub through time
-  {
-    year: 2022,
-    budgetOverrides: [{}, { x: 5 }, { x: 5 }, {}],
-    text: `Land use emissions and land-related sinks cancel a significant portion of each other out`,
-  }, // move land budgets together
-  {
-    year: 2022,
-    budgetOverrides: [{}, { x: 5, negative: true }, { x: 5 }, {}], // render land source on top of land sink
-    text: `Land use emissions and land-related sinks cancel a significant portion of each other out`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
-      {},
-      { x: 5, negative: true, value: 0 },
-      { x: 5, value: 25 },
-      {},
-    ], // absorb land source into top of land sink
-    text: `Fossil fuel emissions dominate land related sources and sinks`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
-      { x: 5 },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, value: 25 },
-      {},
-    ], // center fossil fuels
-    text: `Fossil fuel emissions dominate land related sources and sinks`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
-      { x: 5 },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, negative: false, value: 25 },
-      {},
-    ], // flip land sink
-    text: `Fossil fuel emissions dominate land related sources and sinks`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
-      { x: 5, value: 452 },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, negative: false, value: 0 },
-      {},
-    ], // absorb land sink into fossil fuels
-    text: `Fossil fuel emissions dominate land related sources and sinks`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
-      { x: 5, value: 452 },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, negative: false, value: 0 },
-      { x: 5 },
-    ], // center ocean sink
-    text: `The ocean, however, absorbs a very significant portion of these emissions`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
-      { x: 5, value: 452 },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, negative: false, value: 0 },
-      { x: 5, negative: false },
-    ], // flip ocean sink
-    text: `The ocean, however, absorbs a very significant portion of these emissions`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
-      { x: 5, value: 270 },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, negative: false, value: 0 },
-      { x: 5, negative: false, value: 0 },
-    ], // absorb ocean sink into fossils
-    text: `The ocean, however, absorbs a very significant portion of these emissions`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
+    description: 'Our situation would be much worse without the ocean',
+    subSteps: [
       {
-        x: 5,
-        negative: true,
-        value: 270,
-        color: '#64b9c4',
-        category: 'Atmosphere',
+        year: 2022,
+        budgetOverrides: [
+          {
+            x: 5,
+            negative: true,
+            value: 270,
+            color: '#64b9c4',
+            category: 'Atmosphere',
+          },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ],
       },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, negative: false, value: 0 },
-      { x: 5, negative: false, value: 0 },
-    ], // show net fossil source as atmospheric "sink" (solid)
-    text: `The remainder is what we see in today's atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean`,
-  },
-  {
-    year: 2022,
-    budgetOverrides: [
       {
-        x: 5,
-        negative: true,
-        value: 270,
-        color: '#64b9c4',
-        category: 'Atmosphere',
+        year: 1851,
+        budgetOverrides: [
+          {
+            x: 5,
+            negative: true,
+            value: 0,
+            color: '#64b9c4',
+            category: 'Atmosphere',
+          },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ],
       },
-      { x: 5, negative: true, value: 0 },
-      { x: 5, negative: false, value: 0 },
-      { x: 5, negative: false, value: 0 },
     ],
-    text: `The remainder is what we see in today's atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean`,
-  }, // add net fossil source (w/o ocean sink) as atmospheric "sink" (dashed)
+  },
+  {
+    description: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
+    subSteps: [
+      {
+        year: 1851,
+        budgetOverrides: [],
+      }, // begin scrub through time
+      {
+        year: 2022,
+        budgetOverrides: [],
+      }, // end scrub through time
+    ],
+  },
+  {
+    description: `Land use emissions and land-related sinks cancel a significant portion of each other out`,
+    subSteps: [
+      {
+        year: 2022,
+        budgetOverrides: [],
+      },
+      {
+        year: 2022,
+        budgetOverrides: [{}, { x: 5 }, { x: 5 }, {}],
+      }, // move land budgets together
+      {
+        year: 2022,
+        budgetOverrides: [{}, { x: 5, negative: true }, { x: 5 }, {}], // render land source on top of land sink
+      },
+    ],
+  },
+  {
+    description: `Fossil fuel emissions dominate land related sources and sinks`,
+    subSteps: [
+      {
+        year: 2022,
+        budgetOverrides: [
+          {},
+          { x: 5, negative: true, value: 0 },
+          { x: 5, value: 25 },
+          {},
+        ], // absorb land source into top of land sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, value: 25 },
+          {},
+        ], // center fossil fuels
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 25 },
+          {},
+        ], // flip land sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          {},
+        ], // absorb land sink into fossil fuels
+      },
+    ],
+  },
+  {
+    description: `The ocean, however, absorbs a very significant portion of these emissions`,
+    subSteps: [
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5 },
+        ], // center ocean sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false },
+        ], // flip ocean sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 270 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ], // absorb ocean sink into fossils
+      },
+    ],
+  },
+  {
+    description: `The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean`,
+    subSteps: [
+      {
+        year: 2022,
+        budgetOverrides: [
+          {
+            x: 5,
+            negative: true,
+            value: 270,
+            color: '#64b9c4',
+            category: 'Atmosphere',
+          },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ], // show net fossil source as atmospheric "sink" (solid)
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          {
+            x: 5,
+            negative: true,
+            value: 270,
+            color: '#64b9c4',
+            category: 'Atmosphere',
+          },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ],
+      },
+    ],
+  },
 ]
 
 const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
@@ -259,55 +310,63 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
   )
 })
 
+const animationDuration = 750
+
 const SinksExploration = ({ debug = false }) => {
   const [playing, setPlaying] = useState(false)
   const timeout = useRef()
-  const [step, setStep] = useState(0)
+  const [stepIndex, setStepIndex] = useState({ main: 0, sub: 0 })
+
+  const currentStep = STEPS[stepIndex.main]
+  const currentSubStep = currentStep.subSteps[stepIndex.sub]
+
   const { year } = useSpring({
-    year: STEPS[step].year,
+    year: currentSubStep.year,
     config: {
-      duration: 750,
+      duration: animationDuration,
       tension: 120,
       friction: 60,
     },
   })
-
   const handlePlay = useCallback(
     (willPlay) => {
-      if (willPlay && step === STEPS.length - 1) {
-        setStep(0)
-      }
-
       if (timeout.current) {
         clearTimeout(timeout.current)
         timeout.current = null
       }
 
+      // Set the playing state
       setPlaying(willPlay)
+
       if (willPlay) {
         const increment = () => {
-          timeout.current = setTimeout(() => {
-            let shouldContinue = true
-            setStep((prev) => {
-              let nextValue = prev + 1
-              if (nextValue > STEPS.length - 1) {
-                nextValue = prev
-                shouldContinue = false
+          setStepIndex((prev) => {
+            let nextSub = prev.sub + 1
+            let nextMain = prev.main
+            if (nextSub >= STEPS[prev.main].subSteps.length) {
+              nextSub = 0
+              nextMain += 1
+              if (nextMain >= STEPS.length) {
                 setPlaying(false)
+                return { main: 0, sub: 0 }
               }
+            }
+            timeout.current = setTimeout(increment, animationDuration)
 
-              if (shouldContinue) {
-                increment()
-              }
-              return nextValue
-            })
-          }, 1500)
+            return { main: nextMain, sub: nextSub }
+          })
         }
+
         increment()
       }
     },
-    [step]
+    [animationDuration]
   )
+
+  const handleStepClick = (i) => {
+    setStepIndex({ main: i, sub: 0 })
+    setPlaying(false)
+  }
 
   return (
     <PlayPause playing={playing} setPlaying={handlePlay}>
@@ -333,7 +392,7 @@ const SinksExploration = ({ debug = false }) => {
             color: 'primary',
           }}
         >
-          {STEPS[step].text}
+          {currentStep.description}
         </Box>
         <Chart
           x={[0, 10]}
@@ -349,9 +408,8 @@ const SinksExploration = ({ debug = false }) => {
           )}
           <Plot>
             {budgets.map((budget, i) => {
-              const { budgetOverrides } = STEPS[step]
+              const { budgetOverrides } = currentSubStep
               const override = budgetOverrides[i] ?? {}
-
               return (
                 <StepifiedCircle
                   key={budget.category}
@@ -379,9 +437,8 @@ const SinksExploration = ({ debug = false }) => {
             {year.to((x) => x.toFixed())}
           </AnimatedLabel>
           {budgets.map((budget, i) => {
-            const { budgetOverrides } = STEPS[step]
+            const { budgetOverrides } = currentSubStep
             const override = budgetOverrides[i] ?? {}
-
             return (
               <StepifiedLabel
                 key={`${budget.category}-label`}
@@ -394,6 +451,27 @@ const SinksExploration = ({ debug = false }) => {
           })}
         </Chart>
       </Box>
+      <Flex sx={{ justifyContent: 'flex-start', mt: 1 }}>
+        {STEPS.map((_, i) => (
+          <Box
+            key={`step-${i}`}
+            onClick={() => handleStepClick(i)}
+            sx={{
+              transition: 'all 0.2s ease-in-out',
+              cursor: 'pointer',
+              border: stepIndex.main === i ? '2px solid' : '1px solid',
+              borderColor: 'secondary',
+              color: 'secondary',
+              ml: 1,
+              width: '25px',
+              height: '25px',
+              textAlign: 'center',
+            }}
+          >
+            {i + 1}
+          </Box>
+        ))}
+      </Flex>
     </PlayPause>
   )
 }
