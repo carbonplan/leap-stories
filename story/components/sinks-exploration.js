@@ -439,28 +439,28 @@ const SinksExploration = ({ debug = false }) => {
           }
         />
       )}
-      <Box sx={{ height: HEIGHT * 2, mb: 8 }}>
+      <Box
+        key={currentStep.description}
+        sx={{
+          fontSize: 2,
+          height: '8em',
+          color: 'secondary',
+          animation: `${fadeIn} 1s ease-in-out`,
+        }}
+      >
+        {currentStep.description}{' '}
         <Box
-          key={currentStep.description}
+          key={currentStep.secondDescription}
+          as={'span'}
           sx={{
-            mb: 7,
-            fontSize: 2,
-            color: 'secondary',
-            animation: `${fadeIn} 1s ease-in-out`,
+            opacity: 0,
+            animation: `${fadeIn} 1s ease-in-out 1s forwards`,
           }}
         >
-          {currentStep.description}{' '}
-          <Box
-            key={currentStep.secondDescription}
-            as={'span'}
-            sx={{
-              opacity: 0,
-              animation: `${fadeIn} 1s ease-in-out 1s forwards`,
-            }}
-          >
-            {currentStep.secondDescription ?? ''}
-          </Box>
+          {currentStep.secondDescription ?? ''}
         </Box>
+      </Box>
+      <Box sx={{ height: HEIGHT * 2 }}>
         <Chart
           x={[0, 10]}
           y={[-Y_SCALE, Y_SCALE]}
