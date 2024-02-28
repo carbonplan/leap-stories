@@ -346,6 +346,9 @@ const SinksExploration = ({ debug = false }) => {
   const currentStep = STEPS[stepIndex.main]
   const currentSubStep = currentStep.subSteps[stepIndex.sub]
   const axisOpacity = currentSubStep.hideAxis ? 0 : 1
+  const hideYear = currentStep.subSteps.every(
+    (step, _, arr) => step.year === arr[0].year
+  )
 
   const { year } = useSpring({
     year: currentSubStep.year,
@@ -527,7 +530,7 @@ const SinksExploration = ({ debug = false }) => {
             height={2}
             sx={{
               pl: 2,
-              opacity: axisOpacity,
+              opacity: !hideYear ? axisOpacity : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
           >
