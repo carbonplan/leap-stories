@@ -240,10 +240,19 @@ const calculateSpringValues = ({ year, budget, override, xProp }) => {
 
   const colorValue = overrideColor ?? defaultColor
 
+  let labelY
+  if (overrideY !== undefined) {
+    labelY = overrideY + yPos / 2
+  } else if (overrideNegative !== undefined) {
+    labelY = 0
+  } else {
+    labelY = yPos
+  }
+
   const springValues = {
     x: overrideX ?? xProp,
     y: overrideY ?? yPos / 2,
-    labelY: overrideY !== undefined ? overrideY + yPos / 2 : yPos,
+    labelY: labelY,
     value: value,
     size: radius * 2,
     color: colorValue,
@@ -259,26 +268,28 @@ const BudgetCircle = animated(({ x, y, value, negative, size, ...props }) => {
   return <Circle x={x} y={y} size={size} opacity={0.8} {...props} />
 })
 
-const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
-  return (
-    <Label
-      x={x}
-      y={y}
-      align='center'
-      verticalAlign={y < 0 ? 'top' : 'bottom'}
-      width={2}
-      {...props}
-    >
-      {category}
-      <Box sx={{ color: 'secondary', textTransform: 'none' }}>
-        <Box as={'span'} sx={{ color: 'primary' }}>
-          {value}{' '}
+const BudgetLabel = animated(
+  ({ x, y, negative, value, sink, category, ...props }) => {
+    return (
+      <Label
+        x={x}
+        y={y}
+        align='center'
+        verticalAlign={sink ? 'top' : 'bottom'}
+        width={2}
+        {...props}
+      >
+        {category}
+        <Box sx={{ color: 'secondary', textTransform: 'none' }}>
+          <Box as={'span'} sx={{ color: 'primary' }}>
+            {value}{' '}
+          </Box>
+          GtCO₂
         </Box>
-        GtCO₂
-      </Box>
-    </Label>
-  )
-})
+      </Label>
+    )
+  }
+)
 
 const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
   const springValues = calculateSpringValues({
@@ -304,17 +315,14 @@ const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
 })
 
 const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
-  // don't override negative for labels
-  const labelOverride = { ...override, negative: undefined }
-
   const springValues = calculateSpringValues({
     year,
     budget,
-    override: labelOverride,
+    override,
     xProp,
   })
   const { x, labelY, color, value } = useSpring(springValues)
-  const category = labelOverride.category ?? budget.category
+  const category = override.category ?? budget.category
 
   // fade labels at zero values
   const opacity = value.to((v) => {
@@ -328,6 +336,8 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
     <BudgetLabel
       x={x}
       y={labelY}
+      sink={budget.sink}
+      negative={override.negative}
       value={animatedValue}
       category={category}
       color={animatedColor}
