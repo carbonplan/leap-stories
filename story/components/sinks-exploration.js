@@ -19,7 +19,7 @@ import PlayPause from './play-pause'
 const STEPS = [
   {
     description: 'Our situation would be much worse without the ocean.',
-    secondDescription: `It has obsorbed a significant amount of carbon from the atmosphere.`,
+    secondDescription: `It has absorbed a significant amount of carbon from the atmosphere.`,
     subSteps: [
       {
         year: 1851,
@@ -252,8 +252,6 @@ const calculateSpringValues = ({ year, budget, override, xProp }) => {
       easing: (t) => t,
     },
   }
-  console.log(springValues)
-
   return springValues
 }
 
