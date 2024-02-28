@@ -442,15 +442,19 @@ const SinksExploration = ({ debug = false }) => {
     }
 
     const incrementSubStep = () => {
+      let shouldContinue = true
       setStepIndex((prev) => {
         let nextSub = prev.sub + 1
         let nextMain = prev.main
         if (nextSub >= STEPS[nextMain].subSteps.length) {
+          shouldContinue = false
           return prev
         }
-        timeout.current = setTimeout(incrementSubStep, animationDuration)
         return { main: nextMain, sub: nextSub }
       })
+      if (shouldContinue) {
+        timeout.current = setTimeout(incrementSubStep, animationDuration)
+      }
     }
     incrementSubStep()
   }
