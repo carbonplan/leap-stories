@@ -12,7 +12,6 @@ import { keyframes } from '@emotion/react'
 import { animated, useSpring, to } from '@react-spring/web'
 import { Filter } from '@carbonplan/components'
 import { budgets } from '../data/carbon_budget_data'
-import PlayPause from './play-pause'
 
 const STEPS = [
   {
@@ -433,37 +432,65 @@ const SinksExploration = ({ debug = false }) => {
     handlePlay(true, true)
   }
 
+  const handleStepAdvance = () => {
+    if (stepIndex.main === STEPS.length - 1) {
+      setStepIndex({ main: 0, sub: 0 })
+      return
+    }
+    const nextStepIndex = stepIndex.main + 1
+    setStepIndex({ main: nextStepIndex, sub: 0 })
+    handlePlay(true, true)
+  }
+
   return (
-    <PlayPause
-      sx={{ pb: 2 }}
-      playing={playing}
-      setPlaying={handlePlay}
-      controls={
-        <Flex sx={{ justifyContent: 'flex-start' }}>
-          {STEPS.map((_, i) => (
-            <Box
-              key={`step-${i}`}
-              onClick={() => handleStepClick(i)}
-              sx={{
-                transition: 'all 0.2s ease-in-out',
-                cursor: 'pointer',
-                bg: stepIndex.main === i ? 'muted' : 'hinted',
-                color: stepIndex.main === i ? 'primary' : 'secondary',
-                ml: 1,
-                fontSize: 0,
-                width: '20px',
-                height: '20px',
-                lineHeight: '20px',
-                textAlign: 'center',
-                '&:hover': { bg: 'muted' },
-              }}
-            >
-              {i + 1}
-            </Box>
-          ))}
-        </Flex>
-      }
+    <Box
+      onClick={() => handleStepAdvance()}
+      sx={{
+        cursor: 'pointer',
+        pb: 2,
+        '&:hover #clickNotice': { color: 'secondary' },
+      }}
     >
+      <Flex sx={{ justifyContent: 'flex-start', mb: 2 }}>
+        {STEPS.map((_, i) => (
+          <Box
+            key={`step-${i}`}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleStepClick(i)
+            }}
+            sx={{
+              transition: 'all 0.2s ease-in-out',
+              cursor: 'pointer',
+              bg: stepIndex.main === i ? 'muted' : 'hinted',
+              color: stepIndex.main === i ? 'primary' : 'secondary',
+              ml: 1,
+              fontSize: 0,
+              width: '20px',
+              height: '20px',
+              lineHeight: '20px',
+              textAlign: 'center',
+              '&:hover': { bg: 'muted' },
+            }}
+          >
+            {i + 1}
+          </Box>
+        ))}
+        <Box
+          id='clickNotice'
+          sx={{
+            ml: 3,
+            color: 'muted',
+            cursor: 'pointer',
+            fontStyle: 'italic',
+            fontSize: 1,
+            transition: 'color 0.2s ease-in-out',
+            mt: '2px',
+          }}
+        >
+          Click anywhere to advance
+        </Box>
+      </Flex>
       {debug && (
         <Filter
           values={STEPS.reduce((accum, s, i) => {
@@ -580,7 +607,7 @@ const SinksExploration = ({ debug = false }) => {
           })}
         </Chart>
       </Box>
-    </PlayPause>
+    </Box>
   )
 }
 
