@@ -16,7 +16,7 @@ import { budgets } from '../data/carbon_budget_data'
 const STEPS = [
   {
     description:
-      'Our situation would be much worse without the ocean. It has absorbed a significant amount of carbon from the atmosphere.',
+      'Our situation would be much worse without the ocean. It has absorbed a significant amount of carbon we have released into the atmosphere.',
     subSteps: [
       {
         year: 2022,
@@ -106,7 +106,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Early on, land-use emissions were the largest source of CO₂ in the atmosphere.`,
+    description: `Early on, land-use emissions were the largest source of carbon in the atmosphere.`,
     secondDescription: `In 1979, fossil fuel emissions surpassed land-use emissions.`,
     subSteps: [
       {
@@ -126,8 +126,8 @@ const STEPS = [
     ],
   },
   {
-    description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions.`,
-    secondDescription: `The land and the ocean.`,
+    description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions:`,
+    secondDescription: `the land and the ocean.`,
     subSteps: [
       {
         year: 1979,
@@ -249,7 +249,7 @@ const STEPS = [
   },
   {
     description: `What remains is the carbon that has accumulated in the atmosphere`,
-    secondDescription: `and causes global warming.`,
+    secondDescription: `causing global warming.`,
     subSteps: [
       {
         year: 2022,
@@ -348,7 +348,7 @@ const BudgetLabel = animated(
           <Box as={'span'} sx={{ color: 'primary' }}>
             {value}{' '}
           </Box>
-          GtCO₂
+          GtC
         </Box>
       </Label>
     )
