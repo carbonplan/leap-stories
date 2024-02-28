@@ -116,6 +116,7 @@ const STEPS = [
       },
       {
         year: 1851,
+        duration: 0,
         budgetOverrides: [{}, {}, {}, {}],
       }, // begin scrub through time
       {
@@ -428,11 +429,11 @@ const SinksExploration = ({ debug = false }) => {
   const hideYear = currentStep.subSteps.every(
     (step, _, arr) => step.year === arr[0].year
   )
-
   const { year } = useSpring({
     year: currentSubStep.year,
     config: {
       duration: currentSubStep.duration ?? animationDuration,
+      easing: (t) => t,
     },
   })
   const handlePlay = () => {
