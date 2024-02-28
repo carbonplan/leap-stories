@@ -15,13 +15,12 @@ import { budgets } from '../data/carbon_budget_data'
 
 const STEPS = [
   {
-    description: 'Our situation would be much worse without the ocean.',
-    secondDescription: `It has absorbed a significant amount of carbon from the atmosphere.`,
+    description:
+      'Our situation would be much worse without the ocean. It has absorbed a significant amount of carbon from the atmosphere.',
     subSteps: [
       {
-        year: 1851,
+        year: 2022,
         hideAxis: true,
-        duration: 0,
         budgetOverrides: [
           {
             x: 3,
@@ -45,52 +44,97 @@ const STEPS = [
     ],
   },
   {
-    description: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
-    secondDescription: `In 1979, fossil fuel emissions surpassed land use emissions.`,
+    description: `Carbon is added to the atmosphere from various sources and removed by various sinks.`,
+    secondDescription: `We'll explore the largest.`,
     subSteps: [
       {
-        year: 1851,
+        year: 2022,
         budgetOverrides: [
-          { x: 4, value: 0 },
-          { x: 6, value: 0 },
+          {
+            x: 3,
+            y: 0,
+            value: 0,
+            color: '#F07071',
+            category: 'Current Atmosphere',
+          },
+          {
+            x: 7,
+            y: 0,
+            value: 0,
+            color: '#EA9755',
+            category: 'Atmosphere without Ocean',
+          },
           { value: 0 },
           { value: 0 },
         ],
       },
       {
-        year: 1851,
+        year: 2022,
+        budgetOverrides: [
+          {
+            x: 3,
+            y: 0,
+            value: 0,
+            color: '#F07071',
+            category: 'Current Atmosphere',
+          },
+          {
+            x: 7,
+            y: 0,
+            value: 0,
+            color: '#EA9755',
+            category: 'Atmosphere without Ocean',
+          },
+          { value: 0 },
+          { value: 0 },
+        ],
+      },
+      {
+        year: 2022,
         duration: 0,
         budgetOverrides: [
-          { duration: 0 },
-          { duration: 0 },
-          { duration: 0 },
-          { duration: 0 },
+          { value: 0 },
+          { value: 0 },
+          { value: 0 },
+          { value: 0 },
         ],
+      },
+      {
+        year: 2022,
+        budgetOverrides: [{}, {}, {}, {}],
+      },
+    ],
+  },
+  {
+    description: `Early on, land use emissions were the largest source of CO₂ in the atmosphere.`,
+    secondDescription: `In 1979, fossil fuel emissions surpassed land use emissions.`,
+    subSteps: [
+      {
+        year: 1851,
+        duration: 0,
+        budgetOverrides: [{}, {}, {}, {}],
+      },
+      {
+        year: 1851,
+        budgetOverrides: [{}, {}, {}, {}],
       }, // begin scrub through time
       {
         year: 1979,
-        budgetOverrides: [
-          { duration: 0 },
-          { duration: 0 },
-          { duration: 0 },
-          { duration: 0 },
-        ],
+        budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
   },
   {
-    description: `Today, two sinks have removed the most carbon from the atmosphere.`,
+    description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions.`,
     secondDescription: `The land and the ocean.`,
     subSteps: [
-      // begin scrub through time
+      {
+        year: 1979,
+        budgetOverrides: [{}, {}, {}, {}],
+      },
       {
         year: 2022,
-        budgetOverrides: [
-          { duration: 0 },
-          { duration: 0 },
-          { duration: 0 },
-          { duration: 0 },
-        ],
+        budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
   },
@@ -99,7 +143,7 @@ const STEPS = [
     subSteps: [
       {
         year: 2022,
-        budgetOverrides: [],
+        budgetOverrides: [{}, {}, {}, {}],
       },
       {
         year: 2022,
@@ -204,7 +248,7 @@ const STEPS = [
   },
   {
     description: `What remains is the carbon that has accumulated in the atmosphere`,
-    secondDescription: `and causes global heating.`,
+    secondDescription: `and causes global warming.`,
     subSteps: [
       {
         year: 2022,
@@ -239,19 +283,18 @@ const calculateYPos = (yFactor, ratio) => {
   return yFactor * ratio * Y_SCALE
 }
 
-const calculateSpringValues = ({ year, budget, override, xProp }) => {
+const calculateSpringValues = ({ year, budget, override, xProp, duration }) => {
   const { values, color: defaultColor, sink } = budget
   const {
     value: overrideValue,
     negative: overrideNegative,
-    duration: durationOverride,
     x: overrideX,
     y: overrideY,
     color: overrideColor,
   } = override
 
   const value = overrideValue ?? values[year.toFixed()]
-  const negative = overrideNegative ?? sink
+  const negative = overrideNegative !== undefined ? overrideNegative : sink
   const yFactor = negative ? -1 : 1
 
   const area = (value / MAX_VALUE) * MAX_AREA
@@ -278,14 +321,13 @@ const calculateSpringValues = ({ year, budget, override, xProp }) => {
     size: radius * 2,
     color: colorValue,
     config: {
-      duration: durationOverride ?? animationDuration,
-      easing: (t) => t,
+      duration: duration ?? animationDuration,
     },
   }
   return springValues
 }
 
-const BudgetCircle = animated(({ x, y, value, negative, size, ...props }) => {
+const BudgetCircle = animated(({ x, y, value, size, ...props }) => {
   return <Circle x={x} y={y} size={size} opacity={0.8} {...props} />
 })
 
@@ -312,65 +354,71 @@ const BudgetLabel = animated(
   }
 )
 
-const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
-  const springValues = calculateSpringValues({
-    year,
-    budget,
-    override,
-    xProp,
-  })
+const StepifiedCircle = animated(
+  ({ year, budget, override, duration, x: xProp }) => {
+    const springValues = calculateSpringValues({
+      year,
+      budget,
+      override,
+      xProp,
+      duration,
+    })
 
-  const { x, y, size, color } = useSpring(springValues)
+    const { x, y, size, color } = useSpring(springValues)
 
-  const animatedColor = to([color], (c) => c)
+    const animatedColor = to([color], (c) => c)
 
-  return (
-    <BudgetCircle
-      key={`${budget.category}-circle`}
-      x={x}
-      y={y}
-      size={size}
-      color={animatedColor}
-    />
-  )
-})
+    return (
+      <BudgetCircle
+        key={`${budget.category}-circle`}
+        x={x}
+        y={y}
+        size={size}
+        color={animatedColor}
+      />
+    )
+  }
+)
 
-const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
-  const springValues = calculateSpringValues({
-    year,
-    budget,
-    override,
-    xProp,
-  })
-  const { x, labelY, color, value } = useSpring(springValues)
-  const category = override.category ?? budget.category
+const StepifiedLabel = animated(
+  ({ year, budget, override, duration, x: xProp }) => {
+    const springValues = calculateSpringValues({
+      year,
+      budget,
+      override,
+      xProp,
+      duration,
+    })
+    const { x, labelY, color, value } = useSpring(springValues)
+    const category = override.category ?? budget.category
 
-  // fade labels at zero values
-  const opacity = value.to((v) => {
-    return v <= 1 ? 0 : v < 20 ? 0.5 : 1
-  })
+    // fade labels at zero values
+    const opacity = value.to((v) => {
+      return v <= 1 ? 0 : v < 20 ? 0.5 : 1
+    })
 
-  const animatedColor = to([color], (c) => c)
-  const animatedValue = to([value], (v) => v.toFixed())
+    const animatedColor = to([color], (c) => c)
+    const animatedValue = to([value], (v) => v.toFixed())
 
-  return (
-    <BudgetLabel
-      x={x}
-      y={labelY}
-      sink={budget.sink}
-      negative={override.negative}
-      value={animatedValue}
-      category={category}
-      color={animatedColor}
-      style={{ opacity }}
-    />
-  )
-})
+    return (
+      <BudgetLabel
+        key={`${budget.category}-label`}
+        x={x}
+        y={labelY}
+        sink={budget.sink}
+        negative={override.negative}
+        value={animatedValue}
+        category={category}
+        color={animatedColor}
+        style={{ opacity }}
+      />
+    )
+  }
+)
 
-const animationDuration = 1000
+const animationDuration = 750
 
 const SinksExploration = ({ debug = false }) => {
-  const [playing, setPlaying] = useState(false)
   const timeout = useRef()
   const [stepIndex, setStepIndex] = useState({ main: 0, sub: 0 })
 
@@ -385,61 +433,42 @@ const SinksExploration = ({ debug = false }) => {
     year: currentSubStep.year,
     config: {
       duration: currentSubStep.duration ?? animationDuration,
-      easing: (t) => t,
     },
   })
+  const handlePlay = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current)
+      timeout.current = null
+    }
 
-  const handlePlay = useCallback(
-    (willPlay, playCurrentStepOnly = false) => {
-      if (timeout.current) {
-        clearTimeout(timeout.current)
-        timeout.current = null
-      }
-
-      setPlaying(willPlay)
-
-      if (willPlay) {
-        const increment = () => {
-          setStepIndex((prev) => {
-            let nextSub = prev.sub + 1
-            let nextMain = prev.main
-            if (nextSub >= STEPS[prev.main].subSteps.length) {
-              if (playCurrentStepOnly) {
-                setPlaying(false)
-                return prev
-              } else {
-                nextSub = 0
-                nextMain += 1
-                if (nextMain >= STEPS.length) {
-                  setPlaying(false)
-                  return { main: 0, sub: 0 }
-                }
-              }
-            }
-            timeout.current = setTimeout(increment, animationDuration)
-            return { main: nextMain, sub: nextSub }
-          })
+    const incrementSubStep = () => {
+      setStepIndex((prev) => {
+        let nextSub = prev.sub + 1
+        let nextMain = prev.main
+        if (nextSub >= STEPS[nextMain].subSteps.length) {
+          return prev
         }
-
-        increment()
-      }
-    },
-    [animationDuration]
-  )
+        timeout.current = setTimeout(incrementSubStep, animationDuration)
+        return { main: nextMain, sub: nextSub }
+      })
+    }
+    incrementSubStep()
+  }
 
   const handleStepClick = (i) => {
     setStepIndex({ main: i, sub: 0 })
-    handlePlay(true, true)
+    handlePlay()
   }
 
   const handleStepAdvance = () => {
-    if (stepIndex.main === STEPS.length - 1) {
-      setStepIndex({ main: 0, sub: 0 })
-      return
-    }
-    const nextStepIndex = stepIndex.main + 1
-    setStepIndex({ main: nextStepIndex, sub: 0 })
-    handlePlay(true, true)
+    setStepIndex((prev) => {
+      let nextMain = prev.main + 1
+      if (nextMain >= STEPS.length) {
+        nextMain = 0
+      }
+      return { main: nextMain, sub: 0 }
+    })
+    handlePlay()
   }
 
   return (
@@ -465,6 +494,7 @@ const SinksExploration = ({ debug = false }) => {
               bg: stepIndex.main === i ? 'muted' : 'hinted',
               color: stepIndex.main === i ? 'primary' : 'secondary',
               ml: 1,
+              mb: 2,
               fontSize: 0,
               width: '20px',
               height: '20px',
@@ -546,7 +576,7 @@ const SinksExploration = ({ debug = false }) => {
           )}
           <Plot>
             {budgets.map((budget, i) => {
-              const { budgetOverrides } = currentSubStep
+              const { budgetOverrides, duration } = currentSubStep
               const override = budgetOverrides[i] ?? {}
               return (
                 <StepifiedCircle
@@ -555,6 +585,7 @@ const SinksExploration = ({ debug = false }) => {
                   year={year}
                   budget={budget}
                   override={override}
+                  duration={duration}
                 />
               )
             })}
@@ -593,7 +624,7 @@ const SinksExploration = ({ debug = false }) => {
             {year.to((y) => y.toFixed())}
           </AnimatedLabel>
           {budgets.map((budget, i) => {
-            const { budgetOverrides } = currentSubStep
+            const { budgetOverrides, duration } = currentSubStep
             const override = budgetOverrides[i] ?? {}
             return (
               <StepifiedLabel
@@ -602,6 +633,7 @@ const SinksExploration = ({ debug = false }) => {
                 year={year}
                 budget={budget}
                 override={override}
+                duration={duration}
               />
             )
           })}
