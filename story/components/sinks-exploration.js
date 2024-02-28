@@ -110,7 +110,7 @@ const STEPS = [
     secondDescription: `In 1979, fossil fuel emissions surpassed land-use emissions.`,
     subSteps: [
       {
-        year: 1851,
+        year: 1979,
         budgetOverrides: [
           {
             x: 3,
@@ -131,7 +131,7 @@ const STEPS = [
         ],
       },
       {
-        year: 1851,
+        year: 1979,
         budgetOverrides: [
           {
             x: 3,
@@ -152,12 +152,7 @@ const STEPS = [
         ],
       },
       {
-        year: 1851,
-        duration: 0,
-        budgetOverrides: [{}, {}, {}, {}],
-      },
-      {
-        year: 1851,
+        year: 1979,
         duration: 0,
         budgetOverrides: [{}, {}, {}, {}],
       }, // begin scrub through time
