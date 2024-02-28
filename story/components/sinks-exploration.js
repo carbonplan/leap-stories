@@ -6,11 +6,9 @@ import {
   Plot,
   TickLabels,
 } from '@carbonplan/charts'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { keyframes } from '@emotion/react'
-
-import { mix } from '@theme-ui/color'
 import { animated, useSpring, to } from '@react-spring/web'
 import { Filter } from '@carbonplan/components'
 import { budgets } from '../data/carbon_budget_data'
@@ -48,8 +46,8 @@ const STEPS = [
     ],
   },
   {
-    description: `Carbon is added to the atmosphere from various sources and removed by various sinks.`,
-    secondDescription: `We'll explore the largest.`,
+    description: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
+    secondDescription: `In 1979, fossil fuel emissions surpassed land use emissions.`,
     subSteps: [
       {
         year: 1851,
@@ -70,6 +68,22 @@ const STEPS = [
           { duration: 0 },
         ],
       }, // begin scrub through time
+      {
+        year: 1979,
+        budgetOverrides: [
+          { duration: 0 },
+          { duration: 0 },
+          { duration: 0 },
+          { duration: 0 },
+        ],
+      }, // end scrub through time
+    ],
+  },
+  {
+    description: `Today, two sinks have removed the most carbon from the atmosphere.`,
+    secondDescription: `The land and the ocean.`,
+    subSteps: [
+      // begin scrub through time
       {
         year: 2022,
         budgetOverrides: [
@@ -108,7 +122,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Fossil fuel emissions dominate land related sources and sinks.`,
+    description: `Fossil fuel emissions dominate these land related sources and sinks.`,
     subSteps: [
       {
         year: 2022,
@@ -187,11 +201,19 @@ const STEPS = [
           { x: 5, negative: false, value: 0 },
         ], // absorb ocean sink into fossils
       },
+    ],
+  },
+  {
+    description: `What remains is the carbon that has accumulated in the atmosphere`,
+    secondDescription: `and causes global heating.`,
+    subSteps: [
       {
         year: 2022,
+        hideAxis: true,
         budgetOverrides: [
           {
             x: 5,
+            y: 0,
             value: 270,
             color: '#F07071',
             category: 'Current Atmosphere',
@@ -346,7 +368,7 @@ const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
   )
 })
 
-const animationDuration = 750
+const animationDuration = 1000
 
 const SinksExploration = ({ debug = false }) => {
   const [playing, setPlaying] = useState(false)
@@ -385,9 +407,6 @@ const SinksExploration = ({ debug = false }) => {
             if (nextSub >= STEPS[prev.main].subSteps.length) {
               if (playCurrentStepOnly) {
                 setPlaying(false)
-                if (prev.main === STEPS.length - 1) {
-                  return { main: 0, sub: 0 }
-                }
                 return prev
               } else {
                 nextSub = 0
@@ -544,7 +563,7 @@ const SinksExploration = ({ debug = false }) => {
               transition: 'opacity 0.5s ease-in-out',
             }}
           >
-            {year.to((x) => x.toFixed())}
+            {year.to((y) => y.toFixed())}
           </AnimatedLabel>
           {budgets.map((budget, i) => {
             const { budgetOverrides } = currentSubStep
