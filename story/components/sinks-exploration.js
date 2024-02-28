@@ -28,14 +28,14 @@ const STEPS = [
         budgetOverrides: [
           {
             x: 3,
-            // y: 0,
+            y: 0,
             value: 270,
             color: '#F07071',
             category: 'Current Atmosphere',
           },
           {
             x: 7,
-            // y: 0,
+            y: 0,
             value: 452,
             color: '#EA9755',
             category: 'Atmosphere without Ocean',
@@ -243,7 +243,7 @@ const calculateSpringValues = ({ year, budget, override, xProp }) => {
   const springValues = {
     x: overrideX ?? xProp,
     y: overrideY ?? yPos / 2,
-    labelY: yPos,
+    labelY: overrideY !== undefined ? overrideY + yPos / 2 : yPos,
     value: value,
     size: radius * 2,
     color: colorValue,
@@ -252,6 +252,7 @@ const calculateSpringValues = ({ year, budget, override, xProp }) => {
       easing: (t) => t,
     },
   }
+  console.log(springValues)
 
   return springValues
 }
