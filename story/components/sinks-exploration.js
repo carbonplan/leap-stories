@@ -267,11 +267,16 @@ const BudgetLabel = animated(({ x, y, value, category, ...props }) => {
       y={y}
       align='center'
       verticalAlign={y < 0 ? 'top' : 'bottom'}
-      width={1.2}
+      width={2}
       {...props}
     >
       {category}
-      <div>{value} GtCO₂</div>
+      <Box sx={{ color: 'secondary', textTransform: 'none' }}>
+        <Box as={'span'} sx={{ color: 'primary' }}>
+          {value}{' '}
+        </Box>
+        GtCO₂
+      </Box>
     </Label>
   )
 })
