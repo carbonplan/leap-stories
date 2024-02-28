@@ -106,8 +106,8 @@ const STEPS = [
     ],
   },
   {
-    description: `Early on, land use emissions were the largest source of CO₂ in the atmosphere.`,
-    secondDescription: `In 1979, fossil fuel emissions surpassed land use emissions.`,
+    description: `Early on, land-use emissions were the largest source of CO₂ in the atmosphere.`,
+    secondDescription: `In 1979, fossil fuel emissions surpassed land-use emissions.`,
     subSteps: [
       {
         year: 1851,
@@ -140,7 +140,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Land use emissions and land-related sinks cancel a significant portion of each other out.`,
+    description: `Land-use emissions and land-related sinks cancel a significant portion of each other out.`,
     subSteps: [
       {
         year: 2022,
