@@ -2,7 +2,7 @@ import { Box } from 'theme-ui'
 import { Figure } from '@carbonplan/components'
 import Story, { Authors, Cite, Sidenote } from '../components/layout'
 import { FigureCaption } from '../components'
-import { Map, FluxMaps, Sinks, OceanCycleDiagram } from './components'
+import { FCO2Maps, FluxMaps, Sinks, OceanCycleDiagram } from './components'
 import references from './references.json'
 
 # The ocean carbon sink
@@ -64,40 +64,17 @@ It’s impossible for scientists to go out to each location to collect observati
 Available measurements of fCO₂ are sparse around the ocean and are predominantly located in the northern hemisphere and along common shipping routes. Many data come from automated instruments installed on commercial ships. fCO₂ measurements are also being made on buoys and unmanned vehicles that are particularly good for accessing remote and inhospitable ocean regions.
 
 <Figure>
-  <Map
-    sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/SOCATv2019_tracks_gridded_monthly.zarr'
-    variable='fco2_ave_weighted'
-    clim={[280, 440]}
-    colormapName='warm'
-    label='Measured fCO₂'
-    units='μatm'
-    startYear={1970}
-    delay={100}
-/>
-
-  <FigureCaption number={3}>TK: SOCAT fCO₂ over time</FigureCaption>
+  <FCO2Maps />
+  <FigureCaption number={3}>
+    TK: Measured fCO₂ over time (left) and reconstructed fCO₂ over time (right)
+  </FigureCaption>
 </Figure>
 
 Despite decades of coordinated international efforts by ocean carbon scientists, fCO₂ observations are available for only a fraction of the vast global ocean. How do we understand the global ocean carbon sink where we do not have data? Machine Learning (ML) can be combined with full-coverage data from satellites and other sources to build full-coverage fCO₂ maps. From fCO₂, air-sea CO₂ fluxes can be calculated.
 
 <Figure>
-  <Map
-    sourceUrl='https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
-    variable='sfco2'
-    clim={[280, 440]}
-    label='Reconstructed fCO₂'
-    units='μatm'
-    colormapName='warm'
-    startYear={1959}
-  />
-  <FigureCaption number={4}>
-    global map of fCO₂ progressing in time
-  </FigureCaption>
-</Figure>
-
-<Figure>
   <FluxMaps />
-  <FigureCaption number={5}>
+  <FigureCaption number={4}>
     global map of mean carbon flux (mol/m2/yr).
   </FigureCaption>
 </Figure>
