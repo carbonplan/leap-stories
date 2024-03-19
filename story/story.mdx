@@ -9,11 +9,9 @@ import references from './references.json'
 
 <Authors authors={['Galen McKinley', 'Amanda Fay', 'Thea Hatlen Heimdal']} />
 
-From 2013-2022, only half of the CO₂ added to the atmosphere by humans has remained in the atmosphere; the other half has been absorbed about equally by land plants and the global oceans. Considering the full industrial era, only the oceans have been a net sink of CO₂ from the atmosphere, cumulatively mitigating 37% of all human emissions; the rest of the CO₂ has remained in the atmosphere to cause climate warming.<Cite id='friedlingstein.2023' />
+Future climate warming depends first-and-foremost on how much humans choose to emit. But only half of the CO₂ humans added to the atmosphere between 2013 and 2022 remains there today. Multiple natural processes pull carbon out of the atmosphere and store it, with the ocean carbon sink being the most crucial. Over the course of the full industrial era, oceans have been a net sink of CO₂ from the atmosphere, reducing climate warming to just over 60% that which would’ve otherwise occurred.
 
-Future climate warming depends first-and-foremost on how much humans choose to emit. The future behavior of these natural sinks will also play critical roles. In this article, we explain the ocean component.
-
-The ocean carbon sink provides a massive climate service, reducing climate warming to just over 60% that which would’ve otherwise occurred. However, this climate service does not come for free. A natural consequence of the absorption of carbon is that the water, naturally slightly alkaline at pH ~ 8, is becoming less alkaline, or more acidic. This process is known as ‘Ocean Acidification’, and is a major concern because of negative impacts to marine life.<Cite id='doney.2020' />
+Oceanographers use several methods to estimate the additional carbon that has been absorbed into the ocean in response to its growing concentration in the atmosphere, in turn due to human emissions. However, there is still a lot we don’t know about how the sink works. We rely on this climate regulation service heavily, and we have hints that the ocean sink is changing. But we don’t know enough to make accurate predictions into the future. We need to develop better ways of monitoring, measuring and understanding.
 
 <Figure>
   <Sinks />
@@ -24,11 +22,15 @@ The ocean carbon sink provides a massive climate service, reducing climate warmi
 
 ## How does the ocean carbon sink work?
 
-CO₂ dissolves in seawater. Cold seawater can hold more CO₂ than warm water, so waters that are cooling tend to take up carbon, and waters that are warming tend to emit carbon. This contributes to the pattern of the global sea-to-air CO₂ flux, as shown in this global air-sea flux map in the next section.
+The ocean carbon sink occurs due to linked physical, chemical and biological processes in the surface ocean.
 
-The ocean is also teeming with plant life that produces organic matter from carbon extracted from the water. Much of this organic matter is quickly recycled back to dissolved carbon by the surface ocean food web, but a small portion (\<1%) of the waste matter sinks down to depth and enriches the abyss with carbon (Figure 2, left). This process moves carbon from the atmosphere, into the surface ocean, and then transports it to the deep ocean, ultimately carbon away from the atmospheric reservoir. Regionally, the high latitude oceans are highly productive, and this is another reason that high latitude oceans absorb large quantities of CO₂ (flux map).
+CO₂ dissolves in seawater. Cold seawater can hold more CO₂ than warm water, so waters that are cooling tend to take up carbon, and waters that are warming tend to emit carbon. Since ocean waters warm when they rise to the surface in the tropical ocean and then cool as they move toward the pole, this has a strong imprint on the pattern of the global sea-to-air CO₂ flux (Figure 3, right).
+
+The ocean is also teeming with plant life that produces organic matter from carbon extracted from the water. Much of this organic matter is quickly recycled back to dissolved carbon by the surface ocean food web, but a small portion (\<1%) of the waste matter sinks down to depth and enriches the abyss with carbon (Figure 2, left). This process moves carbon from the atmosphere, into the surface ocean, and then transports it to the deep ocean, ultimately carbon away from the atmospheric reservoir.
 
 As humans increase the atmospheric CO₂ concentration, more carbon is driven into the oceans (Figure 2, right). This is Henry's Law<Sidenote url='https://en.wikipedia.org/wiki/Henry%27s_law'>TK</Sidenote> – equilibration of gas between air and liquid – here operating at the global scale. Human-derived carbon is almost all in the surface ocean and slowly penetrates to depth<Sidenote>Muller paper</Sidenote> with the long timescale of ocean overturning (~1000 years).
+
+The climate service of absorbing our excess carbon does not come for free. As water absorbs CO₂, it becomes more acidic. This has negative impacts on the health of all kinds of marine life and also chemically diminishes the ability of ocean waters to absorb even more carbon.<Cite id='doney.2020' />
 
 <Figure>
   <OceanCycleDiagram />
@@ -47,15 +49,13 @@ As humans increase the atmospheric CO₂ concentration, more carbon is driven in
   </FigureCaption>
 </Figure>
 
-## How this is calculated
+## How is this calculated?
 
-How do we know how much carbon is absorbed by the ocean?
+We want to know how much of the carbon emitted by humans is remaining in the atmosphere, and we want to project how this balance will change in the future. To accomplish this, we need to have accurate data to estimate the ocean sink for the most recent months and years, and we need to have knowledge of how the ocean sink works so we can build simulation models for the future.
 
 The carbon content of the ocean cannot be observed with satellites - data must be collected directly from the water. However, the ocean is enormous, covering 71% of Earth, and there are only a limited number of research ships for scientists to use to collect data. How can we get enough data to understand how much carbon is going into the whole ocean each month?
 
-It’s impossible for scientists to go out to each location to collect observations. Instead, instruments have been developed that are able to measure the amount of carbon dioxide in a sample of ocean water. Specifically, scientists measure the fugacity of CO₂ (fCO₂) in the surface ocean, which is a measure of the concentration of the CO₂ in the surface ocean waters. The exchange of CO₂ between the ocean and atmosphere at any location depends on the difference in fCO₂ concentrations between the water and the air. If the atmosphere has higher fCO₂ values, then the ocean will take up CO₂ in order to move closer to equilibration. This exchange is called the air-sea CO₂ flux. A positive air-sea flux value indicates the ocean is emitting carbon to the atmosphere while a negative air-sea flux value signifies ocean uptake of carbon.
-
-Available measurements of fCO₂ are sparse around the ocean and are predominantly located in the northern hemisphere and along common shipping routes. Many data come from automated instruments installed on commercial ships. fCO₂ measurements are also being made on buoys and unmanned vehicles that are particularly good for accessing remote and inhospitable ocean regions.
+Over decades, scientists have developed machines that can automatically measure the amount of carbon dioxide in a sample of ocean water on a variety of commercial ships. With an automatic analyzer that goes unattended until the ships are in port, scientists measure the fugacity of CO₂ (fCO₂) in the surface ocean. This is a measure of the concentration of the CO₂ in the water. The exchange of CO₂ between the ocean and atmosphere at any location depends on the difference in fCO₂ concentrations between the water and the air. If the ocean has higher fCO₂, then CO₂ will come out of the ocean and if fCO₂ is lower than the atmosphere, CO₂ will go in. This exchange is called the air-sea CO₂ flux. Available measurements of fCO₂ are sparse around the ocean and are predominantly located in the northern hemisphere and along common shipping routes.
 
 <Figure>
   <FCO2Maps />
@@ -73,23 +73,13 @@ Despite decades of coordinated international efforts by ocean carbon scientists,
   </FigureCaption>
 </Figure>
 
-There are two other methods that are used to estimate how much carbon is going into the ocean.
+## Moving forward
 
-One method is to use very precise data collected from the full depth of the ocean to assess the long-term storage of excess carbon below the surface.<Sidenote>Muller paper and / or RECCAP paper</Sidenote> Estimates of the carbon sink for recent decades using full depth data agree with machine learning based estimates,<Cite id='fay.2021' /> which increases confidence in both approaches.
+From these data, and confirmed with independent approaches, it is clear that in the last several decades, the ocean has absorbed about 1 in every 4 molecules of CO₂ emitted by humans as they burn fossil fuel, clear land, and manufacture cement.<Cite id='devries.2023' /> However, many uncertainties remain. The ocean is vast and rapidly evolving. There are not many ships and buoys out there taking the needed carbon measurements. Even though know that the ocean is playing a huge role in limiting climate change, we do not have very precise understanding of how different regions of the ocean are changing their carbon uptake, and thus it is hard to say how they are likely to change in the future.<Cite id='fay.2021' />
 
-The final approach to estimating the ocean carbon sink is to use computer simulations of the ocean circulation and carbon processes (Figure 2). Models are essential tools for scientific inquiry and are the only way to make estimates of the future ocean carbon sink. Models capture many features of the ocean carbon cycle, but more work is needed to enhance their accuracy.<Cite id='fay.2021' />
+For humans to keep global warming to less than 1.5C climate targets, at least 90% of the reductions in atmospheric pCO₂ needs to come from cutting of fossil fuel and land use emissions.<Cite id='ipcc.2022' /> On top of this, humans will need to develop systems to remove an additional 10% of CO₂ from the atmosphere. There are now many small companies pursuing technologies for “marine Carbon Dioxide Removal (mCDR)”,<Cite id='nasem.2022' /> and carbon credits from mCDR are already being sold as “carbon offsets”. Only if we build better knowledge of this huge background ocean carbon sink will we have any reasonable hope of detecting additional, much smaller local impacts from mCDR.
 
-## Discussion
-
-Multiple approaches tell us that in the last several decades, the ocean has absorbed about 1 in every 4 molecules of CO₂ emitted by humans as they burn fossil fuel, clear land, and manufacture cement.<Cite id='friedlingstein.2023' />
-
-However, many uncertainties remain. Particularly as the scale of estimation becomes smaller in space and shorter in time, uncertainties in the amount of carbon taken up and stored in the ocean grows. Machine learning algorithms provide consistent estimates when summed up at the scale of an ocean basin or the globe, but greater disagreement between methods emerges at smaller scales. Ocean models also show disagreement at both large and small scales.<Cite id='fay.2021' />
-
-For humans to keep global warming to less than 1.5C climate targets, at least 90% of the reductions in atmospheric pCO₂ needs to come from cutting of fossil fuel and land use emissions.<Cite id='ipcc.2022' /> On top of this, humans will need to develop systems to remove an additional 10% of CO₂ from the atmosphere. There are now many small companies pursuing technologies for “marine Carbon Dioxide Removal (mCDR)”,<Cite id='nasem.2022' /> and carbon credits from mCDR are already being sold as “carbon offsets”. But how will we quantify engineered effects when the huge background sink, as described here, is itself insufficiently quantified, particularly at small spatial scales? A lot of work must be done to be able to know if mCDR technologies are actually causing the ocean to take up more carbon.
-
-To address climate change, humans must collectively manage the whole global carbon cycle, and it is clear that the ocean plays an enormous role. Despite a growing understanding of the climate crisis and the critical role of the ocean in mitigating climate change, there is no long-term funded, operational system for collecting ocean carbon data and turning these into global sink estimates. Such a system<Sidenote url='https://wmo.int/activities/global-greenhouse-gas-watch-g3w'>TK</Sidenote> is urgently needed as a key component of monitoring the global carbon cycle and understanding its impacts on climate change.
-
-Effectively managing the global carbon cycle is essential for limiting dangerous levels of climate warming. There is no doubt that the ocean fundamentally modifies the relationship between CO₂ emissions and climate warming, but we cannot accurately track change in the ocean carbon sink, and we are yet unable to quantify additional uptake caused by new engineering approaches. Without enough data and knowledge, we cannot rule out surprises. Though it often seems far away, the ocean carbon cycle plays a huge role in the climate that we experience – keeping better tabs on it will be in our best interest.
+To address climate change, humans must collectively manage the whole global carbon cycle, and it is clear that the ocean plays an enormous role. Despite a growing understanding of the climate crisis and the critical role of the ocean in mitigating climate change, there is no long-term funded, operational system for collecting ocean carbon data and turning these into global sink estimates. Such a system<Sidenote url='https://wmo.int/activities/global-greenhouse-gas-watch-g3w'>TK</Sidenote> is urgently needed as a key component of monitoring the global carbon cycle and understanding its impacts on climate change. Though the ocean is vast and generally invisible to our daily lives, it is essential to our lives – better understanding how the ocean works is absolutely in our best interest.
 
 export default ({ children }) => (
   <Story references={references}>{children}</Story>

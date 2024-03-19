@@ -58,5 +58,12 @@
     "title": "Modern air-sea ﬂux distributions reduce uncertainty in the future ocean carbon sink",
     "journal": "Environmental Research Letters",
     "url": "https://doi.org/10.1088/1748-9326/acc195"
+  },
+  "devries.2023": {
+    "authors": "DeVries, T., Yamamoto, K., Wanninkhof, R., Gruber, N., Hauck, J., Müller, J. D., et al.",
+    "year": 2023,
+    "title": "Magnitude, Trends, and Variability of the Global Ocean Carbon Sink From 1985 to 2018",
+    "journal": "Global Biogeochemical Cycles",
+    "url": "https://doi.org/10.1029/2023gb007780"
   }
 }
