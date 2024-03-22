@@ -156,12 +156,8 @@ const STEPS = [
         budgetOverrides: [{}, {}, {}, {}],
       },
       {
-        year: 1851,
-        duration: 0,
-        budgetOverrides: [{}, {}, {}, {}],
-      }, // begin scrub through time
-      {
         year: 1979,
+        duration: 0,
         budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
@@ -172,10 +168,12 @@ const STEPS = [
     subSteps: [
       {
         year: 1979,
+        duration: 0,
         budgetOverrides: [{}, {}, {}, {}],
       },
       {
         year: 2022,
+        duration: 0,
         budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
@@ -470,10 +468,12 @@ const SinksExploration = ({ debug = false }) => {
   const hideYear = currentStep.subSteps.every(
     (step, _, arr) => step.year === arr[0].year
   )
+
+  const isYearAnimation = currentSubStep.duration === 0
   const { year } = useSpring({
     year: currentSubStep.year,
     config: {
-      duration: currentSubStep.duration ?? animationDuration,
+      duration: isYearAnimation ? animationDuration * 3 : animationDuration,
       easing: (t) => t,
     },
   })
