@@ -6,11 +6,10 @@ import {
   Plot,
   TickLabels,
 } from '@carbonplan/charts'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { keyframes } from '@emotion/react'
 import { animated, useSpring, to } from '@react-spring/web'
-import { Filter } from '@carbonplan/components'
 import { budgets } from '../data/carbon_budget_data'
 
 const STEPS = [
