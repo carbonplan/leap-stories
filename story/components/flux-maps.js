@@ -11,11 +11,8 @@ import DraggableValue from './draggable-value'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
-const VARIABLE = 'fgco2'
-const CLIM = [
-  /* Convert clim of [-3, 3] from seconds to year  */
-  -9.5129376e-8, 9.5129376e-8,
-]
+const VARIABLE = 'sfco2'
+const CLIM = [280, 440]
 const FILL_VALUE = 9.969209968386869e36
 const BASE_YEAR = 1959
 
@@ -29,7 +26,7 @@ const formatMonth = (month) => {
 
 const FluxMaps = ({ delay = 500 }) => {
   const { theme } = useThemeUI()
-  const colormap = useThemedColormap('redteal')
+  const colormap = useThemedColormap('warm')
   const [playing, setPlaying] = useState(false)
   const [month, setMonth] = useState(0)
   const [chunks, setChunks] = useState({ start: null, end: null })
@@ -192,10 +189,14 @@ const FluxMaps = ({ delay = 500 }) => {
       <Flex sx={{ justifyContent: 'flex-end', mt: 3 }}>
         <Colorbar
           colormap={colormap}
-          clim={[-3, 3]}
+          clim={CLIM}
           horizontal
-          label={'Carbon flux'}
-          units={'mol / m² / yr'}
+          label={
+            <Box as='span' sx={{ textTransform: 'none' }}>
+              fCO₂
+            </Box>
+          }
+          units={'μatm'}
         />
       </Flex>
     </PlayPause>
