@@ -151,6 +151,7 @@ const FluxMaps = ({ delay = 500 }) => {
           max={11}
           sx={{
             bg: 'hinted',
+            color: 'secondary',
           }}
         />
       </Box>
