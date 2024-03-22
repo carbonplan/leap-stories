@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
-import { Colorbar, Column, Row } from '@carbonplan/components'
+import { Colorbar, Column, Row, Slider } from '@carbonplan/components'
 import zarr from 'zarr-js'
 import { Box, Flex, useThemeUI } from 'theme-ui'
 
@@ -23,7 +23,7 @@ const formatMonth = (month) => {
   const date = new Date(2024, month, 1)
 
   return date.toLocaleString('default', {
-    month: 'long',
+    month: 'short',
   })
 }
 
@@ -112,19 +112,49 @@ const FluxMaps = ({ delay = 500 }) => {
   )
 
   return (
-    <PlayPause
-      playing={playing}
-      setPlaying={handlePlay}
-      controls={
-        <DraggableValue
+    <PlayPause playing={playing} setPlaying={handlePlay}>
+      <Flex sx={{ justifyContent: 'space-between', mt: 2, mb: '12px' }}>
+        {Array.from({ length: 12 }).map((_, i) => (
+          <Box
+            onClick={() => {
+              handlePlay(false)
+              setMonth(i)
+            }}
+            sx={{
+              cursor: 'pointer',
+              width: '30px',
+              fontSize: 0,
+              p: '2px',
+              bg: month === i ? 'muted' : 'hinted',
+              color: month === i ? 'primary' : 'secondary',
+              lineHeight: '20px',
+              textAlign: 'center',
+              transition: 'color 0.2s ease-in-out',
+              '&:hover': {
+                bg: 'muted',
+                transition: 'background-color 0.2s ease-in-out',
+              },
+            }}
+          >
+            {formatMonth(i)}
+          </Box>
+        ))}
+      </Flex>
+      <Box sx={{ mx: 2 }}>
+        <Slider
           value={month}
-          range={[0, 11]}
-          setValue={setMonth}
-          formatter={formatMonth}
-          sx={{ fontSize: 2 }}
+          onChange={(e) => {
+            handlePlay(false)
+            setMonth(parseFloat(e.target.value))
+          }}
+          min={0}
+          max={11}
+          sx={{
+            bg: 'hinted',
+          }}
         />
-      }
-    >
+      </Box>
+
       <Row columns={[6]} sx={{ mt: 3 }}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>1990</Box>
