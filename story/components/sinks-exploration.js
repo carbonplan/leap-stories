@@ -16,7 +16,7 @@ import { budgets } from '../data/carbon_budget_data'
 const STEPS = [
   {
     description:
-      'Our situation would be much worse without the ocean. It has absorbed a significant amount of carbon we have released into the atmosphere.',
+      'Our situation would be much worse without the ocean. It has absorbed a significant amount of the carbon we have released into the atmosphere.',
     subSteps: [
       {
         year: 1851,
