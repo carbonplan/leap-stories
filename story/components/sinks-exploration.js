@@ -668,7 +668,7 @@ const SinksExploration = ({ debug = false }) => {
               transition: 'opacity 0.5s ease-in-out',
             }}
           >
-            {year.to((y) => y.toFixed())}
+            {year.to((y) => (y.toFixed() === '2022' ? 'Today' : y.toFixed()))}
           </AnimatedLabel>
           {budgets.map((budget, i) => {
             const { budgetOverrides, duration } = currentSubStep
