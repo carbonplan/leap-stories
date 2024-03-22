@@ -568,17 +568,6 @@ const SinksExploration = ({ debug = false }) => {
           Click anywhere to advance
         </Box>
       </Flex>
-      {debug && (
-        <Filter
-          values={STEPS.reduce((accum, s, i) => {
-            accum[i] = step === i
-            return accum
-          }, {})}
-          setValues={(obj) =>
-            setStep(parseInt(Object.keys(obj).find((k) => obj[k]) ?? '0'))
-          }
-        />
-      )}
       <Box
         key={currentStep.description}
         sx={{
