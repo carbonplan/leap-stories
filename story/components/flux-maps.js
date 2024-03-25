@@ -112,50 +112,69 @@ const FluxMaps = ({ delay = 500 }) => {
   )
 
   return (
-    <PlayPause playing={playing} setPlaying={handlePlay}>
-      <Flex sx={{ justifyContent: 'space-between', mt: 2, mb: '12px' }}>
-        {Array.from({ length: 12 }).map((_, i) => (
+    <PlayPause
+      playing={playing}
+      setPlaying={handlePlay}
+      controls={
+        <Box>
           <Box
-            onClick={() => {
-              handlePlay(false)
-              setMonth(i)
-            }}
             sx={{
-              cursor: 'pointer',
-              width: '30px',
-              fontSize: 0,
-              p: '2px',
-              bg: month === i ? 'muted' : 'hinted',
-              color: month === i ? 'primary' : 'secondary',
-              lineHeight: '20px',
-              textAlign: 'center',
-              transition: 'color 0.2s ease-in-out',
-              '&:hover': {
-                bg: 'muted',
-                transition: 'background-color 0.2s ease-in-out',
-              },
+              width: 'fit-content',
             }}
           >
-            {formatMonth(i)}
+            <Flex
+              sx={{
+                mt: '-2px',
+                mb: '12px',
+                gap: 1,
+              }}
+            >
+              {Array.from({ length: 12 }).map((_, i) => (
+                <Box
+                  key={i}
+                  onClick={() => {
+                    handlePlay(false)
+                    setMonth(i)
+                  }}
+                  sx={{
+                    cursor: 'pointer',
+                    width: '30px',
+                    fontSize: 0,
+                    p: '2px',
+                    bg: month === i ? 'muted' : 'hinted',
+                    color: month === i ? 'primary' : 'secondary',
+                    lineHeight: '20px',
+                    textAlign: 'center',
+                    transition: 'color 0.2s ease-in-out',
+                    '&:hover': {
+                      bg: 'muted',
+                      transition: 'background-color 0.2s ease-in-out',
+                    },
+                  }}
+                >
+                  {formatMonth(i)}
+                </Box>
+              ))}
+            </Flex>
+            <Box sx={{ width: '100%', px: 2 }}>
+              <Slider
+                value={month}
+                onChange={(e) => {
+                  handlePlay(false)
+                  setMonth(parseFloat(e.target.value))
+                }}
+                min={0}
+                max={11}
+                sx={{
+                  bg: 'hinted',
+                  color: 'secondary',
+                }}
+              />
+            </Box>
           </Box>
-        ))}
-      </Flex>
-      <Box sx={{ mx: 2 }}>
-        <Slider
-          value={month}
-          onChange={(e) => {
-            handlePlay(false)
-            setMonth(parseFloat(e.target.value))
-          }}
-          min={0}
-          max={11}
-          sx={{
-            bg: 'hinted',
-            color: 'secondary',
-          }}
-        />
-      </Box>
-
+        </Box>
+      }
+    >
       <Row columns={[6]} sx={{ mt: 3 }}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>1990</Box>
