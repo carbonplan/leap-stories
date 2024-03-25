@@ -2,12 +2,9 @@ import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
-import { Colorbar, Column, Row } from '@carbonplan/components'
+import { Colorbar, Column, Row, Slider } from '@carbonplan/components'
 import zarr from 'zarr-js'
 import { Box, Flex, useThemeUI } from 'theme-ui'
-
-import PlayPause from './play-pause'
-import DraggableValue from './draggable-value'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/annual-sfco2.zarr'
@@ -21,10 +18,8 @@ const END_YEAR = 2018
 const FCO2Maps = ({ delay = 500 }) => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('warm')
-  const [playing, setPlaying] = useState(false)
   const [year, setYear] = useState(START_YEAR)
   const [chunks, setChunks] = useState(null)
-  const timeout = useRef(null)
 
   useEffect(() => {
     try {
@@ -51,52 +46,9 @@ const FCO2Maps = ({ delay = 500 }) => {
     }
   }, [chunks, year])
 
-  const handlePlay = useCallback(
-    (willPlay) => {
-      if (timeout.current) {
-        clearTimeout(timeout.current)
-        timeout.current = null
-      }
-
-      setPlaying(willPlay)
-      if (willPlay) {
-        const incrementTime = () => {
-          timeout.current = setTimeout(() => {
-            let shouldContinue = true
-            setYear((prev) => {
-              let nextValue = prev + 1
-              if (nextValue > END_YEAR) {
-                nextValue = START_YEAR
-                shouldContinue = false
-                setPlaying(false)
-              }
-              return nextValue
-            })
-            if (shouldContinue) {
-              incrementTime()
-            }
-          }, delay)
-        }
-        incrementTime()
-      }
-    },
-    [delay]
-  )
-
   return (
-    <PlayPause
-      playing={playing}
-      setPlaying={handlePlay}
-      controls={
-        <DraggableValue
-          value={year}
-          range={[START_YEAR, END_YEAR]}
-          setValue={setYear}
-          sx={{ fontSize: 2 }}
-        />
-      }
-    >
-      <Row columns={[6]} sx={{ mt: 3 }}>
+    <>
+      <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>Measured</Box>
 
@@ -130,7 +82,6 @@ const FCO2Maps = ({ delay = 500 }) => {
         </Column>
         <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>Reconstructed</Box>
-
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
               <Path
@@ -160,7 +111,7 @@ const FCO2Maps = ({ delay = 500 }) => {
           </Box>
         </Column>
       </Row>
-      <Flex sx={{ justifyContent: 'flex-end', mt: 3 }}>
+      <Flex sx={{ justifyContent: 'flex-end' }}>
         <Colorbar
           colormap={colormap}
           clim={CLIM}
@@ -173,7 +124,39 @@ const FCO2Maps = ({ delay = 500 }) => {
           units={'μatm'}
         />
       </Flex>
-    </PlayPause>
+      <Box sx={{ width: '100%', position: 'relative', mt: 3 }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            left: `calc(${
+              ((year - START_YEAR) / (END_YEAR - START_YEAR)) * 100
+            }% - ${((year - START_YEAR) / (END_YEAR - START_YEAR)) * 19}px)`,
+
+            top: '-30px',
+            width: '35px',
+            fontSize: 0,
+            p: '2px',
+            bg: 'muted',
+            color: 'primary',
+            lineHeight: '20px',
+            textAlign: 'center',
+          }}
+        >
+          {year}
+        </Box>
+        <Slider
+          value={year}
+          onChange={(e) => {
+            setYear(parseFloat(e.target.value))
+          }}
+          min={START_YEAR}
+          max={END_YEAR}
+          sx={{
+            mx: 2,
+          }}
+        />
+      </Box>
+    </>
   )
 }
 

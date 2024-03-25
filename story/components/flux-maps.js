@@ -6,9 +6,6 @@ import { Colorbar, Column, Row, Slider } from '@carbonplan/components'
 import zarr from 'zarr-js'
 import { Box, Flex, useThemeUI } from 'theme-ui'
 
-import PlayPause from './play-pause'
-import DraggableValue from './draggable-value'
-
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
 const VARIABLE = 'fgco2'
@@ -30,10 +27,8 @@ const formatMonth = (month) => {
 const FluxMaps = ({ delay = 500 }) => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('redteal')
-  const [playing, setPlaying] = useState(false)
   const [month, setMonth] = useState(0)
   const [chunks, setChunks] = useState({ start: null, end: null })
-  const timeout = useRef(null)
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -79,103 +74,9 @@ const FluxMaps = ({ delay = 500 }) => {
     }
   }, [chunks, month])
 
-  const handlePlay = useCallback(
-    (willPlay) => {
-      if (timeout.current) {
-        clearTimeout(timeout.current)
-        timeout.current = null
-      }
-
-      setPlaying(willPlay)
-      if (willPlay) {
-        const incrementTime = () => {
-          timeout.current = setTimeout(() => {
-            let shouldContinue = true
-            setMonth((prev) => {
-              let nextValue = prev + 1
-              if (nextValue > 11) {
-                nextValue = 0
-                shouldContinue = false
-                setPlaying(false)
-              }
-              return nextValue
-            })
-            if (shouldContinue) {
-              incrementTime()
-            }
-          }, delay)
-        }
-        incrementTime()
-      }
-    },
-    [delay]
-  )
-
   return (
-    <PlayPause
-      playing={playing}
-      setPlaying={handlePlay}
-      controls={
-        <Box>
-          <Box
-            sx={{
-              width: 'fit-content',
-            }}
-          >
-            <Flex
-              sx={{
-                mt: '-2px',
-                mb: '12px',
-                gap: 1,
-              }}
-            >
-              {Array.from({ length: 12 }).map((_, i) => (
-                <Box
-                  key={i}
-                  onClick={() => {
-                    handlePlay(false)
-                    setMonth(i)
-                  }}
-                  sx={{
-                    cursor: 'pointer',
-                    width: '30px',
-                    fontSize: 0,
-                    p: '2px',
-                    bg: month === i ? 'muted' : 'hinted',
-                    color: month === i ? 'primary' : 'secondary',
-                    lineHeight: '20px',
-                    textAlign: 'center',
-                    transition: 'color 0.2s ease-in-out',
-                    '&:hover': {
-                      bg: 'muted',
-                      transition: 'background-color 0.2s ease-in-out',
-                    },
-                  }}
-                >
-                  {formatMonth(i)}
-                </Box>
-              ))}
-            </Flex>
-            <Box sx={{ width: '100%', px: 2 }}>
-              <Slider
-                value={month}
-                onChange={(e) => {
-                  handlePlay(false)
-                  setMonth(parseFloat(e.target.value))
-                }}
-                min={0}
-                max={11}
-                sx={{
-                  bg: 'hinted',
-                  color: 'secondary',
-                }}
-              />
-            </Box>
-          </Box>
-        </Box>
-      }
-    >
-      <Row columns={[6]} sx={{ mt: 3 }}>
+    <>
+      <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>1990</Box>
 
@@ -239,7 +140,7 @@ const FluxMaps = ({ delay = 500 }) => {
           </Box>
         </Column>
       </Row>
-      <Flex sx={{ justifyContent: 'flex-end', mt: 3 }}>
+      <Flex sx={{ justifyContent: 'flex-end' }}>
         <Colorbar
           colormap={colormap}
           clim={[-3, 3]}
@@ -248,7 +149,37 @@ const FluxMaps = ({ delay = 500 }) => {
           units={'mol / m² / yr'}
         />
       </Flex>
-    </PlayPause>
+
+      <Box sx={{ width: '100%', position: 'relative', mt: 3 }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            left: `calc(${(month / 11) * 100}% - ${(month / 11) * 16}px)`,
+            top: '-30px',
+            width: '30px',
+            fontSize: 0,
+            p: '2px',
+            bg: 'muted',
+            color: 'primary',
+            lineHeight: '20px',
+            textAlign: 'center',
+          }}
+        >
+          {formatMonth(month)}
+        </Box>
+        <Slider
+          value={month}
+          onChange={(e) => {
+            setMonth(parseFloat(e.target.value))
+          }}
+          min={0}
+          max={11}
+          sx={{
+            mx: 2,
+          }}
+        />
+      </Box>
+    </>
   )
 }
 
