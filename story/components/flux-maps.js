@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
-import { Colorbar, Column, Row, Slider } from '@carbonplan/components'
+import { Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Box, Flex, useThemeUI } from 'theme-ui'
+import { Box, useThemeUI } from 'theme-ui'
+import SliderColorbar from './slider-colorbar'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
@@ -24,7 +25,7 @@ const formatMonth = (month) => {
   })
 }
 
-const FluxMaps = ({ delay = 500 }) => {
+const FluxMaps = () => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('redteal')
   const [month, setMonth] = useState(0)
@@ -79,7 +80,6 @@ const FluxMaps = ({ delay = 500 }) => {
       <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>1990</Box>
-
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
               <Path
@@ -140,40 +140,16 @@ const FluxMaps = ({ delay = 500 }) => {
           </Box>
         </Column>
       </Row>
-      <Flex sx={{ justifyContent: 'flex-end', mt: 3 }}>
-        <Colorbar
-          colormap={colormap}
-          clim={[-3, 3]}
-          horizontal
-          label={'Carbon flux'}
-          units={'mol / m² / yr'}
-        />
-      </Flex>
-      <Flex sx={{ mt: 2 }}>
-        <Box
-          sx={{
-            width: '30px',
-            fontSize: 0,
-            p: '2px',
-            bg: 'muted',
-            color: 'primary',
-            lineHeight: '20px',
-            textAlign: 'center',
-            mt: -1,
-            mr: 3,
-          }}
-        >
-          {formatMonth(month)}
-        </Box>
-        <Slider
-          value={month}
-          onChange={(e) => {
-            setMonth(parseFloat(e.target.value))
-          }}
-          min={0}
-          max={11}
-        />
-      </Flex>
+      <SliderColorbar
+        value={month}
+        formatter={formatMonth}
+        minMax={[0, 11]}
+        setter={setMonth}
+        colormap={colormap}
+        clim={[-3, 3]}
+        variableName={'CARBON FLUX'}
+        units={'mol / m² / yr'}
+      />
     </Box>
   )
 }

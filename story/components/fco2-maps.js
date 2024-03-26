@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
-import { Colorbar, Column, Row, Slider } from '@carbonplan/components'
+import { Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Box, Flex, useThemeUI } from 'theme-ui'
+import { Box, useThemeUI } from 'theme-ui'
+
+import SliderColorbar from './slider-colorbar'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/annual-sfco2.zarr'
@@ -15,7 +17,7 @@ const FILL_VALUE = 9.969209968386869e36
 const START_YEAR = 1990
 const END_YEAR = 2018
 
-const FCO2Maps = ({ delay = 500 }) => {
+const FCO2Maps = () => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('warm')
   const [year, setYear] = useState(START_YEAR)
@@ -47,7 +49,7 @@ const FCO2Maps = ({ delay = 500 }) => {
   }, [chunks, year])
 
   return (
-    <>
+    <Box>
       <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>Measured</Box>
@@ -111,52 +113,16 @@ const FCO2Maps = ({ delay = 500 }) => {
           </Box>
         </Column>
       </Row>
-      <Flex sx={{ justifyContent: 'flex-end' }}>
-        <Colorbar
-          colormap={colormap}
-          clim={CLIM}
-          horizontal
-          label={
-            <Box as='span' sx={{ textTransform: 'none' }}>
-              fCO₂
-            </Box>
-          }
-          units={'μatm'}
-        />
-      </Flex>
-      <Box sx={{ width: '100%', position: 'relative', mt: 3 }}>
-        <Box
-          sx={{
-            position: 'absolute',
-            left: `calc(${
-              ((year - START_YEAR) / (END_YEAR - START_YEAR)) * 100
-            }% - ${((year - START_YEAR) / (END_YEAR - START_YEAR)) * 19}px)`,
-
-            top: '-30px',
-            width: '35px',
-            fontSize: 0,
-            p: '2px',
-            bg: 'muted',
-            color: 'primary',
-            lineHeight: '20px',
-            textAlign: 'center',
-          }}
-        >
-          {year}
-        </Box>
-        <Slider
-          value={year}
-          onChange={(e) => {
-            setYear(parseFloat(e.target.value))
-          }}
-          min={START_YEAR}
-          max={END_YEAR}
-          sx={{
-            mx: 2,
-          }}
-        />
-      </Box>
-    </>
+      <SliderColorbar
+        value={year}
+        minMax={[START_YEAR, END_YEAR]}
+        setter={setYear}
+        colormap={colormap}
+        clim={CLIM}
+        variableName={'fCO₂'}
+        units={'μatm'}
+      />
+    </Box>
   )
 }
 
