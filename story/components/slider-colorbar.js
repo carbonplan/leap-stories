@@ -30,7 +30,7 @@ const SliderColorbar = ({
             {variableName}
           </Box>
         }
-        units={<Box sx={{ fontSize: '9px' }}> {units} </Box>}
+        units={<Box sx={{ fontSize: 0 }}> {units} </Box>}
         sxClim={{ fontSize: 0 }}
         height={13}
       />
@@ -47,11 +47,11 @@ const SliderColorbar = ({
             fontSize: 0,
             width: '40px',
             py: '2px',
-            px: 1,
             bg: 'muted',
             color: 'primary',
             lineHeight: '20px',
             textAlign: 'center',
+            textTransform: 'uppercase',
             mr: 3,
             ml: 1,
           }}
