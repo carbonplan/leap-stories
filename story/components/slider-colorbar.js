@@ -45,7 +45,7 @@ const SliderColorbar = ({
         <Box
           sx={{
             fontSize: 0,
-            width: '35px',
+            width: '40px',
             py: '2px',
             px: 1,
             bg: 'muted',
