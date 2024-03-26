@@ -75,7 +75,7 @@ const FluxMaps = ({ delay = 500 }) => {
   }, [chunks, month])
 
   return (
-    <>
+    <Box>
       <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box sx={{ color: 'secondary' }}>1990</Box>
@@ -140,7 +140,7 @@ const FluxMaps = ({ delay = 500 }) => {
           </Box>
         </Column>
       </Row>
-      <Flex sx={{ justifyContent: 'flex-end' }}>
+      <Flex sx={{ justifyContent: 'flex-end', mt: 3 }}>
         <Colorbar
           colormap={colormap}
           clim={[-3, 3]}
@@ -149,13 +149,9 @@ const FluxMaps = ({ delay = 500 }) => {
           units={'mol / m² / yr'}
         />
       </Flex>
-
-      <Box sx={{ width: '100%', position: 'relative', mt: 3 }}>
+      <Flex sx={{ mt: 2 }}>
         <Box
           sx={{
-            position: 'absolute',
-            left: `calc(${(month / 11) * 100}% - ${(month / 11) * 16}px)`,
-            top: '-30px',
             width: '30px',
             fontSize: 0,
             p: '2px',
@@ -163,6 +159,8 @@ const FluxMaps = ({ delay = 500 }) => {
             color: 'primary',
             lineHeight: '20px',
             textAlign: 'center',
+            mt: -1,
+            mr: 3,
           }}
         >
           {formatMonth(month)}
@@ -174,12 +172,9 @@ const FluxMaps = ({ delay = 500 }) => {
           }}
           min={0}
           max={11}
-          sx={{
-            mx: 2,
-          }}
         />
-      </Box>
-    </>
+      </Flex>
+    </Box>
   )
 }
 
