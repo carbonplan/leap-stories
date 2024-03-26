@@ -9,11 +9,9 @@ import SliderColorbar from './slider-colorbar'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
-const VARIABLE = 'fgco2'
-const CLIM = [
-  /* Convert clim of [-3, 3] from seconds to year  */
-  -9.5129376e-8, 9.5129376e-8,
-]
+const VARIABLE = 'sfco2'
+const CLIM = [280, 440]
+
 const FILL_VALUE = 9.969209968386869e36
 const BASE_YEAR = 1959
 
@@ -25,9 +23,9 @@ const formatMonth = (month) => {
   })
 }
 
-const FluxMaps = () => {
+const DeltaMaps = () => {
   const { theme } = useThemeUI()
-  const colormap = useThemedColormap('redteal')
+  const colormap = useThemedColormap('warm')
   const [month, setMonth] = useState(0)
   const [chunks, setChunks] = useState({ start: null, end: null })
 
@@ -146,12 +144,12 @@ const FluxMaps = () => {
         minMax={[0, 11]}
         setter={setMonth}
         colormap={colormap}
-        clim={[-3, 3]}
-        variableName={'CARBON FLUX'}
-        units={'mol / m² / yr'}
+        clim={CLIM}
+        variableName={'fCO₂'}
+        units={'μatm'}
       />
     </Box>
   )
 }
 
-export default FluxMaps
+export default DeltaMaps
