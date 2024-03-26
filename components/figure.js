@@ -24,9 +24,10 @@ const Figure = ({ as = 'figure', title, children, sx }) => {
             pb: 2,
             width: '100%',
             borderWidth: 0,
-            borderColor: 'primary',
+            borderColor: 'secondary',
             borderStyle: 'solid',
             borderBottomWidth: 1,
+            color: 'secondary',
           }}
         >
           {title}
