@@ -24,7 +24,7 @@ const formatMonth = (month) => {
   })
 }
 
-const FluxMaps = ({ delay = 500 }) => {
+const DeltaMaps = ({ delay = 500 }) => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('warm')
   const [playing, setPlaying] = useState(false)
@@ -203,4 +203,4 @@ const FluxMaps = ({ delay = 500 }) => {
   )
 }
 
-export default FluxMaps
+export default DeltaMaps

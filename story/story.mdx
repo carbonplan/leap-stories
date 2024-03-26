@@ -1,7 +1,7 @@
 import { Box } from 'theme-ui'
 import Story, { Authors, Cite, Sidenote } from '../components/layout'
 import { Figure, FigureCaption } from '../components'
-import { FCO2Maps, FluxMaps, Sinks, OceanCycleDiagram } from './components'
+import { FCO2Maps, DeltaMaps, Sinks, OceanCycleDiagram } from './components'
 import references from './references.json'
 
 # The ocean carbon sink
@@ -66,7 +66,7 @@ Over decades, scientists have developed machines that can automatically measure 
 Despite decades of coordinated international efforts by ocean carbon scientists, fCO₂ observations are available for only a fraction of the vast global ocean. How do we understand the global ocean carbon sink where we do not have data? Machine Learning (ML) can be combined with full-coverage data from satellites and other sources to build full-coverage fCO₂ maps. From fCO₂, air-sea CO₂ fluxes can be calculated.
 
 <Figure>
-  <FluxMaps />
+  <DeltaMaps />
   <FigureCaption number={4}>
     global map of mean carbon flux (mol/m2/yr).
   </FigureCaption>
