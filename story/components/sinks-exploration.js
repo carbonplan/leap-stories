@@ -6,11 +6,13 @@ import {
   Plot,
   TickLabels,
 } from '@carbonplan/charts'
+import { Button } from '@carbonplan/components'
 import React, { useRef, useState } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { keyframes } from '@emotion/react'
 import { animated, useSpring, to } from '@react-spring/web'
 import { budgets } from '../data/carbon_budget_data'
+import { RotatingArrow } from '@carbonplan/icons'
 
 const STEPS = [
   {
@@ -42,68 +44,6 @@ const STEPS = [
       },
     ],
   },
-  // {
-  //   description: `Carbon is added to the atmosphere from various sources and removed by various sinks.`,
-  //   secondDescription: `We'll explore the largest.`,
-  //   subSteps: [
-  //     {
-  //       year: 2022,
-  //       budgetOverrides: [
-  //         {
-  //           x: 3,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#F07071',
-  //           category: 'Current Atmosphere',
-  //         },
-  //         {
-  //           x: 7,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#EA9755',
-  //           category: 'Atmosphere without Ocean',
-  //         },
-  //         { value: 0 },
-  //         { value: 0 },
-  //       ],
-  //     },
-  //     {
-  //       year: 2022,
-  //       budgetOverrides: [
-  //         {
-  //           x: 3,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#F07071',
-  //           category: 'Current Atmosphere',
-  //         },
-  //         {
-  //           x: 7,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#EA9755',
-  //           category: 'Atmosphere without Ocean',
-  //         },
-  //         { value: 0 },
-  //         { value: 0 },
-  //       ],
-  //     },
-  //     {
-  //       year: 2022,
-  //       duration: 0,
-  //       budgetOverrides: [
-  //         { value: 0 },
-  //         { value: 0 },
-  //         { value: 0 },
-  //         { value: 0 },
-  //       ],
-  //     },
-  //     {
-  //       year: 2022,
-  //       budgetOverrides: [{}, {}, {}, {}],
-  //     },
-  //   ],
-  // },
   {
     description: `Early on, land-use emissions were the largest source of carbon in the atmosphere.`,
     secondDescription: `In 1979, fossil fuel emissions surpassed land-use emissions.`,
@@ -526,9 +466,9 @@ const SinksExploration = ({ debug = false }) => {
         '&:hover #clickNotice': { color: 'secondary' },
       }}
     >
-      <Flex sx={{ justifyContent: 'flex-start', mb: 2 }}>
+      <Flex sx={{ justifyContent: 'flex-start', alignItems: 'center', mb: 3 }}>
         {STEPS.map((_, i) => (
-          <Box
+          <Button
             key={`step-${i}`}
             onClick={(e) => {
               e.stopPropagation()
@@ -539,8 +479,7 @@ const SinksExploration = ({ debug = false }) => {
               cursor: 'pointer',
               bg: stepIndex.main === i ? 'muted' : 'hinted',
               color: stepIndex.main === i ? 'primary' : 'secondary',
-              ml: 1,
-              mb: 2,
+              ml: i === 0 ? 0 : 1,
               fontSize: 0,
               width: '20px',
               height: '20px',
@@ -550,12 +489,12 @@ const SinksExploration = ({ debug = false }) => {
             }}
           >
             {i + 1}
-          </Box>
+          </Button>
         ))}
         <Box
           id='clickNotice'
           sx={{
-            ml: 3,
+            mx: 2,
             color: 'muted',
             cursor: 'pointer',
             fontStyle: 'italic',
@@ -565,6 +504,23 @@ const SinksExploration = ({ debug = false }) => {
           }}
         >
           Click anywhere to advance
+        </Box>
+        <Box sx={{ ml: 'auto' }}>
+          <Button
+            href='https://www.icos-cp.eu/science-and-impact/global-carbon-budget/2023'
+            onClick={(e) => e.stopPropagation()}
+            target='_blank'
+            rel='noreferrer'
+            suffix={<RotatingArrow sx={{ height: 12, ml: 1 }} />}
+            sx={{
+              color: 'secondary',
+              fontSize: 1,
+              mr: 2,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Data source
+          </Button>
         </Box>
       </Flex>
       <Box
@@ -599,7 +555,9 @@ const SinksExploration = ({ debug = false }) => {
             values={[0]}
             sx={{
               borderColor: 'primary',
-              transition: 'opacity 1s ease-in-out',
+              transition: `opacity 0.5s ease-in-out ${
+                axisOpacity === 1 ? animationDuration : 0
+              }ms`,
               opacity: axisOpacity,
             }}
           />
@@ -627,7 +585,7 @@ const SinksExploration = ({ debug = false }) => {
           </Plot>
           <Label
             x={0}
-            y={1.5}
+            y={1.4}
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
@@ -647,11 +605,10 @@ const SinksExploration = ({ debug = false }) => {
           </Label>
           <AnimatedLabel
             x={10}
-            y={0}
-            verticalAlign='middle'
-            height={2}
+            y={Y_SCALE}
+            align='right'
             sx={{
-              pl: 2,
+              fontSize: 2,
               opacity: !hideYear ? axisOpacity : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
