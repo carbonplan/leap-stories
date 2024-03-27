@@ -515,9 +515,10 @@ const SinksExploration = ({ debug = false }) => {
               color: 'secondary',
               fontSize: 1,
               mr: 2,
+              whiteSpace: 'nowrap',
             }}
           >
-            source
+            Data source
           </Button>
         </Box>
       </Flex>
