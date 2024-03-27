@@ -494,7 +494,7 @@ const SinksExploration = ({ debug = false }) => {
         <Box
           id='clickNotice'
           sx={{
-            ml: 3,
+            mx: 2,
             color: 'muted',
             cursor: 'pointer',
             fontStyle: 'italic',
