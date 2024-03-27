@@ -603,11 +603,10 @@ const SinksExploration = ({ debug = false }) => {
           </Label>
           <AnimatedLabel
             x={10}
-            y={0}
-            verticalAlign='middle'
-            height={2}
+            y={Y_SCALE}
+            align='right'
             sx={{
-              pl: 2,
+              fontSize: 2,
               opacity: !hideYear ? axisOpacity : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
