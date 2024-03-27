@@ -6,6 +6,7 @@ import {
   Plot,
   TickLabels,
 } from '@carbonplan/charts'
+import { Button } from '@carbonplan/components'
 import React, { useRef, useState } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { keyframes } from '@emotion/react'
@@ -528,7 +529,7 @@ const SinksExploration = ({ debug = false }) => {
     >
       <Flex sx={{ justifyContent: 'flex-start', mb: 2 }}>
         {STEPS.map((_, i) => (
-          <Box
+          <Button
             key={`step-${i}`}
             onClick={(e) => {
               e.stopPropagation()
@@ -550,7 +551,7 @@ const SinksExploration = ({ debug = false }) => {
             }}
           >
             {i + 1}
-          </Box>
+          </Button>
         ))}
         <Box
           id='clickNotice'
