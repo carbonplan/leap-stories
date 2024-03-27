@@ -52,7 +52,14 @@ const FCO2Maps = () => {
     <Box>
       <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>Measured</Box>
+          <Box
+            sx={{
+              color: 'secondary',
+              textAlign: 'center',
+            }}
+          >
+            Measured
+          </Box>
 
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
@@ -83,7 +90,15 @@ const FCO2Maps = () => {
           </Box>
         </Column>
         <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>Reconstructed</Box>
+          <Box
+            sx={{
+              color: 'secondary',
+              textAlign: 'center',
+              mt: [3, 0, 0, 0],
+            }}
+          >
+            Reconstructed
+          </Box>
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
               <Path

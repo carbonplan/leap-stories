@@ -77,7 +77,14 @@ const DeltaMaps = () => {
     <Box>
       <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>1990</Box>
+          <Box
+            sx={{
+              color: 'secondary',
+              textAlign: 'center',
+            }}
+          >
+            1990
+          </Box>
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
               <Path
@@ -107,7 +114,15 @@ const DeltaMaps = () => {
           </Box>
         </Column>
         <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>2020</Box>
+          <Box
+            sx={{
+              color: 'secondary',
+              textAlign: 'center',
+              mt: [3, 0, 0, 0],
+            }}
+          >
+            2020
+          </Box>
 
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
