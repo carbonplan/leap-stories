@@ -66,6 +66,11 @@ const SliderColorbar = ({
             }}
             min={minMax[0]}
             max={minMax[1]}
+            sx={{
+              bg: 'muted',
+              color: 'secondary',
+              ':focus': { color: 'primary' },
+            }}
           />
         </Flex>
       </Flex>
