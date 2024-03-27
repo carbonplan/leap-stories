@@ -553,7 +553,9 @@ const SinksExploration = ({ debug = false }) => {
             values={[0]}
             sx={{
               borderColor: 'primary',
-              transition: 'opacity 1s ease-in-out',
+              transition: `opacity 0.5s ease-in-out ${
+                axisOpacity === 1 ? animationDuration : 0
+              }ms`,
               opacity: axisOpacity,
             }}
           />
