@@ -12,6 +12,7 @@ import { Box, Flex } from 'theme-ui'
 import { keyframes } from '@emotion/react'
 import { animated, useSpring, to } from '@react-spring/web'
 import { budgets } from '../data/carbon_budget_data'
+import { RotatingArrow } from '@carbonplan/icons'
 
 const STEPS = [
   {
@@ -465,7 +466,7 @@ const SinksExploration = ({ debug = false }) => {
         '&:hover #clickNotice': { color: 'secondary' },
       }}
     >
-      <Flex sx={{ justifyContent: 'flex-start', mb: 2 }}>
+      <Flex sx={{ justifyContent: 'flex-start', alignItems: 'center', mb: 3 }}>
         {STEPS.map((_, i) => (
           <Button
             key={`step-${i}`}
@@ -478,8 +479,7 @@ const SinksExploration = ({ debug = false }) => {
               cursor: 'pointer',
               bg: stepIndex.main === i ? 'muted' : 'hinted',
               color: stepIndex.main === i ? 'primary' : 'secondary',
-              ml: 1,
-              mb: 2,
+              ml: i === 0 ? 0 : 1,
               fontSize: 0,
               width: '20px',
               height: '20px',
@@ -504,6 +504,21 @@ const SinksExploration = ({ debug = false }) => {
           }}
         >
           Click anywhere to advance
+        </Box>
+        <Box sx={{ ml: 'auto' }}>
+          <Button
+            href='https://www.icos-cp.eu/science-and-impact/global-carbon-budget/2023'
+            target='_blank'
+            rel='noreferrer'
+            suffix={<RotatingArrow sx={{ height: 12, ml: 1 }} />}
+            sx={{
+              color: 'secondary',
+              fontSize: 1,
+              mr: 2,
+            }}
+          >
+            source
+          </Button>
         </Box>
       </Flex>
       <Box
