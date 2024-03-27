@@ -43,68 +43,6 @@ const STEPS = [
       },
     ],
   },
-  // {
-  //   description: `Carbon is added to the atmosphere from various sources and removed by various sinks.`,
-  //   secondDescription: `We'll explore the largest.`,
-  //   subSteps: [
-  //     {
-  //       year: 2022,
-  //       budgetOverrides: [
-  //         {
-  //           x: 3,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#F07071',
-  //           category: 'Current Atmosphere',
-  //         },
-  //         {
-  //           x: 7,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#EA9755',
-  //           category: 'Atmosphere without Ocean',
-  //         },
-  //         { value: 0 },
-  //         { value: 0 },
-  //       ],
-  //     },
-  //     {
-  //       year: 2022,
-  //       budgetOverrides: [
-  //         {
-  //           x: 3,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#F07071',
-  //           category: 'Current Atmosphere',
-  //         },
-  //         {
-  //           x: 7,
-  //           y: 0,
-  //           value: 0,
-  //           color: '#EA9755',
-  //           category: 'Atmosphere without Ocean',
-  //         },
-  //         { value: 0 },
-  //         { value: 0 },
-  //       ],
-  //     },
-  //     {
-  //       year: 2022,
-  //       duration: 0,
-  //       budgetOverrides: [
-  //         { value: 0 },
-  //         { value: 0 },
-  //         { value: 0 },
-  //         { value: 0 },
-  //       ],
-  //     },
-  //     {
-  //       year: 2022,
-  //       budgetOverrides: [{}, {}, {}, {}],
-  //     },
-  //   ],
-  // },
   {
     description: `Early on, land-use emissions were the largest source of carbon in the atmosphere.`,
     secondDescription: `In 1979, fossil fuel emissions surpassed land-use emissions.`,
