@@ -508,6 +508,7 @@ const SinksExploration = ({ debug = false }) => {
         <Box sx={{ ml: 'auto' }}>
           <Button
             href='https://www.icos-cp.eu/science-and-impact/global-carbon-budget/2023'
+            onClick={(e) => e.stopPropagation()}
             target='_blank'
             rel='noreferrer'
             suffix={<RotatingArrow sx={{ height: 12, ml: 1 }} />}
