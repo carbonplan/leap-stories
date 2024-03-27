@@ -583,7 +583,7 @@ const SinksExploration = ({ debug = false }) => {
           </Plot>
           <Label
             x={0}
-            y={1.5}
+            y={1.4}
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
