@@ -30,12 +30,13 @@ const Option = ({ label, onClick, active }) => {
         transition: 'all 0.2s ease-in-out',
         bg: active ? 'muted' : 'hinted',
         color: active ? 'primary' : 'secondary',
-        fontSize: 0,
-        py: 1,
+        fontSize: [0, 0, 0, 1],
+        py: [1, 1, 1, 2],
         px: 2,
-        height: '20px',
+        height: ['20px', '20px', '20px', '28px'],
         '&:hover': { bg: 'muted' },
         textTransform: 'uppercase',
+        flexShrink: 0,
       }}
     >
       {label}
@@ -54,40 +55,46 @@ const OceanCycleDiagram = () => {
     },
   })
 
+  const options = (
+    <>
+      <Box
+        sx={{
+          fontSize: [0, 0, 0, 1],
+          mt: 2,
+          textTransform: 'uppercase',
+          fontFamily: 'mono',
+          letterSpacing: 'mono',
+          mb: 2,
+        }}
+      >
+        Carbon source
+      </Box>
+      <Flex sx={{ gap: 2, flexWrap: ['wrap', 'wrap', 'nowrap', 'nowrap'] }}>
+        <Option
+          onClick={() => setMode('all')}
+          label='All'
+          active={mode === 'all'}
+        />
+        <Option
+          onClick={() => setMode('natural')}
+          label='Natural'
+          active={mode === 'natural'}
+        />
+        <Option
+          onClick={() => setMode('anthropogenic')}
+          label='Anthropogenic'
+          active={mode === 'anthropogenic'}
+        />
+      </Flex>
+    </>
+  )
+
   return (
     <Box>
+      <Box sx={{ display: ['inherit', 'none'], mb: 3 }}>{options}</Box>
       <Row columns={6}>
-        <Column start={1} width={[6, 2, 3, 3]} sx={{ position: 'relative' }}>
-          <Box
-            sx={{
-              fontSize: [0, 0, 0, 1],
-              mt: 2,
-              textTransform: 'uppercase',
-              fontFamily: 'mono',
-              letterSpacing: 'mono',
-              mb: 2,
-            }}
-          >
-            Carbon source
-          </Box>
-          <Flex sx={{ gap: 2 }}>
-            <Option
-              onClick={() => setMode('all')}
-              label='All'
-              active={mode === 'all'}
-            />
-            <Option
-              onClick={() => setMode('natural')}
-              label='Natural'
-              active={mode === 'natural'}
-            />
-            <Option
-              onClick={() => setMode('anthropogenic')}
-              label='Anthropogenic'
-              active={mode === 'anthropogenic'}
-            />
-          </Flex>
-
+        <Column start={1} width={[3, 2, 3, 3]} sx={{ position: 'relative' }}>
+          <Box sx={{ display: ['none', 'inherit'] }}>{options}</Box>
           <Box
             sx={{
               height: `${200 / 3}%`,
@@ -151,7 +158,7 @@ const OceanCycleDiagram = () => {
             </AnimatedChart>
           </Box>
         </Column>
-        <Column start={[1, 3, 4, 4]} width={[6, 6, 3, 3]}>
+        <Column start={[4, 3, 4, 4]} width={[3, 6, 3, 3]}>
           <Diagram mode={mode} />
         </Column>
       </Row>
