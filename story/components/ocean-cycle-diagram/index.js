@@ -8,23 +8,46 @@ import {
   TickLabels,
   Ticks,
 } from '@carbonplan/charts'
-import { Button, Column, Row, Filter } from '@carbonplan/components'
+import { Button, Column, Row } from '@carbonplan/components'
 import { Left } from '@carbonplan/icons'
 import { useState } from 'react'
 import { Box, Flex, useThemeUI } from 'theme-ui'
 import { animated, useSpring, easings } from '@react-spring/web'
 
-import Radio from '../radio'
 import Diagram from './diagram'
 import { C_NAT, C_ANT, C_TOTAL } from './data'
 
 const AnimatedChart = animated(Chart)
 
+const Option = ({ label, onClick, active }) => {
+  return (
+    <Button
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick(e)
+      }}
+      sx={{
+        transition: 'all 0.2s ease-in-out',
+        bg: active ? 'muted' : 'hinted',
+        color: active ? 'primary' : 'secondary',
+        fontSize: 0,
+        py: 1,
+        px: 2,
+        height: '20px',
+        '&:hover': { bg: 'muted' },
+        textTransform: 'uppercase',
+      }}
+    >
+      {label}
+    </Button>
+  )
+}
+
 const OceanCycleDiagram = () => {
   const { theme } = useThemeUI()
   const [mode, setMode] = useState('natural')
   const { domain } = useSpring({
-    domain: mode === 'natural' ? [0, 2400] : [0, 70],
+    domain: mode !== 'anthropogenic' ? [0, 2400] : [0, 70],
     config: {
       duration: 500,
       easing: easings.easeOut,
@@ -35,67 +58,34 @@ const OceanCycleDiagram = () => {
     <Box>
       <Row columns={6}>
         <Column start={1} width={[6, 2, 3, 3]} sx={{ position: 'relative' }}>
-          {/* <Filter
-            values={{
-              natural: mode === 'natural',
-              anthropogenic: mode === 'anthropogenic',
-            }}
-            setValues={(obj) => setMode(Object.keys(obj).find((k) => obj[k]))}
-            label='Carbon source'
-          /> */}
           <Box
             sx={{
-              fontSize: [1, 1, 1, 2],
+              fontSize: [0, 0, 0, 1],
               mt: 2,
               textTransform: 'uppercase',
+              fontFamily: 'mono',
+              letterSpacing: 'mono',
               mb: 2,
             }}
           >
             Carbon source
           </Box>
           <Flex sx={{ gap: 2 }}>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation()
-                setMode('natural')
-              }}
-              sx={{
-                transition: 'all 0.2s ease-in-out',
-                cursor: 'pointer',
-                bg: mode === 'natural' ? 'muted' : 'hinted',
-                color: mode === 'natural' ? 'primary' : 'secondary',
-                fontSize: 0,
-                py: 1,
-                px: 2,
-                height: '20px',
-                textAlign: 'center',
-                '&:hover': { bg: 'muted' },
-                flexShrink: 0,
-              }}
-            >
-              Natural
-            </Button>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation()
-                setMode('anthropogenic')
-              }}
-              sx={{
-                transition: 'all 0.2s ease-in-out',
-                cursor: 'pointer',
-                bg: mode === 'anthropogenic' ? 'muted' : 'hinted',
-                color: mode === 'anthropogenic' ? 'primary' : 'secondary',
-                fontSize: 0,
-                py: 1,
-                px: 2,
-                height: '20px',
-                textAlign: 'center',
-                '&:hover': { bg: 'muted' },
-                flexShrink: 0,
-              }}
-            >
-              Anthropogenic
-            </Button>
+            <Option
+              onClick={() => setMode('all')}
+              label='All'
+              active={mode === 'all'}
+            />
+            <Option
+              onClick={() => setMode('natural')}
+              label='Natural'
+              active={mode === 'natural'}
+            />
+            <Option
+              onClick={() => setMode('anthropogenic')}
+              label='Anthropogenic'
+              active={mode === 'anthropogenic'}
+            />
           </Flex>
 
           <Box
@@ -156,6 +146,15 @@ const OceanCycleDiagram = () => {
                       : theme.colors.secondary
                   }
                   width={mode === 'anthropogenic' ? 2 : 1.5}
+                />
+                <Line
+                  data={C_TOTAL}
+                  color={
+                    mode === 'all'
+                      ? theme.colors.primary
+                      : theme.colors.secondary
+                  }
+                  width={mode === 'all' ? 2 : 1.5}
                 />
               </Plot>
             </AnimatedChart>
