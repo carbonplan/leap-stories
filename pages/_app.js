@@ -1,7 +1,10 @@
-import { ThemeProvider } from 'theme-ui'
+import React from 'react'
+import { ThemeUIProvider } from 'theme-ui'
 import '@carbonplan/components/fonts.css'
 import '@carbonplan/components/globals.css'
 import theme from '@carbonplan/theme'
+import { useThemedStylesWithMdx } from '@theme-ui/mdx'
+import { MDXProvider, useMDXComponents } from '@mdx-js/react'
 
 const leapTheme = {
   ...theme,
@@ -34,13 +37,24 @@ const leapTheme = {
     useLocalStorage: false,
     useColorSchemeMediaQuery: false,
   },
+  styles: {
+    ...theme.styles,
+    a: {
+      ...theme.styles.a,
+      color: 'primary',
+      textDecoration: 'underline',
+    },
+  },
 }
 
 const App = ({ Component, pageProps }) => {
+  const components = useThemedStylesWithMdx(useMDXComponents())
   return (
-    <ThemeProvider theme={leapTheme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <ThemeUIProvider theme={leapTheme}>
+      <MDXProvider components={components}>
+        <Component {...pageProps} />
+      </MDXProvider>
+    </ThemeUIProvider>
   )
 }
 

@@ -1,18 +1,17 @@
-import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
-import { Colorbar, Column, Row } from '@carbonplan/components'
+import { Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Box, Flex, useThemeUI } from 'theme-ui'
-
-import PlayPause from './play-pause'
-import DraggableValue from './draggable-value'
+import { Box, useThemeUI } from 'theme-ui'
+import SliderColorbar from './slider-colorbar'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
 const VARIABLE = 'sfco2'
 const CLIM = [280, 440]
+
 const FILL_VALUE = 9.969209968386869e36
 const BASE_YEAR = 1959
 
@@ -20,17 +19,15 @@ const formatMonth = (month) => {
   const date = new Date(2024, month, 1)
 
   return date.toLocaleString('default', {
-    month: 'long',
+    month: 'short',
   })
 }
 
-const DeltaMaps = ({ delay = 500 }) => {
+const DeltaMaps = () => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('warm')
-  const [playing, setPlaying] = useState(false)
   const [month, setMonth] = useState(0)
   const [chunks, setChunks] = useState({ start: null, end: null })
-  const timeout = useRef(null)
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -76,56 +73,18 @@ const DeltaMaps = ({ delay = 500 }) => {
     }
   }, [chunks, month])
 
-  const handlePlay = useCallback(
-    (willPlay) => {
-      if (timeout.current) {
-        clearTimeout(timeout.current)
-        timeout.current = null
-      }
-
-      setPlaying(willPlay)
-      if (willPlay) {
-        const incrementTime = () => {
-          timeout.current = setTimeout(() => {
-            let shouldContinue = true
-            setMonth((prev) => {
-              let nextValue = prev + 1
-              if (nextValue > 11) {
-                nextValue = 0
-                shouldContinue = false
-                setPlaying(false)
-              }
-              return nextValue
-            })
-            if (shouldContinue) {
-              incrementTime()
-            }
-          }, delay)
-        }
-        incrementTime()
-      }
-    },
-    [delay]
-  )
-
   return (
-    <PlayPause
-      playing={playing}
-      setPlaying={handlePlay}
-      controls={
-        <DraggableValue
-          value={month}
-          range={[0, 11]}
-          setValue={setMonth}
-          formatter={formatMonth}
-          sx={{ fontSize: 2 }}
-        />
-      }
-    >
-      <Row columns={[6]} sx={{ mt: 3 }}>
+    <Box>
+      <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>1990</Box>
-
+          <Box
+            sx={{
+              color: 'secondary',
+              textAlign: 'center',
+            }}
+          >
+            1990
+          </Box>
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
               <Path
@@ -155,7 +114,15 @@ const DeltaMaps = ({ delay = 500 }) => {
           </Box>
         </Column>
         <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
-          <Box sx={{ color: 'secondary' }}>2020</Box>
+          <Box
+            sx={{
+              color: 'secondary',
+              textAlign: 'center',
+              mt: [3, 0, 0, 0],
+            }}
+          >
+            2020
+          </Box>
 
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
@@ -186,20 +153,17 @@ const DeltaMaps = ({ delay = 500 }) => {
           </Box>
         </Column>
       </Row>
-      <Flex sx={{ justifyContent: 'flex-end', mt: 3 }}>
-        <Colorbar
-          colormap={colormap}
-          clim={CLIM}
-          horizontal
-          label={
-            <Box as='span' sx={{ textTransform: 'none' }}>
-              fCO₂
-            </Box>
-          }
-          units={'μatm'}
-        />
-      </Flex>
-    </PlayPause>
+      <SliderColorbar
+        value={month}
+        formatter={formatMonth}
+        minMax={[0, 11]}
+        setter={setMonth}
+        colormap={colormap}
+        clim={CLIM}
+        variableName={'fCO₂'}
+        units={'μatm'}
+      />
+    </Box>
   )
 }
 

@@ -8,6 +8,10 @@ class MyDocument extends Document {
       <Html lang='en' className='no-focus-outline'>
         <Head>
           <Tracking id={process.env.GA_TRACKING_ID} />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Inter:wght@100;400&display=swap'
+            rel='stylesheet'
+          />
         </Head>
         <body>
           <InitializeColorMode />

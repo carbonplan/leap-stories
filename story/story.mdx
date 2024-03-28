@@ -1,4 +1,3 @@
-import { Box } from 'theme-ui'
 import Story, { Authors, Cite, Sidenote } from '../components/layout'
 import { Figure, FigureCaption } from '../components'
 import { FCO2Maps, DeltaMaps, Sinks, OceanCycleDiagram } from './components'
@@ -12,7 +11,7 @@ Future climate warming depends first-and-foremost on how much humans choose to e
 
 Oceans are the smaller of the two sinks, but they have a bigger overall impact on reducing fossil fuel emissions. Over the course of the full industrial era, oceans, on their own, have absorbed 37 percent of the emissions created by humans. Without this service, we’d be experiencing worse climate change impacts – and sooner. But there is still a lot we don’t know about how the ocean sink works. What’s more, there’s hints that this crucial resource is changing and we don’t yet know enough to make accurate predictions about how it will work in the future. The solution: We need to develop better ways of monitoring, measuring, and understanding what happens when emissions and oceans meet.
 
-<Figure title='The Ocean Is a Crucial Carbon Sink'>
+<Figure title='The ocean is a crucial carbon sink'>
   <Sinks />
 </Figure>
 
@@ -22,11 +21,11 @@ There are several interconnected processes, all happening in the ocean at once, 
 
 The ocean is also teeming with plant life, which also has an impact on the carbon sink. Those plants use carbon extracted from seawater to grow. Much of this organic matter is quickly recycled back into dissolved carbon at the surface ocean as plants and animals consume each other, something scientists called a biologic pump. But a small portion (\<1%) of the waste matter sinks down to depth and enriches the abyss with carbon (Figure 2, left). This process moves carbon from the atmosphere into the surface ocean, and then transports it to the deep ocean, ultimately moving carbon out of the atmosphere.
 
-Meanwhile, as humans increase the atmospheric CO₂ concentration, more carbon is driven into the oceans (Figure 2). This happens because the gas in the air and the gas dissolved in the water will naturally come to an equilibrium in a process known as Henry's Law<Sidenote url='https://en.wikipedia.org/wiki/Henry%27s_law'>TK</Sidenote>.. Human-derived carbon is almost all in the surface ocean and slowly penetrates to depth<Sidenote>Muller paper</Sidenote> with the long timescale of ocean overturning (~1000 years).
+Meanwhile, as humans increase the atmospheric CO₂ concentration, more carbon is driven into the oceans (Figure 2). This happens because the gas in the air and the gas dissolved in the water will naturally come to an equilibrium in a process known as [Henry's Law](https://en.wikipedia.org/wiki/Henry%27s_law). Human-derived carbon is almost all in the surface ocean and slowly penetrates to depth<Sidenote>Muller paper</Sidenote> with the long timescale of ocean overturning (~1000 years).
 
 But the climate service of absorbing our excess carbon does not come for free. As water absorbs CO₂, it becomes more acidic. This has negative impacts on the health of all kinds of marine life and also chemically diminishes the ability of ocean waters to absorb even more carbon.<Cite id='doney.2020' />
 
-<Figure title='Burning Fossil Fuels Changes The Ocean Carbon Cycle'>
+<Figure title='Burning fossil fuels fhanges the ocean carbon cycle'>
   <OceanCycleDiagram />
   <FigureCaption number={2}>
     The ocean carbon cycle, surface to depth. Atmospheric CO₂ is naturally
@@ -47,7 +46,7 @@ The carbon content of the ocean cannot be observed with satellites – data must
 
 Over decades, scientists have developed machines that can automatically measure the amount of carbon dioxide in a sample of ocean water. These samples can be taken by commercial ships, so they don’t require specialized research vessels or even on-board scientists. With an automatic analyzer that goes unattended until the ships are in port, scientists measure the concentration of CO₂ (fCO₂) in the surface ocean. The exchange of CO₂ between the ocean and atmosphere at any location depends on the difference in fCO₂ concentrations between the water and the air. If the ocean has a higher fCO₂ than the air, the gas will come out of the ocean. If the fCO₂ in the water is lower than in the atmosphere, however, more gas will go in. This exchange is called the air-sea CO₂ flux.
 
-<Figure title='How Limited Measurements Build Global Estimates'>
+<Figure title='How limited measurements build global estimates'>
   <FCO2Maps />
   <FigureCaption number={3}>
     Carbon concentrations in seawater can only be directly measured in a limited
@@ -59,7 +58,7 @@ Over decades, scientists have developed machines that can automatically measure 
 
 Despite decades of coordinated international efforts by ocean carbon scientists, fCO₂ observations are available for only a fraction of the vast global ocean – predominantly in the northern hemisphere and along common shipping routes. How do we understand the global ocean carbon sink where we do not have truly global data? Machine Learning (ML) can be combined with full-coverage observations of related variables (for example, sea surface temperature collected from satellites) to build full-coverage fCO₂ maps. From fCO₂, air-sea CO₂ fluxes can be calculated.
 
-<Figure title='The Ocean Carbon Sink Changes With Temperature and Season'>
+<Figure title='The ocean carbon sink changes with temperature and season'>
   <DeltaMaps />
   <FigureCaption number={4}>
     Some parts of the ocean absorb carbon while others emit carbon, and this
