@@ -45,7 +45,7 @@ const Option = ({ label, onClick, active }) => {
 
 const OceanCycleDiagram = () => {
   const { theme } = useThemeUI()
-  const [mode, setMode] = useState('natural')
+  const [mode, setMode] = useState('all')
   const { domain } = useSpring({
     domain: mode !== 'anthropogenic' ? [0, 2400] : [0, 70],
     config: {
