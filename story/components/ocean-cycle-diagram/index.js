@@ -131,29 +131,20 @@ const OceanCycleDiagram = () => {
               <Plot sx={{ overflow: 'hidden' }}>
                 <Line
                   data={C_NAT}
-                  color={
-                    mode === 'natural'
-                      ? theme.colors.primary
-                      : theme.colors.secondary
-                  }
+                  opacity={mode === 'natural' ? 1 : 0.2}
+                  color={theme.colors.primary}
                   width={mode === 'natural' ? 2 : 1.5}
                 />
                 <Line
                   data={C_ANT}
-                  color={
-                    mode === 'anthropogenic'
-                      ? theme.colors.primary
-                      : theme.colors.secondary
-                  }
+                  opacity={mode === 'anthropogenic' ? 1 : 0.2}
+                  color={theme.colors.primary}
                   width={mode === 'anthropogenic' ? 2 : 1.5}
                 />
                 <Line
                   data={C_TOTAL}
-                  color={
-                    mode === 'all'
-                      ? theme.colors.primary
-                      : theme.colors.secondary
-                  }
+                  opacity={mode === 'all' ? 1 : 0.2}
+                  color={theme.colors.primary}
                   width={mode === 'all' ? 2 : 1.5}
                 />
               </Plot>
