@@ -17,8 +17,8 @@ const SliderColorbar = ({
       sx={{
         flexDirection: ['column', 'row-reverse', 'row-reverse', 'row-reverse'],
         justifyContent: 'space-between',
+        alignItems: 'center',
         mt: 3,
-        alignItems: ['center', 'flex-end', 'flex-end', 'flex-end'],
       }}
     >
       <Colorbar
@@ -58,7 +58,7 @@ const SliderColorbar = ({
         >
           {formatter(value)}
         </Box>
-        <Flex sx={{ mt: 1, flexGrow: 1 }}>
+        <Flex sx={{ height: '24px', alignItems: 'center', flexGrow: 1 }}>
           <Slider
             value={value}
             onChange={(e) => {
