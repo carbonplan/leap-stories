@@ -51,6 +51,7 @@ const STEPS = [
     subSteps: [
       {
         year: 1851,
+        showYear: true,
         budgetOverrides: [
           {
             x: 3,
@@ -72,6 +73,7 @@ const STEPS = [
       },
       {
         year: 1851,
+        showYear: true,
         budgetOverrides: [
           {
             x: 3,
@@ -93,12 +95,12 @@ const STEPS = [
       },
       {
         year: 1851,
-        duration: 0,
+        showYear: true,
         budgetOverrides: [{}, {}, {}, {}],
       },
       {
         year: 1979,
-        duration: 0,
+        showYear: true,
         budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
@@ -107,13 +109,8 @@ const STEPS = [
     description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions: the land and the ocean.`,
     subSteps: [
       {
-        year: 1979,
-        duration: 0,
-        budgetOverrides: [{}, {}, {}, {}],
-      },
-      {
         year: 2022,
-        duration: 0,
+        showYear: true,
         budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
@@ -404,18 +401,19 @@ const SinksExploration = ({ debug = false }) => {
   const currentStep = STEPS[stepIndex.main]
   const currentSubStep = currentStep.subSteps[stepIndex.sub]
   const axisOpacity = currentSubStep.hideAxis ? 0 : 1
-  const hideYear = currentStep.subSteps.every(
-    (step, _, arr) => step.year === arr[0].year
-  )
 
-  const isYearAnimation = currentSubStep.duration === 0
+  const yearRef = useRef(currentSubStep.year)
+  const yearsToGo = currentSubStep.year - yearRef.current
+  const yearAnimationTime = yearsToGo * 15
   const { year } = useSpring({
     year: currentSubStep.year,
     config: {
-      duration: isYearAnimation ? animationDuration * 3 : animationDuration,
+      duration: currentSubStep.showYear ? yearAnimationTime : animationDuration,
       easing: (t) => t,
     },
   })
+  yearRef.current = currentSubStep.year
+
   const handlePlay = () => {
     if (timeout.current) {
       clearTimeout(timeout.current)
@@ -592,7 +590,7 @@ const SinksExploration = ({ debug = false }) => {
             align='right'
             sx={{
               fontSize: [2, 2, 2, 3],
-              opacity: !hideYear ? axisOpacity : 0,
+              opacity: currentSubStep.showYear ? axisOpacity : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
           >
