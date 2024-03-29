@@ -8,12 +8,16 @@ import { Box, useThemeUI } from 'theme-ui'
 import SliderColorbar from './slider-colorbar'
 
 const SOURCE_URL =
-  'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-flipped-lon.zarr'
-const VARIABLE = 'sfco2'
-const CLIM = [280, 440]
+  'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-updated-flipped-lon.zarr'
+const VARIABLE = 'fgco2'
+const CLIM = [
+  /* Convert clim of [-3, 3] from seconds to year  */
+  -9.5129376e-8, 9.5129376e-8,
+]
 
 const FILL_VALUE = 9.969209968386869e36
 const BASE_YEAR = 1959
+const SHOW_YEAR = 2022
 
 const formatMonth = (month) => {
   const date = new Date(2024, month, 1)
@@ -59,11 +63,11 @@ const getCustomProjection = () => {
   }
 }
 
-const DeltaMaps = () => {
+const FluxMap = () => {
   const { theme } = useThemeUI()
-  const colormap = useThemedColormap('warm')
+  const colormap = useThemedColormap('redteal')
   const [month, setMonth] = useState(0)
-  const [chunks, setChunks] = useState({ start: null, end: null })
+  const [chunks, setChunks] = useState({ data: null })
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -74,21 +78,12 @@ const DeltaMaps = () => {
             return
           }
           const loader = l[VARIABLE]
-          loader([1990 - BASE_YEAR, 0, 0], (err, chunk) => {
+          loader([SHOW_YEAR - BASE_YEAR, 0, 0], (err, chunk) => {
             if (err) {
               console.error('Error loading chunk:', err)
               return
             }
-
-            setChunks((prev) => ({ ...prev, start: chunk }))
-          })
-          loader([2020 - BASE_YEAR, 0, 0], (err, chunk) => {
-            if (err) {
-              console.error('Error loading chunk:', err)
-              return
-            }
-
-            setChunks((prev) => ({ ...prev, end: chunk }))
+            setChunks((prev) => ({ ...prev, data: chunk }))
           })
         })
       } catch (error) {
@@ -99,10 +94,9 @@ const DeltaMaps = () => {
   }, [])
 
   const data = useMemo(() => {
-    if (chunks.start && chunks.end) {
+    if (chunks.data) {
       return {
-        start: chunks.start.pick(month, null, null),
-        end: chunks.end.pick(month, null, null),
+        end: chunks.data.pick(month, null, null),
       }
     } else {
       return {}
@@ -112,58 +106,15 @@ const DeltaMaps = () => {
   return (
     <Box>
       <Row columns={[6]}>
-        <Column start={1} width={[6, 3, 3, 3]}>
+        <Column start={1} width={6} sx={{ height: 'fit-content' }}>
           <Box
             sx={{
               color: 'secondary',
               textAlign: 'center',
             }}
           >
-            1990
+            {SHOW_YEAR}
           </Box>
-          <Box sx={{ mx: [-3, -3, -3, -5] }}>
-            <Minimap
-              projection={getCustomProjection}
-              scale={1}
-              translate={[0, 0]}
-            >
-              <Path
-                stroke={theme.colors.primary}
-                source={
-                  'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
-                }
-                feature={'land'}
-                opacity={0.3}
-                fill={theme.colors.muted}
-              />
-              <Sphere
-                stroke={theme.colors.primary}
-                fill={theme.colors.background}
-                strokeWidth={1}
-              />
-              {data.start && (
-                <Raster
-                  source={data.start}
-                  colormap={colormap}
-                  clim={CLIM}
-                  mode={'lut'}
-                  nullValue={FILL_VALUE}
-                />
-              )}
-            </Minimap>
-          </Box>
-        </Column>
-        <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
-          <Box
-            sx={{
-              color: 'secondary',
-              textAlign: 'center',
-              mt: [3, 0, 0, 0],
-            }}
-          >
-            2020
-          </Box>
-
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap
               projection={getCustomProjection}
@@ -203,12 +154,12 @@ const DeltaMaps = () => {
         minMax={[0, 11]}
         setter={setMonth}
         colormap={colormap}
-        clim={CLIM}
-        variableName={'fCO₂'}
-        units={'μatm'}
+        clim={[-3, 3]}
+        variableName={'Carbon flux'}
+        units={'mol/m²/month'}
       />
     </Box>
   )
 }
 
-export default DeltaMaps
+export default FluxMap
