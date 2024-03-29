@@ -46,7 +46,7 @@ const Option = ({ label, onClick, active }) => {
 
 const OceanCycleDiagram = () => {
   const { theme } = useThemeUI()
-  const [mode, setMode] = useState('all')
+  const [mode, setMode] = useState('natural')
   const { domain } = useSpring({
     domain: mode !== 'anthropogenic' ? [0, 2400] : [0, 70],
     config: {
@@ -71,11 +71,6 @@ const OceanCycleDiagram = () => {
       </Box>
       <Flex sx={{ gap: 2, flexWrap: ['wrap', 'wrap', 'nowrap', 'nowrap'] }}>
         <Option
-          onClick={() => setMode('all')}
-          label='All'
-          active={mode === 'all'}
-        />
-        <Option
           onClick={() => setMode('natural')}
           label='Natural'
           active={mode === 'natural'}
@@ -84,6 +79,11 @@ const OceanCycleDiagram = () => {
           onClick={() => setMode('anthropogenic')}
           label='Human-dervied'
           active={mode === 'anthropogenic'}
+        />
+        <Option
+          onClick={() => setMode('all')}
+          label='All'
+          active={mode === 'all'}
         />
       </Flex>
     </>
