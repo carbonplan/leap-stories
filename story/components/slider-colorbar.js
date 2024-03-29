@@ -33,7 +33,7 @@ const SliderColorbar = ({
           as={'span'}
           sx={{
             color: 'primary',
-            fontSize: 0,
+            fontSize: [0, 0, 0, 1],
             flex: '1 0 auto',
           }}
         >
@@ -43,7 +43,7 @@ const SliderColorbar = ({
           as={'span'}
           sx={{
             color: 'secondary',
-            fontSize: 0,
+            fontSize: [0, 0, 0, 1],
             flex: '1 0 auto',
             mx: 1,
           }}
@@ -54,8 +54,8 @@ const SliderColorbar = ({
           colormap={colormap}
           clim={clim}
           horizontal
-          height={13}
-          sxClim={{ fontSize: 0 }}
+          height={[13, 13, 13, 15]}
+          sxClim={{ fontSize: [0, 0, 0, 1] }}
         />
       </Flex>
 
