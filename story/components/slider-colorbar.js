@@ -70,7 +70,6 @@ const SliderColorbar = ({
         <BoxButton
           active
           sx={{
-            width: '40px',
             whiteSpace: 'nowrap',
             textAlign: 'center',
             mr: 3,
