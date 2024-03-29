@@ -19,7 +19,7 @@ import { budgets } from '../data/carbon_budget_data'
 const STEPS = [
   {
     description:
-      'Our situation would be much worse without the ocean. It has absorbed a significant amount of the carbon we have released into the atmosphere.',
+      'Human-caused global warming would be much worse without the ocean. It has absorbed a significant amount of the carbon we have released into the atmosphere.',
     subSteps: [
       {
         year: 1851,
@@ -47,7 +47,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Early on, land-use emissions were the largest source of carbon in the atmosphere. In 1979, fossil fuel emissions surpassed land-use emissions.`,
+    description: `Early on, land-use change was the largest source of carbon emissions in the atmosphere. In 1979, fossil fuel emissions surpassed land-use emissions.`,
     subSteps: [
       {
         year: 1851,
@@ -104,7 +104,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions: the land and the ocean.`,
+    description: `Today, fossil fuels are far and away the largest source of carbon emissions. Two sinks have helped mitigate these emissions: the land and the ocean.`,
     subSteps: [
       {
         year: 2022,
@@ -114,7 +114,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Land-use emissions and land-related sinks cancel a significant portion of each other out.`,
+    description: `Land-use emissions and land-related sinks largely cancel each other out.`,
     subSteps: [
       {
         year: 2022,
@@ -222,7 +222,7 @@ const STEPS = [
     ],
   },
   {
-    description: `What remains is the carbon that has accumulated in the atmosphere causing global warming.`,
+    description: `What remains is the carbon that has accumulated in the atmosphere, causing global warming.`,
     subSteps: [
       {
         year: 2022,
