@@ -27,12 +27,11 @@ const SliderColorbar = ({
         clim={clim}
         horizontal
         label={
-          <Box as='span' sx={{ textTransform: 'none', fontSize: 0 }}>
+          <Box as='span' sx={{ textTransform: 'none' }}>
             {variableName}
           </Box>
         }
-        units={<Box sx={{ fontSize: 0 }}> {units} </Box>}
-        sxClim={{ fontSize: 0 }}
+        units={units}
         height={13}
       />
       <Flex

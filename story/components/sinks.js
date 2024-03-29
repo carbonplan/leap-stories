@@ -491,7 +491,7 @@ const SinksExploration = ({ debug = false }) => {
             color: 'muted',
             cursor: 'pointer',
             fontStyle: 'italic',
-            fontSize: 1,
+            fontSize: [1, 1, 1, 2],
             transition: 'color 0.2s ease-in-out',
             mt: '2px',
           }}
@@ -507,7 +507,7 @@ const SinksExploration = ({ debug = false }) => {
             suffix={<RotatingArrow sx={{ height: 12, ml: 1 }} />}
             sx={{
               color: 'secondary',
-              fontSize: 1,
+              fontSize: [1, 1, 1, 2],
               mr: 2,
               whiteSpace: 'nowrap',
             }}
@@ -519,7 +519,7 @@ const SinksExploration = ({ debug = false }) => {
       <Box
         key={currentStep.description}
         sx={{
-          fontSize: 2,
+          fontSize: [2, 2, 2, 3],
           height: '8em',
           color: 'secondary',
           animation: `${fadeIn} 1s ease-in-out`,
@@ -591,7 +591,7 @@ const SinksExploration = ({ debug = false }) => {
             y={Y_SCALE}
             align='right'
             sx={{
-              fontSize: 2,
+              fontSize: [2, 2, 2, 3],
               opacity: !hideYear ? axisOpacity : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
