@@ -8,7 +8,7 @@ const Story = ({ references, children }) => {
   return (
     <Layout>
       <Row>
-        <Column start={[1, 2, 3, 3]} width={[6]} sx={{ pt: 6 }}>
+        <Column start={[1, 2, 4, 4]} width={[6]} sx={{ pt: 6 }}>
           <ReferencesProvider color='primary' references={references}>
             {children}
           </ReferencesProvider>
