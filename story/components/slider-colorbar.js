@@ -47,7 +47,6 @@ const SliderColorbar = ({
         </BoxButton>
         <Flex
           sx={{
-            height: ['24px', '24px', '24px', '30px'],
             alignItems: 'center',
             flexGrow: 1,
           }}
