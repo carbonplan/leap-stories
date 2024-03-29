@@ -22,18 +22,43 @@ const SliderColorbar = ({
         mt: 3,
       }}
     >
-      <Colorbar
-        colormap={colormap}
-        clim={clim}
-        horizontal
-        label={
-          <Box as='span' sx={{ textTransform: 'none' }}>
-            {variableName}
-          </Box>
-        }
-        units={units}
-        height={13}
-      />
+      <Flex
+        sx={{
+          mx: 1,
+          mt: [1, 0, 0, 0],
+        }}
+      >
+        {' '}
+        <Box
+          as={'span'}
+          sx={{
+            color: 'primary',
+            fontSize: 0,
+            flex: '1 0 auto',
+          }}
+        >
+          {variableName}
+        </Box>
+        <Box
+          as={'span'}
+          sx={{
+            color: 'secondary',
+            fontSize: 0,
+            flex: '1 0 auto',
+            mx: 1,
+          }}
+        >
+          {units}
+        </Box>
+        <Colorbar
+          colormap={colormap}
+          clim={clim}
+          horizontal
+          height={13}
+          sxClim={{ fontSize: 0 }}
+        />
+      </Flex>
+
       <Flex
         sx={{
           flexGrow: 1,
