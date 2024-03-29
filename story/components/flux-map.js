@@ -155,7 +155,7 @@ const FluxMap = () => {
         setter={setMonth}
         colormap={colormap}
         clim={[-3, 3]}
-        variableName={'Carbon flux'}
+        variableName={'CARBON FLUX'}
         units={'mol / m² / year'}
       />
     </Box>
