@@ -529,17 +529,7 @@ const SinksExploration = ({ debug = false }) => {
           animation: `${fadeIn} 1s ease-in-out`,
         }}
       >
-        {currentStep.description}{' '}
-        <Box
-          key={currentStep.secondDescription}
-          as={'span'}
-          sx={{
-            opacity: 0,
-            animation: `${fadeIn} 1s ease-in-out 1s forwards`,
-          }}
-        >
-          {currentStep.secondDescription ?? ''}
-        </Box>
+        {currentStep.description}
       </Box>
       <Box sx={{ height: HEIGHT * 2 }}>
         <Chart
