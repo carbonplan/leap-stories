@@ -10,9 +10,11 @@ import { Button } from '@carbonplan/components'
 import React, { useRef, useState } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { keyframes } from '@emotion/react'
-import { animated, useSpring, to } from '@react-spring/web'
-import { budgets } from '../data/carbon_budget_data'
 import { RotatingArrow } from '@carbonplan/icons'
+import { animated, useSpring, to } from '@react-spring/web'
+
+import BoxButton from './box-button'
+import { budgets } from '../data/carbon_budget_data'
 
 const STEPS = [
   {
@@ -463,30 +465,24 @@ const SinksExploration = ({ debug = false }) => {
         '&:hover #clickNotice': { color: 'secondary' },
       }}
     >
-      <Flex sx={{ justifyContent: 'flex-start', alignItems: 'center', mb: 3 }}>
+      <Flex
+        sx={{
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          gap: 1,
+          mb: 3,
+        }}
+      >
         {STEPS.map((_, i) => (
-          <Button
+          <BoxButton
             key={`step-${i}`}
-            onClick={(e) => {
-              e.stopPropagation()
+            active={stepIndex.main === i}
+            onClick={() => {
               handleStepClick(i)
-            }}
-            sx={{
-              transition: 'all 0.2s ease-in-out',
-              cursor: 'pointer',
-              bg: stepIndex.main === i ? 'muted' : 'hinted',
-              color: stepIndex.main === i ? 'primary' : 'secondary',
-              ml: i === 0 ? 0 : 1,
-              fontSize: 0,
-              width: '20px',
-              height: '20px',
-              lineHeight: '20px',
-              textAlign: 'center',
-              '&:hover': { bg: 'muted' },
             }}
           >
             {i + 1}
-          </Button>
+          </BoxButton>
         ))}
         <Box
           id='clickNotice'

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Flex } from 'theme-ui'
 import { Colorbar, Slider } from '@carbonplan/components'
+import BoxButton from './box-button'
 
 const SliderColorbar = ({
   value,
@@ -42,23 +43,16 @@ const SliderColorbar = ({
           width: ['80%', 'auto', 'auto', 'auto'],
         }}
       >
-        <Box
+        <BoxButton active sx={{ mr: 3 }}>
+          {formatter(value)}
+        </BoxButton>
+        <Flex
           sx={{
-            fontSize: 0,
-            width: '40px',
-            py: '2px',
-            bg: 'muted',
-            color: 'primary',
-            lineHeight: '20px',
-            textAlign: 'center',
-            textTransform: 'uppercase',
-            mr: 3,
-            ml: 1,
+            height: ['24px', '24px', '24px', '30px'],
+            alignItems: 'center',
+            flexGrow: 1,
           }}
         >
-          {formatter(value)}
-        </Box>
-        <Flex sx={{ height: '24px', alignItems: 'center', flexGrow: 1 }}>
           <Slider
             value={value}
             onChange={(e) => {

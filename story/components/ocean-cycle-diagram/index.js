@@ -1,48 +1,22 @@
 import {
-  Axis,
   AxisLabel,
   Chart,
   Grid,
   Line,
   Plot,
   TickLabels,
-  Ticks,
 } from '@carbonplan/charts'
-import { Button, Column, Row } from '@carbonplan/components'
+import { Column, Row } from '@carbonplan/components'
 import { Left } from '@carbonplan/icons'
 import { useState } from 'react'
 import { Box, Flex, useThemeUI } from 'theme-ui'
 import { animated, useSpring, easings } from '@react-spring/web'
 
+import BoxButton from '../box-button'
 import Diagram from './diagram'
 import { C_NAT, C_ANT, C_TOTAL } from './data'
 
 const AnimatedChart = animated(Chart)
-
-const Option = ({ label, onClick, active }) => {
-  return (
-    <Button
-      onClick={(e) => {
-        e.stopPropagation()
-        onClick(e)
-      }}
-      sx={{
-        transition: 'all 0.2s ease-in-out',
-        bg: active ? 'muted' : 'hinted',
-        color: active ? 'primary' : 'secondary',
-        fontSize: [0, 0, 0, 1],
-        py: [1, 1, 1, 2],
-        px: 2,
-        height: ['20px', '20px', '20px', '28px'],
-        '&:hover': { bg: 'muted' },
-        textTransform: 'uppercase',
-        flexShrink: 0,
-      }}
-    >
-      {label}
-    </Button>
-  )
-}
 
 const OceanCycleDiagram = () => {
   const { theme } = useThemeUI()
@@ -70,21 +44,21 @@ const OceanCycleDiagram = () => {
         Carbon source
       </Box>
       <Flex sx={{ gap: 2, flexWrap: ['wrap', 'wrap', 'nowrap', 'nowrap'] }}>
-        <Option
+        <BoxButton
           onClick={() => setMode('natural')}
-          label='Natural'
           active={mode === 'natural'}
-        />
-        <Option
+        >
+          Natural
+        </BoxButton>
+        <BoxButton
           onClick={() => setMode('anthropogenic')}
-          label='Human-dervied'
           active={mode === 'anthropogenic'}
-        />
-        <Option
-          onClick={() => setMode('all')}
-          label='All'
-          active={mode === 'all'}
-        />
+        >
+          Human-dervied
+        </BoxButton>
+        <BoxButton onClick={() => setMode('all')} active={mode === 'all'}>
+          All
+        </BoxButton>
       </Flex>
     </>
   )
