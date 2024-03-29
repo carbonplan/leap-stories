@@ -45,8 +45,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Early on, land-use emissions were the largest source of carbon in the atmosphere.`,
-    secondDescription: `In 1979, fossil fuel emissions surpassed land-use emissions.`,
+    description: `Early on, land-use emissions were the largest source of carbon in the atmosphere. In 1979, fossil fuel emissions surpassed land-use emissions.`,
     subSteps: [
       {
         year: 1851,
@@ -103,8 +102,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions:`,
-    secondDescription: `the land and the ocean.`,
+    description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions: the land and the ocean.`,
     subSteps: [
       {
         year: 1979,
@@ -227,8 +225,7 @@ const STEPS = [
     ],
   },
   {
-    description: `What remains is the carbon that has accumulated in the atmosphere`,
-    secondDescription: `causing global warming.`,
+    description: `What remains is the carbon that has accumulated in the atmosphere causing global warming.`,
     subSteps: [
       {
         year: 2022,
