@@ -42,7 +42,15 @@ const SliderColorbar = ({
           width: ['80%', 'auto', 'auto', 'auto'],
         }}
       >
-        <BoxButton active sx={{ mr: 3 }}>
+        <BoxButton
+          active
+          sx={{
+            width: '40px',
+            whiteSpace: 'nowrap',
+            textAlign: 'center',
+            mr: 3,
+          }}
+        >
           {formatter(value)}
         </BoxButton>
         <Flex
