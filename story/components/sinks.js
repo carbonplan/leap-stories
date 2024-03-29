@@ -1,641 +1,638 @@
-import React, { useEffect, useRef } from 'react'
-import { select, easeCubic, interpolate } from 'd3'
-import { Scrollama, Step } from 'react-scrollama'
-import { Box } from 'theme-ui'
+import {
+  Chart,
+  Circle,
+  Grid,
+  Label,
+  Plot,
+  TickLabels,
+} from '@carbonplan/charts'
+import { Button } from '@carbonplan/components'
+import React, { useRef, useState } from 'react'
+import { Box, Flex } from 'theme-ui'
+import { keyframes } from '@emotion/react'
+import { animated, useSpring, to } from '@react-spring/web'
 import { budgets } from '../data/carbon_budget_data'
+import { RotatingArrow } from '@carbonplan/icons'
 
-const maxCircleRadius = 100
-const lineHeight = 300
-const width = 800
-const fontSize = 20
+const STEPS = [
+  {
+    description:
+      'Our situation would be much worse without the ocean. It has absorbed a significant amount of the carbon we have released into the atmosphere.',
+    subSteps: [
+      {
+        year: 1851,
+        hideAxis: true,
+        budgetOverrides: [
+          {
+            x: 3,
+            y: 0,
+            value: 270,
+            color: '#F07071',
+            category: 'Current Atmosphere',
+          },
+          {
+            x: 7,
+            y: 0,
+            value: 452,
+            color: '#EA9755',
+            category: 'Atmosphere without Ocean',
+          },
+          { value: 0 },
+          { value: 0 },
+          { value: 0 },
+        ],
+      },
+    ],
+  },
+  {
+    description: `Early on, land-use emissions were the largest source of carbon in the atmosphere.`,
+    secondDescription: `In 1979, fossil fuel emissions surpassed land-use emissions.`,
+    subSteps: [
+      {
+        year: 1851,
+        budgetOverrides: [
+          {
+            x: 3,
+            y: 0,
+            value: 0,
+            color: '#F07071',
+            category: 'Current Atmosphere',
+          },
+          {
+            x: 7,
+            y: 0,
+            value: 0,
+            color: '#EA9755',
+            category: 'Atmosphere without Ocean',
+          },
+          { value: 0 },
+          { value: 0 },
+        ],
+      },
+      {
+        year: 1851,
+        budgetOverrides: [
+          {
+            x: 3,
+            y: 0,
+            value: 0,
+            color: '#F07071',
+            category: 'Current Atmosphere',
+          },
+          {
+            x: 7,
+            y: 0,
+            value: 0,
+            color: '#EA9755',
+            category: 'Atmosphere without Ocean',
+          },
+          { value: 0 },
+          { value: 0 },
+        ],
+      },
+      {
+        year: 1851,
+        duration: 0,
+        budgetOverrides: [{}, {}, {}, {}],
+      },
+      {
+        year: 1979,
+        duration: 0,
+        budgetOverrides: [{}, {}, {}, {}],
+      }, // end scrub through time
+    ],
+  },
+  {
+    description: `Today, fossil fuels are far and away the largest source. Two sinks have helped mitigate these emissions:`,
+    secondDescription: `the land and the ocean.`,
+    subSteps: [
+      {
+        year: 1979,
+        duration: 0,
+        budgetOverrides: [{}, {}, {}, {}],
+      },
+      {
+        year: 2022,
+        duration: 0,
+        budgetOverrides: [{}, {}, {}, {}],
+      }, // end scrub through time
+    ],
+  },
+  {
+    description: `Land-use emissions and land-related sinks cancel a significant portion of each other out.`,
+    subSteps: [
+      {
+        year: 2022,
+        budgetOverrides: [{}, {}, {}, {}],
+      },
+      {
+        year: 2022,
+        budgetOverrides: [{}, { x: 5 }, { x: 5 }, {}],
+      }, // move land budgets together
+      {
+        year: 2022,
+        budgetOverrides: [{}, { x: 5, negative: true }, { x: 5 }, {}], // render land source on top of land sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          {},
+          { x: 5, negative: true, value: 0 },
+          { x: 5, value: 25 },
+          {},
+        ], // render land source on top of land sink
+      },
+    ],
+  },
+  {
+    description: `Fossil fuel emissions dominate these land related sources and sinks.`,
+    subSteps: [
+      {
+        year: 2022,
+        budgetOverrides: [
+          {},
+          { x: 5, negative: true, value: 0 },
+          { x: 5, value: 25 },
+          {},
+        ], // absorb land source into top of land sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, value: 25 },
+          {},
+        ], // center fossil fuels
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 25 },
+          {},
+        ], // flip land sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          {},
+        ], // absorb land sink into fossil fuels
+      },
+    ],
+  },
+  {
+    description: `The ocean, however, absorbs a very significant portion of these emissions.`,
+    subSteps: [
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5 },
+        ], // center ocean sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5 },
+        ], // flip ocean sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 452 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false },
+        ], // flip ocean sink
+      },
+      {
+        year: 2022,
+        budgetOverrides: [
+          { x: 5, value: 270 },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ], // absorb ocean sink into fossils
+      },
+    ],
+  },
+  {
+    description: `What remains is the carbon that has accumulated in the atmosphere`,
+    secondDescription: `causing global warming.`,
+    subSteps: [
+      {
+        year: 2022,
+        hideAxis: true,
+        budgetOverrides: [
+          {
+            x: 5,
+            y: 0,
+            value: 270,
+            color: '#F07071',
+            category: 'Current Atmosphere',
+          },
+          { x: 5, negative: true, value: 0 },
+          { x: 5, negative: false, value: 0 },
+          { x: 5, negative: false, value: 0 },
+        ], // absorb ocean sink into fossils
+      },
+    ],
+  },
+]
 
-const years = Object.keys(budgets[0].values)
-const startYear = years[0]
-const endYear = years[years.length - 1]
-const maxBudgetValue = Math.max(
-  ...budgets.map((budget) => Math.max(...Object.values(budget.values)))
+const HEIGHT = 150
+const MAX_VALUE = 500
+const Y_SCALE = 10
+const AnimatedLabel = animated(Label)
+const MAX_AREA = Math.PI * Math.pow(HEIGHT / 2, 2)
+const MAX_RADIUS = HEIGHT / 2
+
+const fadeIn = keyframes({ from: { opacity: 0 }, to: { opacity: 1 } })
+
+const calculateYPos = (yFactor, ratio) => {
+  return yFactor * ratio * Y_SCALE
+}
+
+const calculateSpringValues = ({ year, budget, override, xProp, duration }) => {
+  const { values, color: defaultColor, sink } = budget
+  const {
+    value: overrideValue,
+    negative: overrideNegative,
+    x: overrideX,
+    y: overrideY,
+    color: overrideColor,
+  } = override
+
+  const value = overrideValue ?? values[year.toFixed()]
+  const negative = overrideNegative !== undefined ? overrideNegative : sink
+  const yFactor = negative ? -1 : 1
+
+  const area = (value / MAX_VALUE) * MAX_AREA
+  const radius = Math.sqrt(area / Math.PI)
+  const ratio = radius / MAX_RADIUS
+  const yPos = calculateYPos(yFactor, ratio)
+
+  const colorValue = overrideColor ?? defaultColor
+
+  let labelY
+  if (overrideY !== undefined) {
+    labelY = overrideY + yPos / 2
+  } else if (overrideNegative !== undefined) {
+    labelY = 0
+  } else {
+    labelY = yPos
+  }
+
+  const springValues = {
+    x: overrideX ?? xProp,
+    y: overrideY ?? yPos / 2,
+    labelY: labelY,
+    value: value,
+    size: radius * 2,
+    color: colorValue,
+    config: {
+      duration: duration ?? animationDuration,
+    },
+  }
+  return springValues
+}
+
+const BudgetCircle = animated(({ x, y, value, size, ...props }) => {
+  return <Circle x={x} y={y} size={size} opacity={0.8} {...props} />
+})
+
+const BudgetLabel = animated(
+  ({ x, y, negative, value, sink, category, ...props }) => {
+    return (
+      <Label
+        x={x}
+        y={y}
+        align='center'
+        verticalAlign={sink ? 'top' : 'bottom'}
+        width={2}
+        {...props}
+      >
+        {category}
+        <Box sx={{ color: 'secondary', textTransform: 'none' }}>
+          <Box as={'span'} sx={{ color: 'primary' }}>
+            {value}{' '}
+          </Box>
+          GtC
+        </Box>
+      </Label>
+    )
+  }
 )
-const scalingConstant = (maxCircleRadius * maxCircleRadius) / maxBudgetValue
 
-const getCircleData = (year) => {
-  return budgets.map(({ color, sink, id, category, values }, index) => {
-    const area = values[year] * scalingConstant
-    const radius = Math.sqrt(area / Math.PI)
-    return {
-      cx: ((index + 1) * width) / (budgets.length + 1),
-      cy: sink ? lineHeight + radius : lineHeight - radius,
-      radius,
-      color,
-      sink,
-      id,
-      category,
-      values,
-    }
-  })
-}
+const StepifiedCircle = animated(
+  ({ year, budget, override, duration, x: xProp }) => {
+    const springValues = calculateSpringValues({
+      year,
+      budget,
+      override,
+      xProp,
+      duration,
+    })
 
-const calculateCirclePositions = (circles, lineHeight) => {
-  return circles.map((circle) => ({
-    ...circle,
-    cy: circle.sink ? lineHeight + circle.radius : lineHeight - circle.radius,
-  }))
-}
+    const { x, y, size, color } = useSpring(springValues)
 
-const circles = getCircleData(endYear)
+    const animatedColor = to([color], (c) => c)
 
-const calculateAreaDifference = (radius1, radius2) => {
-  const area1 = Math.PI * radius1 ** 2
-  const area2 = Math.PI * radius2 ** 2
-  return Math.abs(area1 - area2)
-}
+    return (
+      <BudgetCircle
+        key={`${budget.category}-circle`}
+        x={x}
+        y={y}
+        size={size}
+        color={animatedColor}
+      />
+    )
+  }
+)
 
-const getCarbonLabel = (value, sink) => {
-  if (value === 0) return ''
-  return value.toFixed(0) * (sink ? -1 : 1) + ' GtCO\u2082'
-}
+const StepifiedLabel = animated(
+  ({ year, budget, override, duration, x: xProp }) => {
+    const springValues = calculateSpringValues({
+      year,
+      budget,
+      override,
+      xProp,
+      duration,
+    })
+    const { x, labelY, color, value } = useSpring(springValues)
+    const category = override.category ?? budget.category
 
-const incrementYear = (svg, percent) => {
-  const year = Math.round(
-    parseInt(startYear) + (parseInt(endYear) - parseInt(startYear)) * percent
+    // fade labels at zero values
+    const opacity = value.to((v) => {
+      return v <= 1 ? 0 : v < 20 ? 0.5 : 1
+    })
+
+    const animatedColor = to([color], (c) => c)
+    const animatedValue = to([value], (v) => v.toFixed())
+
+    return (
+      <BudgetLabel
+        key={`${budget.category}-label`}
+        x={x}
+        y={labelY}
+        sink={budget.sink}
+        negative={override.negative}
+        value={animatedValue}
+        category={category}
+        color={animatedColor}
+        style={{ opacity }}
+      />
+    )
+  }
+)
+
+const animationDuration = 750
+
+const SinksExploration = ({ debug = false }) => {
+  const timeout = useRef()
+  const [stepIndex, setStepIndex] = useState({ main: 0, sub: 0 })
+
+  const currentStep = STEPS[stepIndex.main]
+  const currentSubStep = currentStep.subSteps[stepIndex.sub]
+  const axisOpacity = currentSubStep.hideAxis ? 0 : 1
+  const hideYear = currentStep.subSteps.every(
+    (step, _, arr) => step.year === arr[0].year
   )
-  const circles = calculateCirclePositions(getCircleData(year), lineHeight)
-  svg.select('.year').text(year)
-  circles.forEach(({ id, cx, cy, color, radius, sink, values }, index) => {
-    svg
-      .select(`.circle-${id}`)
-      .attr('cx', cx)
-      .attr('cy', lineHeight)
-      .attr('r', 0)
-      .attr('fill', color)
-      .attr('r', radius)
-      .attr('cy', cy)
-      .attr('stroke', 'black')
 
-    updateLabels(svg, id, radius, sink, values[year])
+  const isYearAnimation = currentSubStep.duration === 0
+  const { year } = useSpring({
+    year: currentSubStep.year,
+    config: {
+      duration: isYearAnimation ? animationDuration * 3 : animationDuration,
+      easing: (t) => t,
+    },
   })
-}
-
-const buildOpener = (svg) => {
-  svg.selectAll('*').remove()
-  const graph = svg.append('g').attr('class', 'graph')
-  graph
-    .append('line')
-    .attr('class', 'line')
-    .attr('x1', 0)
-    .attr('y1', lineHeight)
-    .attr('x2', 700)
-    .attr('y2', lineHeight)
-    .attr('stroke', 'black')
-    .attr('stroke-width', 1)
-    .style('opacity', 0)
-
-  graph
-    .append('text')
-    .attr('class', 'year')
-    .attr('x', width - 90)
-    .attr('y', lineHeight)
-    .attr('font-size', fontSize)
-    .attr('fill', '#808080')
-    .text(startYear)
-    .style('opacity', 0)
-
-  graph
-    .append('text')
-    .text('Tracking Cumulative Carbon Budgets')
-    .attr('class', 'title')
-    .attr('x', width / 2)
-    .attr('y', 0)
-    .attr('font-size', fontSize + 5)
-    .attr('fill', '#808080')
-    .attr('text-anchor', 'middle')
-
-  graph
-    .append('text')
-    .text('Sources')
-    .attr('class', 'sources')
-    .attr('x', width * (1 / 3))
-    .attr('y', 40)
-    .attr('font-size', fontSize)
-    .attr('fill', '#808080')
-    .attr('text-anchor', 'middle')
-
-  graph
-    .append('text')
-    .text('Sinks')
-    .attr('class', 'sinks')
-    .attr('x', width * (2 / 3))
-    .attr('y', 40)
-    .attr('font-size', fontSize)
-    .attr('fill', '#808080')
-    .attr('text-anchor', 'middle')
-
-  circles.forEach((circle, index) => {
-    const x = circle.sink ? width * (2 / 3) : width * (1 / 3)
-    const y = index > 1 ? 50 + (index - 1) * 25 : 50 + (index + 1) * 25
-    svg
-      .append('text')
-      .attr('class', `text-${circle.id}`)
-      .attr('x', x)
-      .attr('y', y)
-      .attr('font-size', fontSize - 5)
-      .attr('fill', circle.color)
-      .attr('text-anchor', 'middle')
-      .attr('text-align', 'center')
-      .style('opacity', 0)
-      // .attr('dominant-baseline', circle.sink && 'hanging')
-      .data([circle])
-      .text(circle.category)
-      .transition()
-      .duration(1000)
-      .style('opacity', 1)
-    svg.append('circle').attr('class', `circle-${circle.id}`).data([circle])
-  })
-}
-
-const buildGraphBase = (svg) => {
-  return new Promise((resolve) => {
-    svg
-      .select('.sources')
-      .transition()
-      .duration(1000)
-      .attr('x', 0)
-      .attr('y', lineHeight - 10)
-      .attr('text-anchor', 'unset')
-
-    svg
-      .select('.sinks')
-      .transition()
-      .duration(1000)
-      .attr('x', 0)
-      .attr('y', lineHeight + 25)
-      .attr('text-anchor', 'unset')
-
-    circles.forEach((circle) => {
-      svg
-        .select(`.text-${circle.id}`)
-        .transition()
-        .duration(1000)
-        .attr('x', circle.cx)
-        .attr('y', circle.sink ? lineHeight + 10 : lineHeight - 10)
-        .attr('font-size', fontSize - 5)
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', circle.sink && 'hanging')
-        .text(circle.category)
-      svg
-        .select(`.value-${circle.id}`)
-        .transition()
-        .duration(1000)
-        .attr('x', circle.cx)
-        .attr('y', circle.sink ? lineHeight + 30 : lineHeight - 30)
-        .attr('font-size', fontSize - 5)
-        .attr('font-weight', 'bold')
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', circle.sink && 'hanging')
-        .text(getCarbonLabel(circle.values[startYear], circle.sink))
-      svg
-        .append('text')
-        .attr('class', `value-${circle.id}`)
-        .attr('x', circle.cx)
-        .attr('y', circle.sink ? lineHeight + 30 : lineHeight - 30)
-        .attr('font-size', fontSize - 5)
-        .attr('font-weight', 'bold')
-        .attr('fill', circle.color)
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', circle.sink && 'hanging')
-        .data([circle])
-        .text(getCarbonLabel(circle.values[startYear], circle.sink))
-    })
-
-    svg
-      .selectAll('.line, .year')
-      .transition()
-      .duration(1000)
-      .style('opacity', 1)
-      .on('end', () => {
-        resolve()
-      })
-  })
-}
-
-const animateCircles = (svg, largerCircleID, smallerCircleID) => {
-  return new Promise((resolve) => {
-    const largerCircleSVG = svg.select(`.circle-${largerCircleID}`)
-    const smallerCircleSVG = svg.select(`.circle-${smallerCircleID}`)
-
-    const largerCircleData = largerCircleSVG.datum()
-    const smallerCircleData = smallerCircleSVG.datum()
-
-    const largerRadius = parseFloat(largerCircleSVG.attr('r'))
-    const smallerRadius = parseFloat(smallerCircleSVG.attr('r'))
-    const finalArea = calculateAreaDifference(largerRadius, smallerRadius)
-    const finalRadius = Math.sqrt(finalArea / Math.PI)
-    // const targetX = parseFloat(smallerCircleSVG.attr('cx'))
-    const targetX = width / 2
-    const targetY = largerCircleData.sink
-      ? lineHeight + finalRadius
-      : lineHeight - finalRadius
-
-    svg
-      .select(`.text-${largerCircleID}`)
-      .transition()
-      .duration(1000)
-      .attr('x', targetX)
-    svg
-      .select(`.value-${largerCircleID}`)
-      .transition()
-      .duration(1000)
-      .attr('x', targetX)
-    svg
-      .select(`.text-${smallerCircleID}`)
-      .transition()
-      .duration(1000)
-      .attr('x', targetX)
-    svg
-      .select(`.value-${smallerCircleID}`)
-      .transition()
-      .duration(1000)
-      .attr('x', targetX)
-
-    smallerCircleSVG.transition().duration(1000).attr('cx', targetX)
-
-    largerCircleSVG
-      .transition()
-      .duration(1000)
-      .attr('cx', targetX)
-      .on('end', () => {
-        smallerCircleSVG
-          .raise()
-          .transition()
-          .duration(1000)
-          .ease(easeCubic)
-          .attr(
-            'cy',
-            largerCircleData.sink
-              ? lineHeight + parseFloat(smallerCircleSVG.attr('r'))
-              : lineHeight - parseFloat(smallerCircleSVG.attr('r'))
-          )
-          .on('end', () => {
-            svg
-              .select(`.text-${smallerCircleID}`)
-              .transition()
-              .duration(1000)
-              .style('opacity', 0)
-            svg
-              .select(`.value-${smallerCircleID}`)
-              .transition()
-              .duration(1000)
-              .tween('text', function () {
-                const currentValue = parseFloat(
-                  this.textContent?.match(/[\d\.]+/)?.[0]
-                )
-                  ? parseFloat(this.textContent?.match(/[\d\.]+/)?.[0])
-                  : 0
-                const finalValue = 0
-                const interpolator = interpolate(currentValue, finalValue)
-                return function (t) {
-                  this.textContent = getCarbonLabel(
-                    interpolator(t),
-                    smallerCircleData.sink
-                  )
-                }
-              })
-              .style('opacity', 0)
-
-            svg
-              .select(`.value-${largerCircleID}`)
-              .transition()
-              .duration(1000)
-              .tween('text', function () {
-                const currentValue = parseFloat(
-                  this.textContent.match(/[\d\.]+/)[0]
-                )
-                const finalValue =
-                  currentValue -
-                  svg
-                    .select(`.value-${smallerCircleID}`)
-                    .text()
-                    .match(/[\d\.]+/)[0]
-                const interpolator = interpolate(currentValue, finalValue)
-                return function (t) {
-                  this.textContent = getCarbonLabel(
-                    interpolator(t),
-                    largerCircleData.sink
-                  )
-                }
-              })
-
-            largerCircleSVG
-              .transition()
-              .duration(1000)
-              .ease(easeCubic)
-              .attr('r', finalRadius)
-              .attr('cy', targetY)
-            smallerCircleSVG
-              .transition()
-              .duration(1000)
-              .ease(easeCubic)
-              .attr('r', 0)
-              .attr('cy', lineHeight)
-              .on('end', () => {
-                resolve()
-              })
-          })
-      })
-  })
-}
-
-const updateLabels = (svg, circleId, radius, sink, carbon) => {
-  return new Promise((resolve) => {
-    const valueBaseOffset = sink ? 30 : -30
-    const textBaseOffset = sink ? 10 : -10
-    const circle = svg.select(`.circle-${circleId}`).datum()
-    const text = svg.select(`.text-${circleId}`)
-    const value = svg.select(`.value-${circleId}`)
-    const textTargetY = lineHeight + (sink ? radius * 2 : radius * -2)
-
-    text.attr('x', circle.cx).attr('y', textTargetY + textBaseOffset)
-    value
-      .attr('x', circle.cx)
-      .attr('y', textTargetY + valueBaseOffset)
-      .text(getCarbonLabel(carbon, sink))
-    resolve()
-  })
-}
-
-const Sinks = () => {
-  const steps = [
-    {
-      text: `Carbon is added to the atmosphere from various sources and removed by various sinks. We'll explore the largest.`,
-      progress: false,
-      animate: (svg) => {
-        buildGraphBase(svg)
-      },
-      revert: (svg) => {
-        buildOpener(svg)
-      },
-    },
-    {
-      text: `Carbon sources and sinks from ${startYear} to ${endYear}`,
-      progress: true,
-      init: (svg) => {
-        return new Promise((resolve) => {
-          svg
-            .selectAll("[class^='value-']")
-            .transition()
-            .duration(1000)
-            .style('opacity', 1)
-            .on('end', () => {
-              resolve()
-            })
-        })
-      },
-      animate: (svg, percent) => {
-        incrementYear(svg, percent)
-      },
-    },
-    {
-      text: 'Land use emissions and land-related sinks cancel a significant portion of each other out',
-      animate: async (svg) => {
-        incrementYear(svg, 1) // make sure we always get to the end
-        await animateCircles(svg, 'land-sink', 'land-use')
-      },
-    },
-    {
-      text: 'Fossil fuel emissions dominate land related sources and sinks',
-      animate: async (svg) => {
-        await animateCircles(svg, 'fossil-fuels', 'land-sink')
-      },
-    },
-    {
-      text: 'The ocean, however, absorbs a very significant portion of these emissions',
-      animate: async (svg) => {
-        return new Promise(async (resolve) => {
-          const clonedFossilFuelsCircle = svg
-            .select('.circle-fossil-fuels')
-            .clone(true)
-          clonedFossilFuelsCircle
-            .attr('class', 'cloned-fossil-fuels')
-            .style('opacity', 0)
-            .attr('cx', width / 2)
-            .attr(
-              'cy',
-              lineHeight + parseFloat(clonedFossilFuelsCircle.attr('r'))
-            )
-            .attr('fill', '#00000000')
-            .attr('stroke-dasharray', '5,5')
-            .attr('stroke', '#64B9C4')
-
-          svg.node().appendChild(clonedFossilFuelsCircle.node())
-
-          await animateCircles(svg, 'fossil-fuels', 'ocean-sink')
-          resolve()
-        })
-      },
-      // revert: (svg) => {
-      //   svg.selectAll('*').remove()
-      //   buildGraphBase(svg)
-      // },
-    },
-    {
-      text: 'The remainder is what we see in todays atmosphere. While extremely harmful, this amount is vastly smaller than what would otherwise exist without the ocean',
-      animate: async (svg) => {
-        return new Promise((resolve) => {
-          const ffCircle = svg.select('.circle-fossil-fuels')
-          const ffText = svg.select('.text-fossil-fuels')
-          const ffValue = svg.select('.value-fossil-fuels')
-          const clonedFossilFuelsCircle = svg.select('.cloned-fossil-fuels')
-
-          ffText
-            .transition()
-            .duration(1000)
-            .attr('x', width / 2)
-          ffValue
-            .transition()
-            .duration(1000)
-            .attr('x', width / 2)
-          ffCircle
-            .transition()
-            .duration(1000)
-            .attr('cx', width / 2)
-            .on('end', () => {
-              ffText.transition().duration(1000).style('opacity', 0)
-              ffValue.transition().duration(1000).style('opacity', 0)
-              clonedFossilFuelsCircle
-                .transition()
-                .duration(1000)
-                .style('opacity', 1)
-
-              ffText
-                .transition()
-                .duration(1000)
-                .attr('y', lineHeight - 20)
-                .text('Atmosphere')
-                .attr('fill', '#64B9C4')
-                .style('opacity', 1)
-              ffValue
-                .transition()
-                .duration(1000)
-                .attr('y', lineHeight - 40)
-                .attr('fill', '#64B9C4')
-                .style('opacity', 1)
-              ffCircle
-                .transition()
-                .duration(1000)
-                .attr('cy', lineHeight + parseFloat(ffCircle.attr('r')))
-                .attr('fill', '#64B9C4')
-                .on('end', () => {
-                  svg
-                    .select('.graph')
-                    .transition()
-                    .duration(1000)
-                    .style('opacity', 0)
-                    .on('end', () => {
-                      resolve()
-                    })
-                })
-            })
-        })
-      },
-    },
-    {
-      text: null,
-      animate: async (svg) => {
-        return new Promise((resolve) => {
-          const clonedFossilFuelsCircle = svg.select('.cloned-fossil-fuels')
-          const currentRadius = parseFloat(
-            svg.select('.circle-fossil-fuels').attr('r')
-          )
-          const newRadius = currentRadius * 4
-
-          clonedFossilFuelsCircle
-            .transition()
-            .duration(2000)
-            .style('opacity', 0)
-          svg
-            .select('.circle-fossil-fuels')
-            .transition()
-            .duration(2000)
-            .attr('r', newRadius)
-            .style('opacity', 0)
-          svg
-            .select('.text-fossil-fuels')
-            .transition()
-            .duration(2000)
-            .style('opacity', 0)
-          svg
-            .select('.value-fossil-fuels')
-            .transition()
-            .duration(2000)
-            .style('opacity', 0)
-            .on('end', () => {
-              resolve()
-            })
-        })
-      },
-    },
-  ]
-
-  const animationQueueRef = useRef([])
-
-  const processQueue = async () => {
-    if (animationQueueRef.current.length > 0) {
-      const { animation, svg, resolve } = animationQueueRef.current[0]
-      await animation(svg)
-      resolve()
-      animationQueueRef.current.shift()
-      processQueue()
+  const handlePlay = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current)
+      timeout.current = null
     }
-  }
 
-  const addToQ = (animation, svg) => {
-    return new Promise((resolve) => {
-      animationQueueRef.current.push({ animation, svg, resolve })
-      if (animationQueueRef.current.length === 1) {
-        processQueue()
+    const incrementSubStep = () => {
+      let shouldContinue = true
+      setStepIndex((prev) => {
+        let nextSub = prev.sub + 1
+        let nextMain = prev.main
+        if (nextSub >= STEPS[nextMain].subSteps.length) {
+          shouldContinue = false
+          return prev
+        }
+        return { main: nextMain, sub: nextSub }
+      })
+      if (shouldContinue) {
+        timeout.current = setTimeout(incrementSubStep, animationDuration)
       }
-    })
-  }
-
-  const handleStepEnter = ({ data, direction }) => {
-    if (data.progress && !data.init) return
-    const svg = select('svg')
-    if (direction === 'up') {
-      if (data.revert) addToQ(() => data.revert(svg), svg)
-    } else {
-      if (data.init) addToQ(() => data.init(svg), svg)
-      else addToQ(() => data.animate(svg), svg)
     }
+    incrementSubStep()
   }
 
-  const handleStepProgress = ({ progress, data }) => {
-    if (!data.progress) return
-    const svg = select('svg')
-    data.animate(svg, progress)
+  const handleStepClick = (i) => {
+    setStepIndex({ main: i, sub: 0 })
+    handlePlay()
   }
-  useEffect(() => {
-    const svg = select('svg')
-    // buildGraphBase(svg)
-    buildOpener(svg)
-  }, [])
+
+  const handleStepAdvance = () => {
+    setStepIndex((prev) => {
+      let nextMain = prev.main + 1
+      if (nextMain >= STEPS.length) {
+        nextMain = 0
+      }
+      return { main: nextMain, sub: 0 }
+    })
+    handlePlay()
+  }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ position: 'sticky', top: 0, height: '100vh', zIndex: -1 }}>
-        <Box
-          as={'svg'}
-          sx={{
-            height: '100vh',
-            width: '100%',
-          }}
-          width='800'
-          height='600'
-          viewBox='0 0 800 600'
-        ></Box>
-      </Box>
-      <Scrollama
-        onStepEnter={handleStepEnter}
-        offset={0.3}
-        onStepProgress={handleStepProgress}
-      >
-        {steps.map((step, index) => (
-          <Step data={step} key={index}>
-            <Box
-              sx={{
-                py: '45vh',
-              }}
-            >
-              {step.text && (
-                <Box
-                  sx={{
-                    mr: 'calc(-1 * (3 * (100vw - 32px * 13) / 12 + 32px * 3))',
-                    margin: [
-                      'auto',
-                      'auto',
-                      '0 calc(-1 * (3 * (100vw - 32px * 13) / 12 + 32px * 3)) 0 0',
-                      '0 calc(-1 * (3 * (100vw - 48px * 13) / 12 + 48px * 3)) 0 0',
-                    ],
-                    width: [
-                      '50%',
-                      '50%',
-                      'calc(2 * (100vw - 32px * 13) / 12 + 32px)',
-                      'calc(2 * (100vw - 48px * 13) / 12 + 48px)',
-                    ],
-                    float: ['unset', 'unset', 'right', 'right'],
-                    bg: 'hinted',
-                    fontSize: 1,
-                    padding: 2,
-                    borderRadius: 4,
-                  }}
-                >
-                  {step.text}
-                </Box>
-              )}
-            </Box>
-          </Step>
+    <Box
+      onClick={() => handleStepAdvance()}
+      sx={{
+        cursor: 'pointer',
+        pb: 2,
+        '&:hover #clickNotice': { color: 'secondary' },
+      }}
+    >
+      <Flex sx={{ justifyContent: 'flex-start', alignItems: 'center', mb: 3 }}>
+        {STEPS.map((_, i) => (
+          <Button
+            key={`step-${i}`}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleStepClick(i)
+            }}
+            sx={{
+              transition: 'all 0.2s ease-in-out',
+              cursor: 'pointer',
+              bg: stepIndex.main === i ? 'muted' : 'hinted',
+              color: stepIndex.main === i ? 'primary' : 'secondary',
+              ml: i === 0 ? 0 : 1,
+              fontSize: 0,
+              width: '20px',
+              height: '20px',
+              lineHeight: '20px',
+              textAlign: 'center',
+              '&:hover': { bg: 'muted' },
+            }}
+          >
+            {i + 1}
+          </Button>
         ))}
-      </Scrollama>
+        <Box
+          id='clickNotice'
+          sx={{
+            mx: 2,
+            color: 'muted',
+            cursor: 'pointer',
+            fontStyle: 'italic',
+            fontSize: 1,
+            transition: 'color 0.2s ease-in-out',
+            mt: '2px',
+          }}
+        >
+          Click anywhere to advance
+        </Box>
+        <Box sx={{ ml: 'auto' }}>
+          <Button
+            href='https://www.icos-cp.eu/science-and-impact/global-carbon-budget/2023'
+            onClick={(e) => e.stopPropagation()}
+            target='_blank'
+            rel='noreferrer'
+            suffix={<RotatingArrow sx={{ height: 12, ml: 1 }} />}
+            sx={{
+              color: 'secondary',
+              fontSize: 1,
+              mr: 2,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Data source
+          </Button>
+        </Box>
+      </Flex>
+      <Box
+        key={currentStep.description}
+        sx={{
+          fontSize: 2,
+          height: '8em',
+          color: 'secondary',
+          animation: `${fadeIn} 1s ease-in-out`,
+        }}
+      >
+        {currentStep.description}{' '}
+        <Box
+          key={currentStep.secondDescription}
+          as={'span'}
+          sx={{
+            opacity: 0,
+            animation: `${fadeIn} 1s ease-in-out 1s forwards`,
+          }}
+        >
+          {currentStep.secondDescription ?? ''}
+        </Box>
+      </Box>
+      <Box sx={{ height: HEIGHT * 2 }}>
+        <Chart
+          x={[0, 10]}
+          y={[-Y_SCALE, Y_SCALE]}
+          padding={{ left: 0, bottom: 0 }}
+        >
+          <Grid
+            horizontal
+            values={[0]}
+            sx={{
+              borderColor: 'primary',
+              transition: `opacity 0.5s ease-in-out ${
+                axisOpacity === 1 ? animationDuration : 0
+              }ms`,
+              opacity: axisOpacity,
+            }}
+          />
+          {debug && (
+            <>
+              <Grid horizontal vertical />
+              <TickLabels left />
+            </>
+          )}
+          <Plot>
+            {budgets.map((budget, i) => {
+              const { budgetOverrides, duration } = currentSubStep
+              const override = budgetOverrides[i] ?? {}
+              return (
+                <StepifiedCircle
+                  key={budget.category}
+                  x={(i + 1) * 2}
+                  year={year}
+                  budget={budget}
+                  override={override}
+                  duration={duration}
+                />
+              )
+            })}
+          </Plot>
+          <Label
+            x={0}
+            y={1.4}
+            sx={{
+              opacity: axisOpacity,
+              transition: 'opacity 0.5s ease-in-out',
+            }}
+          >
+            Sources
+          </Label>
+          <Label
+            x={0}
+            y={-0.5}
+            sx={{
+              opacity: axisOpacity,
+              transition: 'opacity 0.5s ease-in-out',
+            }}
+          >
+            Sinks
+          </Label>
+          <AnimatedLabel
+            x={10}
+            y={Y_SCALE}
+            align='right'
+            sx={{
+              fontSize: 2,
+              opacity: !hideYear ? axisOpacity : 0,
+              transition: 'opacity 0.5s ease-in-out',
+            }}
+          >
+            {year.to((y) => (y.toFixed() === '2022' ? 'Today' : y.toFixed()))}
+          </AnimatedLabel>
+          {budgets.map((budget, i) => {
+            const { budgetOverrides, duration } = currentSubStep
+            const override = budgetOverrides[i] ?? {}
+            return (
+              <StepifiedLabel
+                key={`${budget.category}-label`}
+                x={(i + 1) * 2}
+                year={year}
+                budget={budget}
+                override={override}
+                duration={duration}
+              />
+            )
+          })}
+        </Chart>
+      </Box>
     </Box>
   )
 }
 
-export default Sinks
+export default SinksExploration
