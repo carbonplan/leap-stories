@@ -37,14 +37,6 @@ const leapTheme = {
     useLocalStorage: false,
     useColorSchemeMediaQuery: false,
   },
-  styles: {
-    ...theme.styles,
-    a: {
-      ...theme.styles.a,
-      color: 'primary',
-      textDecoration: 'underline',
-    },
-  },
 }
 
 const App = ({ Component, pageProps }) => {
