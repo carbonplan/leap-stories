@@ -82,7 +82,7 @@ const OceanCycleDiagram = () => {
         />
         <Option
           onClick={() => setMode('anthropogenic')}
-          label='Anthropogenic'
+          label='Human-dervied'
           active={mode === 'anthropogenic'}
         />
       </Flex>
