@@ -259,7 +259,7 @@ const calculateYPos = (yFactor, ratio) => {
   return yFactor * ratio * Y_SCALE
 }
 
-const calculateSpringValues = ({ year, budget, override, xProp, duration }) => {
+const calculateSpringValues = ({ year, budget, override, xProp }) => {
   const { values, color: defaultColor, sink } = budget
   const {
     value: overrideValue,
@@ -297,7 +297,7 @@ const calculateSpringValues = ({ year, budget, override, xProp, duration }) => {
     size: radius * 2,
     color: colorValue,
     config: {
-      duration: duration ?? animationDuration,
+      duration: animationDuration,
     },
   }
   return springValues
@@ -330,67 +330,61 @@ const BudgetLabel = animated(
   }
 )
 
-const StepifiedCircle = animated(
-  ({ year, budget, override, duration, x: xProp }) => {
-    const springValues = calculateSpringValues({
-      year,
-      budget,
-      override,
-      xProp,
-      duration,
-    })
+const StepifiedCircle = animated(({ year, budget, override, x: xProp }) => {
+  const springValues = calculateSpringValues({
+    year,
+    budget,
+    override,
+    xProp,
+  })
 
-    const { x, y, size, color } = useSpring(springValues)
+  const { x, y, size, color } = useSpring(springValues)
 
-    const animatedColor = to([color], (c) => c)
+  const animatedColor = to([color], (c) => c)
 
-    return (
-      <BudgetCircle
-        key={`${budget.category}-circle`}
-        x={x}
-        y={y}
-        size={size}
-        color={animatedColor}
-      />
-    )
-  }
-)
+  return (
+    <BudgetCircle
+      key={`${budget.category}-circle`}
+      x={x}
+      y={y}
+      size={size}
+      color={animatedColor}
+    />
+  )
+})
 
-const StepifiedLabel = animated(
-  ({ year, budget, override, duration, x: xProp }) => {
-    const springValues = calculateSpringValues({
-      year,
-      budget,
-      override,
-      xProp,
-      duration,
-    })
-    const { x, labelY, color, value } = useSpring(springValues)
-    const category = override.category ?? budget.category
+const StepifiedLabel = animated(({ year, budget, override, x: xProp }) => {
+  const springValues = calculateSpringValues({
+    year,
+    budget,
+    override,
+    xProp,
+  })
+  const { x, labelY, color, value } = useSpring(springValues)
+  const category = override.category ?? budget.category
 
-    // fade labels at zero values
-    const opacity = value.to((v) => {
-      return v <= 1 ? 0 : v < 20 ? 0.5 : 1
-    })
+  // fade labels at zero values
+  const opacity = value.to((v) => {
+    return v <= 1 ? 0 : v < 20 ? 0.5 : 1
+  })
 
-    const animatedColor = to([color], (c) => c)
-    const animatedValue = to([value], (v) => v.toFixed())
+  const animatedColor = to([color], (c) => c)
+  const animatedValue = to([value], (v) => v.toFixed())
 
-    return (
-      <BudgetLabel
-        key={`${budget.category}-label`}
-        x={x}
-        y={labelY}
-        sink={budget.sink}
-        negative={override.negative}
-        value={animatedValue}
-        category={category}
-        color={animatedColor}
-        style={{ opacity }}
-      />
-    )
-  }
-)
+  return (
+    <BudgetLabel
+      key={`${budget.category}-label`}
+      x={x}
+      y={labelY}
+      sink={budget.sink}
+      negative={override.negative}
+      value={animatedValue}
+      category={category}
+      color={animatedColor}
+      style={{ opacity }}
+    />
+  )
+})
 
 const animationDuration = 750
 
@@ -550,7 +544,7 @@ const SinksExploration = ({ debug = false }) => {
           )}
           <Plot>
             {budgets.map((budget, i) => {
-              const { budgetOverrides, duration } = currentSubStep
+              const { budgetOverrides } = currentSubStep
               const override = budgetOverrides[i] ?? {}
               return (
                 <StepifiedCircle
@@ -559,7 +553,6 @@ const SinksExploration = ({ debug = false }) => {
                   year={year}
                   budget={budget}
                   override={override}
-                  duration={duration}
                 />
               )
             })}
@@ -598,7 +591,7 @@ const SinksExploration = ({ debug = false }) => {
             {year.to((y) => (y.toFixed() === '2022' ? 'Today' : y.toFixed()))}
           </AnimatedLabel>
           {budgets.map((budget, i) => {
-            const { budgetOverrides, duration } = currentSubStep
+            const { budgetOverrides } = currentSubStep
             const override = budgetOverrides[i] ?? {}
             return (
               <StepifiedLabel
@@ -607,7 +600,6 @@ const SinksExploration = ({ debug = false }) => {
                 year={year}
                 budget={budget}
                 override={override}
-                duration={duration}
               />
             )
           })}
