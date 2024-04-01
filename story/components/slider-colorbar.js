@@ -73,6 +73,7 @@ const SliderColorbar = ({
             whiteSpace: 'nowrap',
             textAlign: 'center',
             mr: 3,
+            width: '40px',
           }}
         >
           {formatter(value)}
