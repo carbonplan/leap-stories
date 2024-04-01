@@ -136,6 +136,7 @@ const FCO2Maps = () => {
         clim={CLIM}
         variableName={'fCO₂'}
         units={'μatm'}
+        labelWidth={['44px', '44px', '44px', '48px']}
       />
     </Box>
   )
