@@ -12,6 +12,7 @@ const SliderColorbar = ({
   clim,
   variableName,
   units,
+  labelWidth = ['40px', '40px', '40px', '48px'],
 }) => {
   return (
     <Flex
@@ -73,7 +74,7 @@ const SliderColorbar = ({
             whiteSpace: 'nowrap',
             textAlign: 'center',
             mr: 3,
-            width: '40px',
+            minWidth: labelWidth,
           }}
         >
           {formatter(value)}
