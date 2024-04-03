@@ -21,24 +21,24 @@ const START_YEAR = 1851
 const STEPS = [
   {
     description:
-      'Human-caused global warming would be much worse without the ocean. It has absorbed a significant amount of the carbon we have released into the atmosphere.',
+      'Human-caused global warming would be much worse without the ocean. It has absorbed a significant amount of the carbon we have released into the atmosphere since 1851.',
     subSteps: [
       {
-        year: 1851,
+        year: 2022,
         hideAxis: true,
         budgetOverrides: [
           {
             x: 3,
             y: 0,
             value: 270,
-            color: '#F07071',
-            category: 'Current Atmosphere',
+            color: '#EA9755',
+            category: 'Atmosphere',
           },
           {
             x: 7,
             y: 0,
             value: 452,
-            color: '#EA9755',
+            color: '#F07071',
             category: 'Atmosphere without Ocean',
           },
           { value: 0 },
@@ -58,14 +58,14 @@ const STEPS = [
             x: 3,
             y: 0,
             value: 0,
-            color: '#F07071',
-            category: 'Current Atmosphere',
+            color: '#EA9755',
+            category: 'Atmosphere',
           },
           {
             x: 7,
             y: 0,
             value: 0,
-            color: '#EA9755',
+            color: '#F07071',
             category: 'Atmosphere without Ocean',
           },
           { value: 0 },
@@ -79,14 +79,14 @@ const STEPS = [
             x: 3,
             y: 0,
             value: 0,
-            color: '#F07071',
-            category: 'Current Atmosphere',
+            color: '#EA9755',
+            category: 'Atmosphere',
           },
           {
             x: 7,
             y: 0,
             value: 0,
-            color: '#EA9755',
+            color: '#F07071',
             category: 'Atmosphere without Ocean',
           },
           { value: 0 },
@@ -234,8 +234,8 @@ const STEPS = [
             x: 5,
             y: 0,
             value: 270,
-            color: '#F07071',
-            category: 'Current Atmosphere',
+            color: '#EA9755',
+            category: 'Atmosphere',
           },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
@@ -600,7 +600,7 @@ const SinksExploration = ({ debug = false }) => {
             verticalAlign='bottom'
             sx={{
               fontSize: [2, 2, 2, 3],
-              opacity: currentSubStep.year !== START_YEAR ? axisOpacity : 0,
+              opacity: currentSubStep.year !== START_YEAR ? 1 : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
           >
@@ -608,9 +608,6 @@ const SinksExploration = ({ debug = false }) => {
             <animated.span>
               {year.to((y) => {
                 const rounded = y.toFixed()
-                if (rounded === '1851') {
-                  return '    '
-                }
                 if (rounded === '2022') {
                   return 'Today'
                 }
