@@ -16,6 +16,8 @@ import { animated, useSpring, to } from '@react-spring/web'
 import BoxButton from './box-button'
 import { budgets } from '../data/carbon_budget_data'
 
+const START_YEAR = 1851
+
 const STEPS = [
   {
     description:
@@ -93,12 +95,12 @@ const STEPS = [
       },
       {
         year: 1851,
-        showYear: true,
+        isYearAnimation: true,
         budgetOverrides: [{}, {}, {}, {}],
       },
       {
         year: 1979,
-        showYear: true,
+        isYearAnimation: true,
         budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
@@ -108,7 +110,7 @@ const STEPS = [
     subSteps: [
       {
         year: 2022,
-        showYear: true,
+        isYearAnimation: true,
         budgetOverrides: [{}, {}, {}, {}],
       }, // end scrub through time
     ],
@@ -257,7 +259,13 @@ const calculateYPos = (yFactor, ratio) => {
   return yFactor * ratio * Y_SCALE
 }
 
-const calculateSpringValues = ({ year, budget, override, xProp, showYear }) => {
+const calculateSpringValues = ({
+  year,
+  budget,
+  override,
+  xProp,
+  isYearAnimation,
+}) => {
   const { values, color: defaultColor, sink } = budget
   const {
     value: overrideValue,
@@ -295,7 +303,7 @@ const calculateSpringValues = ({ year, budget, override, xProp, showYear }) => {
     size: radius * 2,
     color: colorValue,
     config: {
-      duration: showYear ? 0 : animationDuration,
+      duration: isYearAnimation ? 0 : animationDuration,
     },
   }
   return springValues
@@ -329,13 +337,13 @@ const BudgetLabel = animated(
 )
 
 const StepifiedCircle = animated(
-  ({ year, budget, override, x: xProp, showYear }) => {
+  ({ year, budget, override, x: xProp, isYearAnimation }) => {
     const springValues = calculateSpringValues({
       year,
       budget,
       override,
       xProp,
-      showYear,
+      isYearAnimation,
     })
 
     const { x, y, size, color } = useSpring(springValues)
@@ -355,13 +363,13 @@ const StepifiedCircle = animated(
 )
 
 const StepifiedLabel = animated(
-  ({ year, budget, override, x: xProp, showYear }) => {
+  ({ year, budget, override, x: xProp, isYearAnimation }) => {
     const springValues = calculateSpringValues({
       year,
       budget,
       override,
       xProp,
-      showYear,
+      isYearAnimation,
     })
     const { x, labelY, color, value } = useSpring(springValues)
     const category = override.category ?? budget.category
@@ -407,7 +415,7 @@ const SinksExploration = ({ debug = false }) => {
     year: currentSubStep.year,
     config: {
       duration:
-        currentSubStep.showYear && yearAnimationTime > 0
+        currentSubStep.isYearAnimation && yearAnimationTime > 0
           ? yearAnimationTime
           : animationDuration,
       easing: (t) => t,
@@ -551,7 +559,7 @@ const SinksExploration = ({ debug = false }) => {
           )}
           <Plot>
             {budgets.map((budget, i) => {
-              const { budgetOverrides, showYear } = currentSubStep
+              const { budgetOverrides, isYearAnimation } = currentSubStep
               const override = budgetOverrides[i] ?? {}
               return (
                 <StepifiedCircle
@@ -560,7 +568,7 @@ const SinksExploration = ({ debug = false }) => {
                   year={year}
                   budget={budget}
                   override={override}
-                  showYear={showYear}
+                  isYearAnimation={isYearAnimation}
                 />
               )
             })}
@@ -592,14 +600,26 @@ const SinksExploration = ({ debug = false }) => {
             verticalAlign='bottom'
             sx={{
               fontSize: [2, 2, 2, 3],
-              opacity: currentSubStep.showYear ? axisOpacity : 0,
+              opacity: currentSubStep.year !== START_YEAR ? axisOpacity : 0,
               transition: 'opacity 0.5s ease-in-out',
             }}
           >
-            {year.to((y) => (y.toFixed() === '2022' ? 'Today' : y.toFixed()))}
+            {START_YEAR} {' - '}
+            <animated.span>
+              {year.to((y) => {
+                const rounded = y.toFixed()
+                if (rounded === '1851') {
+                  return '    '
+                }
+                if (rounded === '2022') {
+                  return 'Today'
+                }
+                return rounded
+              })}
+            </animated.span>
           </AnimatedLabel>
           {budgets.map((budget, i) => {
-            const { budgetOverrides, showYear } = currentSubStep
+            const { budgetOverrides, isYearAnimation } = currentSubStep
             const override = budgetOverrides[i] ?? {}
             return (
               <StepifiedLabel
@@ -608,7 +628,7 @@ const SinksExploration = ({ debug = false }) => {
                 year={year}
                 budget={budget}
                 override={override}
-                showYear={showYear}
+                isYearAnimation={isYearAnimation}
               />
             )
           })}
