@@ -16,7 +16,7 @@ import { animated, useSpring, to } from '@react-spring/web'
 import BoxButton from './box-button'
 import { budgets } from '../data/carbon_budget_data'
 
-const START_YEAR = 1851
+const START_YEAR = 1850
 
 const STEPS = [
   {
@@ -52,7 +52,7 @@ const STEPS = [
     description: `Early on, land-use change was the largest source of carbon emissions in the atmosphere. In 1979, fossil fuel emissions surpassed land-use emissions.`,
     subSteps: [
       {
-        year: 1850,
+        year: 1849,
         budgetOverrides: [
           {
             x: 3,
@@ -73,7 +73,7 @@ const STEPS = [
         ],
       },
       {
-        year: 1850,
+        year: 1849,
         budgetOverrides: [
           {
             x: 3,
@@ -94,7 +94,7 @@ const STEPS = [
         ],
       },
       {
-        year: 1850,
+        year: 1849,
         isYearAnimation: true,
         budgetOverrides: [{}, {}, {}, {}],
       },
@@ -608,8 +608,8 @@ const SinksExploration = ({ debug = false }) => {
             <animated.span>
               {year.to((y) => {
                 const rounded = y.toFixed()
-                if (rounded === '1850') {
-                  return '1851' // override 1850 (our zero year)
+                if (rounded === '1849') {
+                  return '1851' // override 1849 (our zero year)
                 }
                 return rounded
               })}
