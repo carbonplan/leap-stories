@@ -16,7 +16,7 @@ import { animated, useSpring, to } from '@react-spring/web'
 import BoxButton from './box-button'
 import { budgets } from '../data/carbon_budget_data'
 
-const START_YEAR = 1851
+const START_YEAR = 1850
 
 const STEPS = [
   {
@@ -30,14 +30,14 @@ const STEPS = [
           {
             x: 3,
             y: 0,
-            value: 270,
+            value: 278,
             color: '#EA9755',
             category: 'Atmosphere',
           },
           {
             x: 7,
             y: 0,
-            value: 452,
+            value: 457,
             color: '#F07071',
             category: 'Atmosphere without Ocean',
           },
@@ -52,7 +52,7 @@ const STEPS = [
     description: `Early on, land-use change was the largest source of carbon emissions in the atmosphere. In 1979, fossil fuel emissions surpassed land-use emissions.`,
     subSteps: [
       {
-        year: 1851,
+        year: 1849,
         budgetOverrides: [
           {
             x: 3,
@@ -73,7 +73,7 @@ const STEPS = [
         ],
       },
       {
-        year: 1851,
+        year: 1849,
         budgetOverrides: [
           {
             x: 3,
@@ -94,7 +94,7 @@ const STEPS = [
         ],
       },
       {
-        year: 1851,
+        year: 1849,
         isYearAnimation: true,
         budgetOverrides: [{}, {}, {}, {}],
       },
@@ -135,7 +135,7 @@ const STEPS = [
         budgetOverrides: [
           {},
           { x: 5, negative: true, value: 0 },
-          { x: 5, value: 25 },
+          { x: 5, value: 5 },
           {},
         ], // render land source on top of land sink
       },
@@ -149,7 +149,7 @@ const STEPS = [
         budgetOverrides: [
           {},
           { x: 5, negative: true, value: 0 },
-          { x: 5, value: 25 },
+          { x: 5, value: 5 },
           {},
         ], // absorb land source into top of land sink
       },
@@ -158,7 +158,7 @@ const STEPS = [
         budgetOverrides: [
           { x: 5 },
           { x: 5, negative: true, value: 0 },
-          { x: 5, value: 25 },
+          { x: 5, value: 5 },
           {},
         ], // center fossil fuels
       },
@@ -167,14 +167,14 @@ const STEPS = [
         budgetOverrides: [
           { x: 5 },
           { x: 5, negative: true, value: 0 },
-          { x: 5, negative: false, value: 25 },
+          { x: 5, negative: false, value: 5 },
           {},
         ], // flip land sink
       },
       {
         year: 2022,
         budgetOverrides: [
-          { x: 5, value: 452 },
+          { x: 5, value: 478 },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
           {},
@@ -188,7 +188,7 @@ const STEPS = [
       {
         year: 2022,
         budgetOverrides: [
-          { x: 5, value: 452 },
+          { x: 5, value: 478 },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
           { x: 5 },
@@ -197,7 +197,7 @@ const STEPS = [
       {
         year: 2022,
         budgetOverrides: [
-          { x: 5, value: 452 },
+          { x: 5, value: 478 },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
           { x: 5 },
@@ -206,7 +206,7 @@ const STEPS = [
       {
         year: 2022,
         budgetOverrides: [
-          { x: 5, value: 452 },
+          { x: 5, value: 478 },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
           { x: 5, negative: false },
@@ -215,7 +215,7 @@ const STEPS = [
       {
         year: 2022,
         budgetOverrides: [
-          { x: 5, value: 270 },
+          { x: 5, value: 299 },
           { x: 5, negative: true, value: 0 },
           { x: 5, negative: false, value: 0 },
           { x: 5, negative: false, value: 0 },
@@ -224,7 +224,7 @@ const STEPS = [
     ],
   },
   {
-    description: `What remains is the carbon that has accumulated in the atmosphere, causing global warming.`,
+    description: `What remains, after accounting for uncertainties and other small factors, is the carbon that has accumulated in the atmosphere and causes global warming.`,
     subSteps: [
       {
         year: 2022,
@@ -233,7 +233,7 @@ const STEPS = [
           {
             x: 5,
             y: 0,
-            value: 270,
+            value: 278,
             color: '#EA9755',
             category: 'Atmosphere',
           },
@@ -376,7 +376,7 @@ const StepifiedLabel = animated(
 
     // fade labels at zero values
     const opacity = value.to((v) => {
-      return v <= 1 ? 0 : v < 20 ? 0.5 : 1
+      return v <= 1 ? 0 : v < 5 ? 0.5 : 1
     })
 
     const animatedColor = to([color], (c) => c)
@@ -608,8 +608,8 @@ const SinksExploration = ({ debug = false }) => {
             <animated.span>
               {year.to((y) => {
                 const rounded = y.toFixed()
-                if (rounded === '2022') {
-                  return 'Today'
+                if (rounded === '1849') {
+                  return '1850' // override 1849 (our zero year)
                 }
                 return rounded
               })}
