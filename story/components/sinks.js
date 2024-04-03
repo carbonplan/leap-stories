@@ -609,7 +609,7 @@ const SinksExploration = ({ debug = false }) => {
               {year.to((y) => {
                 const rounded = y.toFixed()
                 if (rounded === '1849') {
-                  return '1851' // override 1849 (our zero year)
+                  return '1850' // override 1849 (our zero year)
                 }
                 return rounded
               })}
