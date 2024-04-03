@@ -30,14 +30,14 @@ const STEPS = [
           {
             x: 3,
             y: 0,
-            value: 299,
+            value: 278,
             color: '#EA9755',
             category: 'Atmosphere',
           },
           {
             x: 7,
             y: 0,
-            value: 478,
+            value: 457,
             color: '#F07071',
             category: 'Atmosphere without Ocean',
           },
@@ -224,7 +224,7 @@ const STEPS = [
     ],
   },
   {
-    description: `What remains is the carbon that has accumulated in the atmosphere, causing global warming.`,
+    description: `What remains, after accounting for uncertainties and other small factors, is the carbon that has accumulated in the atmosphere and causes global warming.`,
     subSteps: [
       {
         year: 2022,
@@ -233,7 +233,7 @@ const STEPS = [
           {
             x: 5,
             y: 0,
-            value: 299,
+            value: 278,
             color: '#EA9755',
             category: 'Atmosphere',
           },
