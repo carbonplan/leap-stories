@@ -95,6 +95,7 @@ const STEPS = [
       },
       {
         year: 1849,
+        isYearAnimation: true,
         budgetOverrides: [
           {
             x: 3,
@@ -427,18 +428,18 @@ const SinksExploration = ({ debug = false }) => {
 
   const yearRef = useRef(currentSubStep.year)
   const yearsToGo = currentSubStep.year - (yearRef.current ?? 0)
+  yearRef.current = currentSubStep.year
   const yearAnimationTime = yearsToGo * 15
   const { year } = useSpring({
     year: currentSubStep.year,
     config: {
       duration:
-        currentSubStep.isYearAnimation && yearAnimationTime > 0
+        currentSubStep.isYearAnimation && yearAnimationTime >= 0
           ? yearAnimationTime
           : animationDuration,
       easing: (t) => t,
     },
   })
-  yearRef.current = currentSubStep.year
 
   const handlePlay = () => {
     if (timeout.current) {
