@@ -66,6 +66,7 @@ const getCustomProjection = () => {
 const FluxMap = () => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('redteal')
+  const colormapReversed = [...colormap].reverse() // flipped colorbar colormap to correct sign of data
   const [month, setMonth] = useState(0)
   const [chunks, setChunks] = useState({ data: null })
 
@@ -153,7 +154,7 @@ const FluxMap = () => {
         formatter={formatMonth}
         minMax={[0, 11]}
         setter={setMonth}
-        colormap={colormap}
+        colormap={colormapReversed}
         clim={[-3, 3]}
         variableName={'CARBON FLUX'}
         units={'mol / m² / year'}
