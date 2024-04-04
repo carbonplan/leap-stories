@@ -95,6 +95,23 @@ const STEPS = [
       },
       {
         year: 1849,
+        budgetOverrides: [
+          {
+            x: 3,
+            y: 0,
+            value: 0,
+          },
+          {
+            x: 7,
+            y: 0,
+            value: 0,
+          },
+          { value: 0 },
+          { value: 0 },
+        ],
+      },
+      {
+        year: 1849,
         isYearAnimation: true,
         budgetOverrides: [{}, {}, {}, {}],
       },
