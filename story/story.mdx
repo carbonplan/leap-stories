@@ -7,7 +7,7 @@ import references from './references.json'
 
 <Authors authors={['Galen McKinley', 'Amanda Fay', 'Thea Hatlen Heimdal']} />
 
-Climate change is driven by greenhouse gas emissions, so future warming will be determined by how much humans choose to emit. But warming would be worse today if not for the natural processes that pull carbon out of the atmosphere and store it. Natural carbon sinks on land and in the oceans are critical for understanding and mitigating climate change, and they’ve significantly reduced the impacts of our climate changing choices to date. Only half of the CO₂ humans added to the atmosphere between 2013 and 2022 remains there today – the rest is in the seas and soils.
+Climate change is driven by greenhouse gas emissions, so future warming will be determined by how much humans choose to emit. But warming would be worse today if not for the natural processes that pull carbon out of the atmosphere and store it. Natural carbon sinks on land and in the oceans are critical; they’ve significantly reduced the impacts of our climate changing choices to date. Only half of the CO₂ humans added to the atmosphere between 2013 and 2022 remains there today – the rest is in the seas, forests, and soils.
 
 Over the course of the full industrial era, oceans, on their own, have absorbed 37 percent of the fossil fuel emissions from humans. Without this service, we’d be experiencing worse climate change impacts – and sooner. But there is still a lot we don’t know about how the ocean sink works. What’s more, there are hints that this crucial resource is changing and we don’t yet know enough to make accurate predictions about how it will work in the future. The solution: We need to develop better ways of monitoring, measuring, and understanding what happens when emissions and oceans meet.
 
@@ -19,28 +19,11 @@ Over the course of the full industrial era, oceans, on their own, have absorbed 
 
 There are several interconnected processes, all happening at once, that affect how carbon is taken up and stored in the ocean. Ocean waters warm when they rise to the surface in the tropics and then cool and fall into deeper levels as they move toward the poles. CO₂ dissolves in seawater, and cold seawater can hold more CO₂ than warm water, so waters that are cooling tend to take up carbon, and waters that are warming tend to emit carbon. That means the overturning layers of warm and cold water moving around the globe affect the pattern of how CO₂ moves between the sea and air.
 
-The ocean is teeming with plant life, which also has an impact on the carbon sink. Those plants use carbon extracted from seawater to grow. Much of this organic matter is quickly recycled back into dissolved carbon at the surface ocean as plants and animals consume each other. But a small portion (\<1%) of the waste matter sinks down to depth and enriches the abyss with carbon (Figure 2). This process – called the biological pump, moves carbon from the atmosphere into the surface ocean, and then transports it to the deep ocean, ultimately moving carbon out of the atmosphere.
+The ocean is teeming with plant life, which also has an impact on the carbon sink. Those plants use carbon extracted from seawater to grow. Much of this organic matter is quickly recycled back into dissolved carbon at the surface ocean as plants and animals consume each other. But a small portion (\<1%) of the waste matter sinks down to depth and enriches the abyss with carbon. This process – called the biological pump, moves carbon from the atmosphere into the surface ocean, and then transports it to the deep ocean, ultimately moving carbon out of the atmosphere.
 
-Meanwhile, as humans increase the atmospheric CO₂ concentration, more carbon is driven into the oceans (Figure 2, “human derived”). This happens because the gas in the air and the gas dissolved in the water will naturally come to an equilibrium in a process known as [Henry's Law](https://en.wikipedia.org/wiki/Henry%27s_law). Human-derived carbon is almost all in the surface ocean and slowly penetrates to depth with the long timescale of the ocean overturning circulation (~1000 years). The vast majority of the carbon in the ocean has accumulated there due to natural processes and is at highest concentrations in the deep ocean.
+Meanwhile, as humans increase the atmospheric CO₂ concentration, more carbon is driven into the oceans. This happens because the gas in the air and the gas dissolved in the water will naturally come to an equilibrium in a process known as [Henry's Law](https://en.wikipedia.org/wiki/Henry%27s_law). Human-derived carbon is almost all in the surface ocean and slowly penetrates to depth with the long timescale of the ocean overturning circulation (~1000 years). The vast majority of the carbon in the ocean has accumulated there due to natural processes and is at highest concentrations in the deep ocean.
 
-But the climate service of absorbing our excess carbon does not come for free. As water absorbs CO₂, it becomes more acidic. This has [negative impacts](https://doi.org/10.1146/annurev-environ-012320-083019) on the health of many kinds of marine life, potentially reducing the effectiveness of the biological pump. Acidification also chemically diminishes the ability of ocean waters to absorb even more carbon.
-
-<Figure title='Burning fossil fuels changes the natural ocean carbon cycle'>
-  <OceanCycleDiagram />
-  <FigureCaption number={2}>
-    The [ocean carbon cycle](https://doi.org/10.1029/2021rg000736), surface to
-    2,000 meters depth. On the left, you can see globally-averaged data for
-    carbon concentrations compared to ocean depth. This distribution of carbon
-    in the water changes depending on whether you’re looking at “natural”
-    background levels of CO₂ , “human-derived” levels added by burning fossil
-    fuels, or the combination of both. On the right, you can see how the natural
-    processes that move carbon from the atmosphere to the deep ocean work, and
-    how they change as more human-derived carbon is added to the system. As
-    human activity introduces higher levels of CO₂ to the surface layers,
-    natural processes that store carbon in the deep ocean can’t keep up. The
-    result is more carbon remaining at the surface layer.
-  </FigureCaption>
-</Figure>
+But the climate service of absorbing our excess carbon does not come for free. As surface waters absorb CO₂, they become more acidic. This has [negative impacts](https://doi.org/10.1146/annurev-environ-012320-083019) on the health of many kinds of marine life, potentially reducing the effectiveness of the biological pump. Acidification also chemically diminishes the ability of surface waters to absorb even more carbon from the atmosphere.
 
 ## How do we know how much carbon is in the ocean?
 
@@ -52,12 +35,12 @@ To solve the problem, scientists have developed machines that can automatically 
 
 <Figure title='How scientists build global estimates from limited measurements'>
   <FCO2Maps />
-  <FigureCaption number={3}>
+  <FigureCaption>
     Carbon concentrations in seawater can only be directly measured in a limited
-    number of places. So scientists apply machine learning to combine these
-    sparse data with other full-coverage datasets, such as sea surface
+    number of places (left). So scientists apply machine learning to combine
+    these sparse data with other full-coverage datasets, such as sea surface
     temperatures, and reconstruct full-coverage estimates of surface ocean
-    concentrations over time.
+    concentrations over time (right).
   </FigureCaption>
 </Figure>
 
@@ -65,7 +48,7 @@ Despite decades of coordinated international efforts by ocean carbon scientists,
 
 <Figure title='The ocean carbon sink changes with temperature and season'>
   <FluxMap />
-  <FigureCaption number={4}>
+  <FigureCaption>
     Some parts of the ocean absorb carbon while others emit carbon, and this
     carbon flux changes with the seasons and ocean surface temperatures. On
     these maps, a positive air-sea flux value indicates the ocean is emitting
