@@ -1,7 +1,6 @@
 import Story, { Authors, Cite, Sidenote } from '../components/layout'
 import { Figure, FigureCaption } from '../components'
 import { FCO2Maps, FluxMap, Sinks, OceanCycleDiagram } from './components'
-import references from './references.json'
 
 # The ocean carbon sink
 
@@ -69,6 +68,4 @@ Stabilizing global temperatures will first and foremost require deep emissions c
 
 It’s clear the ocean plays an enormous role in the fight to reduce the risks of climate change. Despite this, there is no long-term funded, operational system for collecting ocean carbon data and turning these into global ocean sink estimates. [Such a system](https://wmo.int/activities/global-greenhouse-gas-watch-g3w) is urgently needed to help monitor the global carbon cycle and understand its impacts on climate change. The ocean is vast and essential to our lives. It’s in our best interest to better understand how it works.
 
-export default ({ children }) => (
-  <Story references={references}>{children}</Story>
-)
+export default ({ children }) => <Story>{children}</Story>
