@@ -110,6 +110,14 @@ const FluxMap = () => {
     }
   }, [chunks, month])
 
+  const handleSetMonth = useCallback(
+    (month) => {
+      setMonth(month)
+      handlePlay(false)
+    },
+    [setMonth, setPlaying]
+  )
+
   const handlePlay = useCallback(
     (willPlay) => {
       if (timeout.current) {
@@ -200,7 +208,7 @@ const FluxMap = () => {
               value={month}
               formatter={formatMonth}
               minMax={[0, 11]}
-              setter={setMonth}
+              setter={handleSetMonth}
               colormap={colormapReversed}
               clim={[-3, 3]}
               variableName={'CARBON FLUX'}
