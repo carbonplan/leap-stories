@@ -198,25 +198,18 @@ const FluxMap = () => {
           </Box>
         </Column>
       </Row>
-      <PlayPause
-        playing={playing}
-        setPlaying={handlePlay}
-        sx={{}}
-        controls={
-          <Box sx={{ width: '100%' }}>
-            <SliderColorbar
-              value={month}
-              formatter={formatMonth}
-              minMax={[0, 11]}
-              setter={handleSetMonth}
-              colormap={colormapReversed}
-              clim={[-3, 3]}
-              variableName={'CARBON FLUX'}
-              units={'mol / m² / year'}
-            />
-          </Box>
-        }
-      ></PlayPause>
+
+      <SliderColorbar
+        value={month}
+        formatter={formatMonth}
+        minMax={[0, 11]}
+        setter={handleSetMonth}
+        colormap={colormapReversed}
+        clim={[-3, 3]}
+        variableName={'CARBON FLUX'}
+        units={'mol / m² / year'}
+        playPause={<PlayPause playing={playing} setPlaying={handlePlay} />}
+      />
     </Box>
   )
 }
