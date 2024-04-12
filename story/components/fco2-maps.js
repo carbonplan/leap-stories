@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Box, useThemeUI } from 'theme-ui'
+import { Box, Flex, useThemeUI } from 'theme-ui'
 
 import SliderColorbar from './slider-colorbar'
+import PlayPause from './play-pause'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/annual-sfco2.zarr'
@@ -17,11 +18,16 @@ const FILL_VALUE = 9.969209968386869e36
 const START_YEAR = 1990
 const END_YEAR = 2018
 
+const delay = 250
+
 const FCO2Maps = () => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('warm')
   const [year, setYear] = useState(START_YEAR)
   const [chunks, setChunks] = useState(null)
+
+  const [playing, setPlaying] = useState(false)
+  const timeout = useRef(null)
 
   useEffect(() => {
     try {
@@ -48,8 +54,58 @@ const FCO2Maps = () => {
     }
   }, [chunks, year])
 
+  const handleSetYear = useCallback(
+    (newYear) => {
+      setYear(newYear)
+      handlePlay(false)
+    },
+    [setYear, setPlaying]
+  )
+
+  const handlePlay = useCallback(
+    (willPlay) => {
+      if (timeout.current) {
+        clearTimeout(timeout.current)
+        timeout.current = null
+      }
+
+      setPlaying(willPlay)
+      if (willPlay) {
+        const incrementTime = () => {
+          timeout.current = setTimeout(() => {
+            let shouldContinue = true
+            setYear((prev) => {
+              let nextValue = prev + 1
+              if (nextValue > END_YEAR) {
+                nextValue = START_YEAR
+                shouldContinue = false
+                setPlaying(false)
+              }
+              return nextValue
+            })
+            if (shouldContinue) {
+              incrementTime()
+            }
+          }, delay)
+        }
+        incrementTime()
+      }
+    },
+    [delay]
+  )
+
   return (
     <Box>
+      <Flex sx={{ justifyContent: 'center' }}>
+        <Box
+          sx={{
+            color: 'secondary',
+            textAlign: 'center',
+          }}
+        >
+          {year}
+        </Box>
+      </Flex>
       <Row columns={[6]}>
         <Column start={1} width={[6, 3, 3, 3]}>
           <Box
@@ -131,12 +187,12 @@ const FCO2Maps = () => {
       <SliderColorbar
         value={year}
         minMax={[START_YEAR, END_YEAR]}
-        setter={setYear}
+        setter={handleSetYear}
         colormap={colormap}
         clim={CLIM}
         variableName={'fCO₂'}
         units={'μatm'}
-        labelWidth={['44px', '44px', '44px', '48px']}
+        playPause={<PlayPause playing={playing} setPlaying={handlePlay} />}
       />
     </Box>
   )

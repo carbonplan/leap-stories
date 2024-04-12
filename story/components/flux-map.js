@@ -201,7 +201,6 @@ const FluxMap = () => {
 
       <SliderColorbar
         value={month}
-        formatter={formatMonth}
         minMax={[0, 11]}
         setter={handleSetMonth}
         colormap={colormapReversed}
