@@ -1,18 +1,16 @@
 import React from 'react'
 import { Box, Flex } from 'theme-ui'
 import { Colorbar, Slider } from '@carbonplan/components'
-import BoxButton from './box-button'
 
 const SliderColorbar = ({
   value,
-  formatter = (x) => x,
   minMax,
   setter,
   colormap,
   clim,
   variableName,
   units,
-  labelWidth = ['40px', '40px', '40px', '48px'],
+  playPause,
 }) => {
   return (
     <Flex
@@ -20,7 +18,7 @@ const SliderColorbar = ({
         flexDirection: ['column', 'row-reverse', 'row-reverse', 'row-reverse'],
         justifyContent: 'space-between',
         alignItems: 'center',
-        mt: 3,
+        ml: 1,
       }}
     >
       <Flex
@@ -29,7 +27,6 @@ const SliderColorbar = ({
           mt: [1, 0, 0, 0],
         }}
       >
-        {' '}
         <Box
           as={'span'}
           sx={{
@@ -68,23 +65,14 @@ const SliderColorbar = ({
           width: ['80%', 'auto', 'auto', 'auto'],
         }}
       >
-        <BoxButton
-          active
-          sx={{
-            whiteSpace: 'nowrap',
-            textAlign: 'center',
-            mr: 3,
-            minWidth: labelWidth,
-          }}
-        >
-          {formatter(value)}
-        </BoxButton>
         <Flex
           sx={{
             alignItems: 'center',
             flexGrow: 1,
+            gap: 3,
           }}
         >
+          {playPause}
           <Slider
             value={value}
             onChange={(e) => {
