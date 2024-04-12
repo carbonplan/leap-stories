@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
 import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
-import { Box, useThemeUI } from 'theme-ui'
+import { Box, Flex, useThemeUI } from 'theme-ui'
 import SliderColorbar from './slider-colorbar'
+import PlayPause from './play-pause'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-updated-flipped-lon.zarr'
@@ -63,12 +64,17 @@ const getCustomProjection = () => {
   }
 }
 
+const delay = 250
+
 const FluxMap = () => {
   const { theme } = useThemeUI()
   const colormap = useThemedColormap('redteal')
   const colormapReversed = [...colormap].reverse() // flipped colorbar colormap to correct sign of data
   const [month, setMonth] = useState(0)
   const [chunks, setChunks] = useState({ data: null })
+
+  const [playing, setPlaying] = useState(false)
+  const timeout = useRef(null)
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -104,18 +110,53 @@ const FluxMap = () => {
     }
   }, [chunks, month])
 
+  const handlePlay = useCallback(
+    (willPlay) => {
+      if (timeout.current) {
+        clearTimeout(timeout.current)
+        timeout.current = null
+      }
+
+      setPlaying(willPlay)
+      if (willPlay) {
+        const incrementTime = () => {
+          timeout.current = setTimeout(() => {
+            let shouldContinue = true
+            setMonth((prev) => {
+              let nextValue = prev + 1
+              if (nextValue > 11) {
+                nextValue = 0
+                shouldContinue = false
+                setPlaying(false)
+              }
+              return nextValue
+            })
+            if (shouldContinue) {
+              incrementTime()
+            }
+          }, delay)
+        }
+        incrementTime()
+      }
+    },
+    [delay]
+  )
+
   return (
     <Box>
       <Row columns={[6]}>
         <Column start={1} width={6} sx={{ height: 'fit-content' }}>
-          <Box
+          <Flex
             sx={{
               color: 'secondary',
               textAlign: 'center',
+              justifyContent: 'center',
+              gap: 1,
             }}
           >
-            {SHOW_YEAR}
-          </Box>
+            <Box sx={{ width: 30 }}>{formatMonth(month)}</Box>
+            <Box sx={{ width: 40 }}>{SHOW_YEAR}</Box>
+          </Flex>
           <Box sx={{ mx: [-3, -3, -3, -5] }}>
             <Minimap
               projection={getCustomProjection}
@@ -149,16 +190,25 @@ const FluxMap = () => {
           </Box>
         </Column>
       </Row>
-      <SliderColorbar
-        value={month}
-        formatter={formatMonth}
-        minMax={[0, 11]}
-        setter={setMonth}
-        colormap={colormapReversed}
-        clim={[-3, 3]}
-        variableName={'CARBON FLUX'}
-        units={'mol / m² / year'}
-      />
+      <PlayPause
+        playing={playing}
+        setPlaying={handlePlay}
+        sx={{}}
+        controls={
+          <Box sx={{ width: '100%' }}>
+            <SliderColorbar
+              value={month}
+              formatter={formatMonth}
+              minMax={[0, 11]}
+              setter={setMonth}
+              colormap={colormapReversed}
+              clim={[-3, 3]}
+              variableName={'CARBON FLUX'}
+              units={'mol / m² / year'}
+            />
+          </Box>
+        }
+      ></PlayPause>
     </Box>
   )
 }

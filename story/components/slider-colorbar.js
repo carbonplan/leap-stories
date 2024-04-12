@@ -20,7 +20,7 @@ const SliderColorbar = ({
         flexDirection: ['column', 'row-reverse', 'row-reverse', 'row-reverse'],
         justifyContent: 'space-between',
         alignItems: 'center',
-        mt: 3,
+        ml: 1,
       }}
     >
       <Flex
@@ -29,7 +29,6 @@ const SliderColorbar = ({
           mt: [1, 0, 0, 0],
         }}
       >
-        {' '}
         <Box
           as={'span'}
           sx={{
@@ -68,7 +67,7 @@ const SliderColorbar = ({
           width: ['80%', 'auto', 'auto', 'auto'],
         }}
       >
-        <BoxButton
+        {/* <BoxButton
           active
           sx={{
             whiteSpace: 'nowrap',
@@ -78,7 +77,7 @@ const SliderColorbar = ({
           }}
         >
           {formatter(value)}
-        </BoxButton>
+        </BoxButton> */}
         <Flex
           sx={{
             alignItems: 'center',
