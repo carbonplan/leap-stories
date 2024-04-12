@@ -101,6 +101,7 @@ const FCO2Maps = () => {
           sx={{
             color: 'secondary',
             textAlign: 'center',
+            fontVariantNumeric: 'tabular-nums',
           }}
         >
           {year}
