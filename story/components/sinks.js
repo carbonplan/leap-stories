@@ -21,7 +21,7 @@ const START_YEAR = 1850
 const STEPS = [
   {
     description:
-      'Human-caused global warming would be much worse without the ocean. It has absorbed a significant amount of the carbon we have released into the atmosphere since 1851.',
+      'Human-caused global warming would be much worse without the ocean. It has absorbed a significant amount of the gigatons of carbon (GtC) we have released into the atmosphere.',
     subSteps: [
       {
         year: 2022,
