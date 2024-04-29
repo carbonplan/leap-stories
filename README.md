@@ -7,13 +7,11 @@
 </a>
 </p>
 
-# carbonplan / simple-site
-
-**website template using our stack**
+# carbonplan / leap-story-carbon-sink
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-This repository is a super simple website set up using the basic components of our web stack and design system: React, Next, ThemeUI, our components, and our theme.
+This repository stores an interactive story made in collaboration with [LEAP](https://leap.columbia.edu/). It focuses on the importance of the ocean as a carbon sink.
 
 ## usage
 
