@@ -49,7 +49,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Early on, land-use change was the largest source of carbon emissions in the atmosphere. In 1979, fossil fuel emissions surpassed land-use emissions.`,
+    description: `Practices like cutting down trees and expanding cities used to be the biggest way people created carbon emissions. But in 1979, fossil fuel use surpassed these land-use change emissions as the primary driver of climate change.`,
     subSteps: [
       {
         year: 1849,
@@ -124,7 +124,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Today, fossil fuels are far and away the largest source of carbon emissions. Two sinks have helped mitigate these emissions: the land and the ocean.`,
+    description: `Today, fossil fuels are far and away the largest source of carbon emissions. But the planet can help mitigate those emissions, draining carbon from the atmosphere through two “sinks” in the land and the ocean.`,
     subSteps: [
       {
         year: 2022,
@@ -160,7 +160,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Fossil fuel emissions dominate these land related sources and sinks.`,
+    description: `Fossil fuel emissions, on the other hand, are much larger and the land-related sink doesn't make much of a dent.`,
     subSteps: [
       {
         year: 2022,
@@ -201,7 +201,7 @@ const STEPS = [
     ],
   },
   {
-    description: `The ocean, however, absorbs a very significant portion of these emissions.`,
+    description: `The ocean, however, absorbs a very significant portion of fossil fuel emissions.`,
     subSteps: [
       {
         year: 2022,
@@ -593,12 +593,15 @@ const SinksExploration = ({ debug = false }) => {
           </Plot>
           <Label
             x={0}
-            y={1.4}
+            y={2.3}
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
+              lineHeight: '1.2em',
             }}
           >
+            Carbon
+            <br />
             Sources
           </Label>
           <Label
@@ -607,8 +610,11 @@ const SinksExploration = ({ debug = false }) => {
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
+              lineHeight: '1.2em',
             }}
           >
+            Carbon
+            <br />
             Sinks
           </Label>
           <AnimatedLabel
