@@ -6,7 +6,12 @@ import { ReferencesProvider } from './references'
 
 const Story = ({ references, children }) => {
   return (
-    <Layout>
+    <Layout
+      title={'The ocean carbon sink'}
+      description={
+        'Oceans are helping us to fight climate change, but there’s still a lot to learn about how that works. Scientists use machine learning to study how oceans absorb carbon, even in parts of the world they haven’t sampled directly.'
+      }
+    >
       <Row>
         <Column start={[1, 2, 4, 4]} width={[6]} sx={{ pt: 6 }}>
           <ReferencesProvider color='primary' references={references}>
