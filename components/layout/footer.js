@@ -34,7 +34,7 @@ const Footer = () => {
                 }}
               />
               <Image
-                src={'/LEAP.png'}
+                src={'/leap.png'}
                 width={120}
                 height={30}
                 alt='LEAP Logo'
