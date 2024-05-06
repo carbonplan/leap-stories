@@ -165,10 +165,10 @@ const FluxMap = () => {
             <Box sx={{ width: 30 }}>{formatMonth(month)}</Box>
             <Box sx={{ width: 40 }}>{SHOW_YEAR}</Box>
           </Flex>
-          <Box sx={{ mx: [-3, -3, -3, -5] }}>
+          <Box>
             <Minimap
               projection={getCustomProjection}
-              scale={1}
+              scale={1.05}
               translate={[0, 0]}
             >
               <Path
