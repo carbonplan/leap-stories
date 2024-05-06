@@ -31,7 +31,11 @@ const Meta = ({ title, description, card, url }) => {
         href='https://leap.columbia.edu/wp-content/uploads/2021/11/cropped-favicon-1-1-32x32.png'
       />
       <link rel='preconnect' href='https://fonts.googleapis.com' />
-      <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin />
+      <link
+        rel='preconnect'
+        href='https://fonts.gstatic.com'
+        crossOrigin='true'
+      />
       <meta name='theme-color' content={theme.colors.background} />
       <meta
         name='color-scheme'
