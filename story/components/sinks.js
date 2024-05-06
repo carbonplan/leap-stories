@@ -490,56 +490,57 @@ const SinksExploration = ({ debug = false }) => {
         '&:hover #clickNotice': { color: 'secondary' },
       }}
     >
-      <Flex
-        sx={{
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          gap: 1,
-          mb: 3,
-        }}
-      >
-        {STEPS.map((_, i) => (
-          <BoxButton
-            key={`step-${i}`}
-            active={stepIndex.main === i}
-            onClick={() => {
-              handleStepClick(i)
-            }}
-          >
-            {i + 1}
-          </BoxButton>
-        ))}
-        <Box
-          id='clickNotice'
+      <Flex sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <Flex
           sx={{
-            mx: 2,
-            color: 'muted',
-            cursor: 'pointer',
-            fontStyle: 'italic',
-            fontSize: [1, 1, 1, 2],
-            transition: 'color 0.2s ease-in-out',
-            mt: '2px',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            gap: 1,
+            mb: 3,
           }}
         >
-          Click anywhere to advance
-        </Box>
-        <Box sx={{ ml: 'auto' }}>
-          <Button
-            href='https://www.icos-cp.eu/science-and-impact/global-carbon-budget/2023'
-            onClick={(e) => e.stopPropagation()}
-            target='_blank'
-            rel='noreferrer'
-            suffix={<RotatingArrow sx={{ height: 12, ml: 1 }} />}
+          {STEPS.map((_, i) => (
+            <BoxButton
+              key={`step-${i}`}
+              active={stepIndex.main === i}
+              onClick={() => {
+                handleStepClick(i)
+              }}
+            >
+              {i + 1}
+            </BoxButton>
+          ))}
+          <Box
+            id='clickNotice'
             sx={{
-              color: 'secondary',
+              mx: 2,
+              color: 'muted',
+              cursor: 'pointer',
+              fontStyle: 'italic',
               fontSize: [1, 1, 1, 2],
-              mr: 2,
-              whiteSpace: 'nowrap',
+              transition: 'color 0.2s ease-in-out',
+              mt: '2px',
             }}
           >
-            Data source
-          </Button>
-        </Box>
+            Click anywhere to advance
+          </Box>
+        </Flex>
+
+        <Button
+          href='https://www.icos-cp.eu/science-and-impact/global-carbon-budget/2023'
+          onClick={(e) => e.stopPropagation()}
+          target='_blank'
+          rel='noreferrer'
+          suffix={<RotatingArrow sx={{ height: 12, ml: 1 }} />}
+          sx={{
+            color: 'secondary',
+            fontSize: [1, 1, 1, 2],
+            mr: 2,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Data source
+        </Button>
       </Flex>
       <Box
         key={currentStep.description}
