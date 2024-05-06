@@ -11,6 +11,7 @@ const Footer = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             textAlign: ['center', 'left'],
+            gap: [3, 0],
           }}
         >
           <Link
@@ -19,17 +20,10 @@ const Footer = () => {
               display: 'inline-flex',
               alignItems: 'center',
               flexGrow: [1, 0],
-              mb: [3, 0],
             }}
           >
-            <Flex sx={{ alignItems: 'center', mb: 2 }}>
-              <Image
-                src={'/NSF.svg'}
-                height={48}
-                width={48}
-                alt='NSF Logo'
-                sx
-              />
+            <Flex sx={{ alignItems: 'center' }}>
+              <Image src={'/NSF.svg'} height={48} width={48} alt='NSF Logo' />
               {/* Vertical divider */}
               <Box
                 sx={{
