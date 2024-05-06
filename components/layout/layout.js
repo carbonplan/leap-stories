@@ -3,6 +3,7 @@ import { Container, Flex, Box } from 'theme-ui'
 import { FadeIn, Guide, Scrollbar } from '@carbonplan/components'
 import Meta from './meta'
 import Header from './header'
+import Footer from './footer'
 
 const Layout = ({
   title,
@@ -72,6 +73,7 @@ const Layout = ({
         >
           {content}
         </Box>
+        <Footer />
       </Flex>
     </>
   )
