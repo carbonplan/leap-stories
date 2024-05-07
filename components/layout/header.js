@@ -21,7 +21,7 @@ const Header = () => {
         }}
       >
         <Link href='/'>
-          <Image src={'/LEAP.png'} width={120} height={30} alt={'LEAP Logo'} />
+          <Image src={'/leap.png'} width={120} height={30} alt={'LEAP Logo'} />
         </Link>
       </Box>
     </Box>
