@@ -1,4 +1,5 @@
-import Story, { Authors, Cite, Sidenote } from '../components/layout'
+import { Box } from 'theme-ui'
+import Story, { Authors, Cite, Links, Sidenote } from '../components/layout'
 import { Figure, FigureCaption } from '../components'
 import { FCO2Maps, FluxMap, Sinks, OceanCycleDiagram } from './components'
 
@@ -67,5 +68,18 @@ From these data, and confirmed by other independent approaches, it is clear that
 Stabilizing global temperatures will first and foremost require deep emissions cuts, created by reducing fossil fuel use and land use change. In addition, we will also need to develop systems to remove gigatons of CO₂ from the atmosphere. There are now many small companies pursuing technologies for "marine Carbon Dioxide Removal ([mCDR](https://doi.org/10.17226/26278))" and carbon credits from mCDR are already being sold as "carbon offsets". If we want to have any hope of verifying the additional, much smaller, local impacts of mCDR, then we have to build better knowledge of the huge background natural ocean carbon sink.
 
 It’s clear the ocean plays an enormous role in the fight to reduce the risks of climate change. Despite this, there is no long-term funded, operational system for collecting ocean carbon data and turning these into global ocean sink estimates. [Such a system](https://wmo.int/activities/global-greenhouse-gas-watch-g3w) is urgently needed to help monitor the global carbon cycle and understand its impacts on climate change. The ocean is vast and essential to our lives. It’s in our best interest to better understand how it works.
+
+<Links
+  links={[
+    {
+      label: 'Subscribe to the LEAP newsletter',
+      href: 'https://leap.columbia.edu/subscribe',
+    },
+    {
+      label: 'Explore the ocean flux data',
+      href: 'https://ncview-js.staging.carbonplan.org/?dataset=s3://carbonplan-data-viewer/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-updated-flipped-lon.zarr/',
+    },
+  ]}
+/>
 
 export default ({ children }) => <Story>{children}</Story>
