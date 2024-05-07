@@ -242,7 +242,7 @@ const STEPS = [
     ],
   },
   {
-    description: `What remains, after accounting for uncertainties and other small factors, is the carbon that has accumulated in the atmosphere and causes global warming.`,
+    description: `After accounting for uncertainties and other small factors, the carbon that remains in the atmosphere after the land sink and ocean sink have drained some away is the carbon that causes climate change.`,
     subSteps: [
       {
         year: 2022,
