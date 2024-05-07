@@ -1,6 +1,6 @@
 import { Box } from 'theme-ui'
 
-const Callout = () => {
+const Callout = ({ children }) => {
   return (
     <Box
       variant='styles.blockquote'
@@ -10,10 +10,7 @@ const Callout = () => {
         background: 'hinted',
       }}
     >
-      Oceans are helping us to fight climate change, but there’s still a lot to
-      learn about how that works. Scientists use machine learning to study how
-      oceans absorb carbon, even in parts of the world they haven’t sampled
-      directly.
+      {children}
     </Box>
   )
 }
