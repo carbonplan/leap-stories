@@ -8,7 +8,18 @@ const Links = ({ links }) => {
   const widths = links.length > 2 ? [3, 2, 2, 2] : [3, 3, 3, 3]
 
   return (
-    <Row columns={6} sx={{ mt: 6, rowGap: 4 }}>
+    <Row
+      columns={6}
+      sx={{
+        mt: 6,
+        rowGap: 4,
+        borderWidth: 0,
+        borderStyle: 'solid',
+        borderColor: 'secondary',
+        borderTopWidth: 1,
+        pt: 6,
+      }}
+    >
       {links.map(({ label, href }, i) => (
         <Column
           key={label}
