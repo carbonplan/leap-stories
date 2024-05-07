@@ -118,8 +118,8 @@ const FCO2Maps = () => {
             Measured
           </Box>
 
-          <Box sx={{ mx: [-3, -3, -3, -5] }}>
-            <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
+          <Box>
+            <Minimap projection={naturalEarth1} scale={1.05} translate={[0, 0]}>
               <Path
                 stroke={theme.colors.primary}
                 source={
@@ -156,8 +156,8 @@ const FCO2Maps = () => {
           >
             Reconstructed
           </Box>
-          <Box sx={{ mx: [-3, -3, -3, -5] }}>
-            <Minimap projection={naturalEarth1} scale={1} translate={[0, 0]}>
+          <Box>
+            <Minimap projection={naturalEarth1} scale={1.05} translate={[0, 0]}>
               <Path
                 stroke={theme.colors.primary}
                 source={
