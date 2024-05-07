@@ -2,9 +2,8 @@ import React from 'react'
 import { Row, Column } from '@carbonplan/components'
 
 import Layout from './layout'
-import { ReferencesProvider } from './references'
 
-const Story = ({ references, children }) => {
+const Story = ({ children }) => {
   return (
     <Layout
       title={'The ocean carbon sink'}
@@ -14,9 +13,7 @@ const Story = ({ references, children }) => {
     >
       <Row>
         <Column start={[1, 2, 4, 4]} width={[6]} sx={{ pt: 6 }}>
-          <ReferencesProvider color='primary' references={references}>
-            {children}
-          </ReferencesProvider>
+          {children}
         </Column>
       </Row>
     </Layout>
