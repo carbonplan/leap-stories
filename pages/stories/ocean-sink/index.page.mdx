@@ -1,22 +1,22 @@
-import {
-  Authors,
-  Callout,
-  Figure,
-  FigureCaption,
-  Links,
-} from '../../../components'
+import Story, { Figure, FigureCaption } from '../../../components'
 import { FCO2Maps, FluxMap, Sinks, OceanCycleDiagram } from './components'
 
-# The ocean carbon sink
-
-<Authors authors={['Galen McKinley', 'Amanda Fay', 'Thea Hatlen Heimdal']} />
-
-<Callout>
-  Oceans are helping us to fight climate change, but there’s still a lot to
-  learn about how that works. Scientists use machine learning to study how
-  oceans absorb carbon, even in parts of the world they haven’t sampled
-  directly.
-</Callout>
+export const metadata = {
+  title: 'The ocean carbon sink',
+  description:
+    'Oceans are helping us to fight climate change, but there’s still a lot to learn about how that works. Scientists use machine learning to study how oceans absorb carbon, even in parts of the world they haven’t sampled directly.',
+  authors: ['Galen McKinley', 'Amanda Fay', 'Thea Hatlen Heimdal'],
+  links: [
+    {
+      label: 'Subscribe to the LEAP newsletter',
+      href: 'https://leap.columbia.edu/subscribe',
+    },
+    {
+      label: 'Explore the ocean flux data',
+      href: 'https://ncview-js.staging.carbonplan.org/?dataset=s3://carbonplan-data-viewer/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-updated-flipped-lon.zarr/',
+    },
+  ],
+}
 
 Climate change is driven by the greenhouse gas emissions that accumulate in the atmosphere and trap heat. So future warming will be determined by how much humans choose to emit. But warming would be worse today if not for the natural processes that pull carbon out of the atmosphere and store it. These natural “carbon sinks” on land and in the oceans are critical; they’ve significantly reduced the impacts of our climate changing choices to date. Only half of the CO₂ humans added to the atmosphere between 2013 and 2022 remains there today – the rest is in the seas, forests, and soils.
 
@@ -80,15 +80,4 @@ Stabilizing global temperatures will first and foremost require deep emissions c
 
 It’s clear the ocean plays an enormous role in the fight to reduce the risks of climate change. Despite this, there is no long-term funded, operational system for collecting ocean carbon data and turning these into global ocean sink estimates. [Such a system](https://wmo.int/activities/global-greenhouse-gas-watch-g3w) is urgently needed to help monitor the global carbon cycle and understand its impacts on climate change. The ocean is vast and essential to our lives. It’s in our best interest to better understand how it works.
 
-<Links
-  links={[
-    {
-      label: 'Subscribe to the LEAP newsletter',
-      href: 'https://leap.columbia.edu/subscribe',
-    },
-    {
-      label: 'Explore the ocean flux data',
-      href: 'https://ncview-js.staging.carbonplan.org/?dataset=s3://carbonplan-data-viewer/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-updated-flipped-lon.zarr/',
-    },
-  ]}
-/>
+export default ({ children }) => <Story {...metadata}>{children}</Story>

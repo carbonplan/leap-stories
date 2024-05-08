@@ -5,7 +5,6 @@ import '@carbonplan/components/globals.css'
 import theme from '@carbonplan/theme'
 import { useThemedStylesWithMdx } from '@theme-ui/mdx'
 import { MDXProvider, useMDXComponents } from '@mdx-js/react'
-import Story from '../components'
 
 const leapTheme = {
   ...theme,
@@ -45,9 +44,7 @@ const App = ({ Component, pageProps }) => {
   return (
     <ThemeUIProvider theme={leapTheme}>
       <MDXProvider components={components}>
-        <Story>
-          <Component {...pageProps} />
-        </Story>
+        <Component {...pageProps} />
       </MDXProvider>
     </ThemeUIProvider>
   )
