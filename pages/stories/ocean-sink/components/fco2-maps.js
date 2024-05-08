@@ -117,6 +117,7 @@ const FCO2Maps = () => {
           }}
         >
           Measured
+          <Box sx={{ fontSize: 0 }}>from a ship</Box>
         </Box>
 
         <Box>
@@ -160,6 +161,7 @@ const FCO2Maps = () => {
           }}
         >
           Reconstructed
+          <Box sx={{ fontSize: 0 }}>with machine learning</Box>
         </Box>
         <Box>
           <Minimap
