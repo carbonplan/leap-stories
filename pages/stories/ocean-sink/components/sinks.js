@@ -50,6 +50,7 @@ const STEPS = [
   },
   {
     description: `Practices like cutting down trees and expanding cities used to be the biggest way people created carbon emissions. But in 1979, fossil fuel use surpassed these land-use change emissions as the primary driver of climate change.`,
+    yearProminent: true,
     subSteps: [
       {
         year: 1849,
@@ -125,6 +126,7 @@ const STEPS = [
   },
   {
     description: `Today, fossil fuels are far and away the largest source of carbon emissions. But the planet can help mitigate those emissions, draining carbon from the atmosphere through two “sinks” in the land and the ocean.`,
+    yearProminent: true,
     subSteps: [
       {
         year: 2022,
@@ -631,9 +633,9 @@ const SinksExploration = ({ debug = false }) => {
             verticalAlign='bottom'
             sx={{
               fontSize: [2, 2, 2, 3],
-              opacity: currentSubStep.year !== START_YEAR ? 1 : 0,
-              transition: 'opacity 0.5s ease-in-out',
               fontVariantNumeric: 'tabular-nums',
+              color: currentStep.yearProminent ? 'primary' : 'secondary',
+              transition: 'color 0.2s ease-in-out',
             }}
           >
             {START_YEAR} {' - '}
