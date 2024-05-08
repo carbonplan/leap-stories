@@ -633,7 +633,7 @@ const SinksExploration = ({ debug = false }) => {
               fontSize: [2, 2, 2, 3],
               fontVariantNumeric: 'tabular-nums',
               color: currentSubStep.isYearAnimation ? 'primary' : 'secondary',
-              transition: 'color 0.2s ease-in-out',
+              transition: 'color 0.5s ease-in-out',
             }}
           >
             {START_YEAR} {' - '}
