@@ -8,5 +8,14 @@ const withMDX = nextMDX({
 })
 
 export default withMDX({
-  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  pageExtensions: ['page.js', 'page.jsx', 'page.md', 'page.mdx'],
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/stories/ocean-sink',
+        permanent: false,
+      },
+    ]
+  },
 })
