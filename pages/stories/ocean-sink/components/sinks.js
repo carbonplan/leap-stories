@@ -630,6 +630,7 @@ const SinksExploration = ({ debug = false }) => {
             x={10}
             y={Y_SCALE}
             align='right'
+            verticalAlign='bottom'
             sx={{
               fontSize: [2, 2, 2, 3],
               fontVariantNumeric: 'tabular-nums',
