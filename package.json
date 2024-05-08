@@ -1,7 +1,7 @@
 {
-  "name": "simple-site",
+  "name": "leap-stories",
   "version": "1.0.0",
-  "description": "simple template for a website using our web stack",
+  "description": "inventory of interactive data stories about LEAP research",
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development next -p 4000",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/carbonplan/simple-site.git"
+    "url": "git+https://github.com/carbonplan/leap-stories.git"
   },
   "keywords": [
     "next",
@@ -21,9 +21,9 @@
   "author": "freeman-lab",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/carbonplan/simple-site/issues"
+    "url": "https://github.com/carbonplan/leap-stories/issues"
   },
-  "homepage": "https://github.com/carbonplan/simple-site#readme",
+  "homepage": "https://github.com/carbonplan/leap-stories#readme",
   "dependencies": {
     "@carbonplan/charts": "^3.1.0",
     "@carbonplan/colormaps": "^4.0.0",
