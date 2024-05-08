@@ -343,7 +343,13 @@ const BudgetLabel = animated(
         {...props}
       >
         {category}
-        <Box sx={{ color: 'secondary', textTransform: 'none' }}>
+        <Box
+          sx={{
+            color: 'secondary',
+            textTransform: 'none',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
           <Box as={'span'} sx={{ color: 'primary' }}>
             {value}{' '}
           </Box>
@@ -627,6 +633,7 @@ const SinksExploration = ({ debug = false }) => {
               fontSize: [2, 2, 2, 3],
               opacity: currentSubStep.year !== START_YEAR ? 1 : 0,
               transition: 'opacity 0.5s ease-in-out',
+              fontVariantNumeric: 'tabular-nums',
             }}
           >
             {START_YEAR} {' - '}
