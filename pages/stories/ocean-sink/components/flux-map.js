@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
-import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
 import { Box, Flex, useThemeUI } from 'theme-ui'
-import SliderColorbar from './slider-colorbar'
+
+import { getCustomProjection } from './projection'
 import PlayPause from './play-pause'
+import TimeSlider from './time-slider'
+import DynamicColorbar from './dynamic-colorbar'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/GCB-2023_dataprod_LDEO-HPD_1959-2022-updated-flipped-lon.zarr'
@@ -26,42 +28,6 @@ const formatMonth = (month) => {
   return date.toLocaleString('default', {
     month: 'short',
   })
-}
-
-const getCustomProjection = () => {
-  return {
-    ...naturalEarth1(),
-    glsl: {
-      func: `
-      vec2 naturalEarth1Invert(float x, float y)
-      {
-        const float pi = 3.14159265358979323846264;
-        const float halfPi = pi * 0.5;
-        float phi = y;
-        float delta;
-        float phi2 = phi * phi;
-        float phi4 = phi2 * phi2;
-        for (int i = 0; i < 25; i++) {
-          phi2 = phi * phi;
-          phi4 = phi2 * phi2;
-          delta = (phi * (1.007226 + phi2 * (0.015085 + phi4 * (-0.044475 + 0.028874 * phi2 - 0.005916 * phi4))) - y) / (1.007226 + phi2 * (0.015085 * 3.0 + phi4 * (-0.044475 * 7.0 + 0.028874 * 9.0 * phi2 - 0.005916 * 11.0 * phi4)));
-          phi = phi - delta;
-          if (abs(delta) < 1e-6) {
-            break;
-          }
-        }
-        phi2 = phi * phi;
-        float lambda = x / (0.8707 + phi2 * (-0.131979 + phi2 * (-0.013791 + phi2 * phi2 * phi2 * (0.003971 - 0.001529 * phi2))));
-        if (lambda <= -1.0 * pi + 1e-6 || lambda >= pi - 1e-6) {
-          return vec2(-1000.0, -1000.0);
-        } else {
-          return vec2(degrees(lambda), degrees(phi));
-        }
-      }
-    `,
-      name: 'naturalEarth1Invert',
-    },
-  }
 }
 
 const delay = 250
@@ -150,21 +116,39 @@ const FluxMap = () => {
     [delay]
   )
 
+  const climFormatter = useCallback((d) => {
+    return d > 0 ? (
+      <>
+        +{d}{' '}
+        <Box as='span' sx={{ textTransform: 'none' }}>
+          (out)
+        </Box>
+      </>
+    ) : (
+      <>
+        {d}{' '}
+        <Box as='span' sx={{ textTransform: 'none' }}>
+          (in)
+        </Box>
+      </>
+    )
+  }, [])
+
   return (
     <Box>
-      <Row columns={[6]}>
-        <Column start={1} width={6} sx={{ height: 'fit-content' }}>
+      <Row columns={[6]} sx={{ position: 'relative' }}>
+        <Column start={1} width={6}>
           <Flex
             sx={{
-              color: 'secondary',
-              textAlign: 'center',
               justifyContent: 'center',
-              gap: 1,
+              color: 'secondary',
+              fontVariantNumeric: 'tabular-nums',
             }}
           >
-            <Box sx={{ width: 30 }}>{formatMonth(month)}</Box>
-            <Box sx={{ width: 40 }}>{SHOW_YEAR}</Box>
+            {formatMonth(month)} {SHOW_YEAR}
           </Flex>
+        </Column>
+        <Column start={1} width={6} sx={{ height: 'fit-content' }}>
           <Box>
             <Minimap
               projection={getCustomProjection}
@@ -197,18 +181,24 @@ const FluxMap = () => {
             </Minimap>
           </Box>
         </Column>
-      </Row>
+        <Column start={1} width={[4, 3, 3, 3]} sx={{ mt: 3 }}>
+          <TimeSlider
+            value={month}
+            minMax={[0, 11]}
+            setter={handleSetMonth}
+            playPause={<PlayPause playing={playing} setPlaying={handlePlay} />}
+          />
+        </Column>
 
-      <SliderColorbar
-        value={month}
-        minMax={[0, 11]}
-        setter={handleSetMonth}
-        colormap={colormapReversed}
-        clim={[-3, 3]}
-        variableName={'CARBON FLUX'}
-        units={'mol / m² / year'}
-        playPause={<PlayPause playing={playing} setPlaying={handlePlay} />}
-      />
+        <DynamicColorbar
+          colormap={colormapReversed}
+          format={climFormatter}
+          clim={[-3, 3]}
+          label={'Carbon flux'}
+          units={'mol / m² / year'}
+          sx={{ right: -96 }}
+        />
+      </Row>
     </Box>
   )
 }

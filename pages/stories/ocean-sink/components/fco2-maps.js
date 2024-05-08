@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react'
 import { Minimap, Path, Sphere, Raster } from '@carbonplan/minimaps'
-import { naturalEarth1 } from '@carbonplan/minimaps/projections'
 import { useThemedColormap } from '@carbonplan/colormaps'
 import { Column, Row } from '@carbonplan/components'
 import zarr from 'zarr-js'
 import { Box, Flex, useThemeUI } from 'theme-ui'
 
-import SliderColorbar from './slider-colorbar'
+import { getCustomProjection } from './projection'
 import PlayPause from './play-pause'
+import TimeSlider from './time-slider'
+import DynamicColorbar from './dynamic-colorbar'
 
 const SOURCE_URL =
   'https://carbonplan-data-viewer.s3.us-west-2.amazonaws.com/demo/leap-data-stories/annual-sfco2.zarr'
@@ -95,107 +96,122 @@ const FCO2Maps = () => {
   )
 
   return (
-    <Box>
-      <Flex sx={{ justifyContent: 'center' }}>
-        <Box
+    <Row columns={[6]} sx={{ position: 'relative' }}>
+      <Column start={1} width={6}>
+        <Flex
           sx={{
+            justifyContent: 'center',
             color: 'secondary',
-            textAlign: 'center',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
           {year}
-        </Box>
-      </Flex>
-      <Row columns={[6]}>
-        <Column start={1} width={[6, 3, 3, 3]}>
-          <Box
-            sx={{
-              color: 'secondary',
-              textAlign: 'center',
-            }}
-          >
-            Measured
-          </Box>
+        </Flex>
+      </Column>
 
-          <Box>
-            <Minimap projection={naturalEarth1} scale={1.05} translate={[0, 0]}>
-              <Path
-                stroke={theme.colors.primary}
-                source={
-                  'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
-                }
-                feature={'land'}
-                opacity={0.3}
-                fill={theme.colors.muted}
-              />
-              <Sphere
-                stroke={theme.colors.primary}
-                fill={theme.colors.background}
-                strokeWidth={1}
-              />
-              {data.measured && (
-                <Raster
-                  source={data.measured}
-                  colormap={colormap}
-                  clim={CLIM}
-                  mode={'lut'}
-                  nullValue={FILL_VALUE}
-                />
-              )}
-            </Minimap>
-          </Box>
-        </Column>
-        <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
-          <Box
-            sx={{
-              color: 'secondary',
-              textAlign: 'center',
-              mt: [3, 0, 0, 0],
-            }}
+      <Column start={1} width={[6, 3, 3, 3]}>
+        <Box
+          sx={{
+            color: 'secondary',
+            textAlign: 'center',
+          }}
+        >
+          Measured
+        </Box>
+
+        <Box>
+          <Minimap
+            projection={getCustomProjection}
+            scale={1.05}
+            translate={[0, 0]}
           >
-            Reconstructed
-          </Box>
-          <Box>
-            <Minimap projection={naturalEarth1} scale={1.05} translate={[0, 0]}>
-              <Path
-                stroke={theme.colors.primary}
-                source={
-                  'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
-                }
-                feature={'land'}
-                opacity={0.3}
-                fill={theme.colors.muted}
+            <Path
+              stroke={theme.colors.primary}
+              source={
+                'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
+              }
+              feature={'land'}
+              opacity={0.3}
+              fill={theme.colors.muted}
+            />
+            <Sphere
+              stroke={theme.colors.primary}
+              fill={theme.colors.background}
+              strokeWidth={1}
+            />
+            {data.measured && (
+              <Raster
+                source={data.measured}
+                colormap={colormap}
+                clim={CLIM}
+                mode={'lut'}
+                nullValue={FILL_VALUE}
               />
-              <Sphere
-                stroke={theme.colors.primary}
-                fill={theme.colors.background}
-                strokeWidth={1}
+            )}
+          </Minimap>
+        </Box>
+      </Column>
+      <Column start={[1, 4, 4, 4]} width={[6, 3, 3, 3]}>
+        <Box
+          sx={{
+            color: 'secondary',
+            textAlign: 'center',
+            mt: [3, 0, 0, 0],
+          }}
+        >
+          Reconstructed
+        </Box>
+        <Box>
+          <Minimap
+            projection={getCustomProjection}
+            scale={1.05}
+            translate={[0, 0]}
+          >
+            <Path
+              stroke={theme.colors.primary}
+              source={
+                'https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json'
+              }
+              feature={'land'}
+              opacity={0.3}
+              fill={theme.colors.muted}
+            />
+            <Sphere
+              stroke={theme.colors.primary}
+              fill={theme.colors.background}
+              strokeWidth={1}
+            />
+            {data.reconstructed && (
+              <Raster
+                source={data.reconstructed}
+                colormap={colormap}
+                clim={CLIM}
+                mode={'lut'}
+                nullValue={FILL_VALUE}
               />
-              {data.reconstructed && (
-                <Raster
-                  source={data.reconstructed}
-                  colormap={colormap}
-                  clim={CLIM}
-                  mode={'lut'}
-                  nullValue={FILL_VALUE}
-                />
-              )}
-            </Minimap>
-          </Box>
-        </Column>
-      </Row>
-      <SliderColorbar
-        value={year}
-        minMax={[START_YEAR, END_YEAR]}
-        setter={handleSetYear}
+            )}
+          </Minimap>
+        </Box>
+      </Column>
+      <Column start={1} width={[4, 3, 3, 3]} sx={{ mt: 3 }}>
+        <TimeSlider
+          value={year}
+          minMax={[START_YEAR, END_YEAR]}
+          setter={handleSetYear}
+          playPause={<PlayPause playing={playing} setPlaying={handlePlay} />}
+        />
+      </Column>
+      <DynamicColorbar
         colormap={colormap}
         clim={CLIM}
-        variableName={'fCO₂'}
+        label={
+          <Box as='span' sx={{ textTransform: 'none' }}>
+            fCO₂
+          </Box>
+        }
         units={'μatm'}
-        playPause={<PlayPause playing={playing} setPlaying={handlePlay} />}
       />
-    </Box>
+    </Row>
   )
 }
 
