@@ -600,7 +600,8 @@ const SinksExploration = ({ debug = false }) => {
           </Plot>
           <Label
             x={0}
-            y={2.3}
+            y={0.3} // slight discrepancy between bottom and top alignments
+            verticalAlign='bottom'
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
@@ -614,6 +615,7 @@ const SinksExploration = ({ debug = false }) => {
           <Label
             x={0}
             y={-0.5}
+            verticalAlign='top'
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
@@ -628,7 +630,6 @@ const SinksExploration = ({ debug = false }) => {
             x={10}
             y={Y_SCALE}
             align='right'
-            verticalAlign='bottom'
             sx={{
               fontSize: [2, 2, 2, 3],
               fontVariantNumeric: 'tabular-nums',
