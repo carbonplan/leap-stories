@@ -343,7 +343,13 @@ const BudgetLabel = animated(
         {...props}
       >
         {category}
-        <Box sx={{ color: 'secondary', textTransform: 'none' }}>
+        <Box
+          sx={{
+            color: 'secondary',
+            textTransform: 'none',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
           <Box as={'span'} sx={{ color: 'primary' }}>
             {value}{' '}
           </Box>
@@ -594,7 +600,8 @@ const SinksExploration = ({ debug = false }) => {
           </Plot>
           <Label
             x={0}
-            y={2.3}
+            y={0.3} // slight discrepancy between bottom and top alignments
+            verticalAlign='bottom'
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
@@ -608,6 +615,7 @@ const SinksExploration = ({ debug = false }) => {
           <Label
             x={0}
             y={-0.5}
+            verticalAlign='top'
             sx={{
               opacity: axisOpacity,
               transition: 'opacity 0.5s ease-in-out',
@@ -625,8 +633,9 @@ const SinksExploration = ({ debug = false }) => {
             verticalAlign='bottom'
             sx={{
               fontSize: [2, 2, 2, 3],
-              opacity: currentSubStep.year !== START_YEAR ? 1 : 0,
-              transition: 'opacity 0.5s ease-in-out',
+              fontVariantNumeric: 'tabular-nums',
+              color: currentSubStep.isYearAnimation ? 'primary' : 'secondary',
+              transition: 'color 0.5s ease-in-out',
             }}
           >
             {START_YEAR} {' - '}
