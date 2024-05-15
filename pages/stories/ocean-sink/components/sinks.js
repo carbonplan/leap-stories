@@ -49,7 +49,7 @@ const STEPS = [
     ],
   },
   {
-    description: `Practices like cutting down trees and expanding cities used to be the biggest way people created carbon emissions. But in 1979, fossil fuel use surpassed these land-use change emissions as the primary driver of climate change.`,
+    description: `Land use practices like cutting down trees and expanding cities used to be the biggest way people created carbon emissions. But in 1979, fossil fuel use surpassed these land-use change emissions as the primary driver of climate change.`,
     subSteps: [
       {
         year: 1849,
