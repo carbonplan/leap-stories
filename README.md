@@ -11,7 +11,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains interactive stories made in collaboration with [LEAP](https://leap.columbia.edu/). Stories and their interactive figures are included directly in this repository within the [`pages/stories/`](/pages/stories) subfolder.
+This repository contains interactive stories made in collaboration with [LEAP](https://leap.columbia.edu/). Stories and their interactive figures are included directly in this repository within the [`pages/`](/pages) subfolder.
 
 The site is a [Next.js](https://nextjs.org/) project, deployed on [Vercel](https://vercel.com/).
 
@@ -28,7 +28,7 @@ and then visit `http://localhost:4000/` in your browser.
 
 ### new stories
 
-New stories should be added to `pages/stories/` with the story content and `metadata` exported from `pages/stories/{story-name}/index.page.mdx`. See [`pages/stories/ocean-sink/index.page.mdx`](/pages/stories/ocean-sink/index.page.mdx) for an example of how exports should be laid out.
+New stories should be added to `pages/` with the story content and `metadata` exported from `pages/{story-name}/index.page.mdx`. See [`pages/ocean-sink/index.page.mdx`](/pages/ocean-sink/index.page.mdx) for an example of how exports should be laid out.
 
 ## license
 

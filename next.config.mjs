@@ -13,7 +13,7 @@ export default withMDX({
     return [
       {
         source: '/',
-        destination: '/stories/ocean-sink',
+        destination: '/ocean-sink',
         permanent: false,
       },
     ]
