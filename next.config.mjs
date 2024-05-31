@@ -16,6 +16,11 @@ export default withMDX({
         destination: '/ocean-sink',
         permanent: false,
       },
+      {
+        source: '/stories/:path',
+        destination: '/:path',
+        permanent: false,
+      },
     ]
   },
 })
