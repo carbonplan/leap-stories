@@ -18,7 +18,7 @@ const Story = ({
     <Layout title={title} description={description}>
       <Row>
         <Column start={[1, 2, 4, 4]} width={[6]} sx={{ pt: 6 }}>
-          <Box as='h1' variant='styles.h1'>
+          <Box as='h1' variant='styles.h1' sx={{ fontSize: [6, 6, 6, 7] }}>
             {title}
           </Box>
 
