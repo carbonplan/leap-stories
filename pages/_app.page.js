@@ -1,4 +1,5 @@
 import React from 'react'
+import PlausibleProvider from 'next-plausible'
 import { ThemeUIProvider } from 'theme-ui'
 import '@carbonplan/components/fonts.css'
 import '@carbonplan/components/globals.css'
@@ -42,11 +43,13 @@ const leapTheme = {
 const App = ({ Component, pageProps }) => {
   const components = useThemedStylesWithMdx(useMDXComponents())
   return (
-    <ThemeUIProvider theme={leapTheme}>
-      <MDXProvider components={components}>
-        <Component {...pageProps} />
-      </MDXProvider>
-    </ThemeUIProvider>
+    <PlausibleProvider domain='carbonplan.org'>
+      <ThemeUIProvider theme={leapTheme}>
+        <MDXProvider components={components}>
+          <Component {...pageProps} />
+        </MDXProvider>
+      </ThemeUIProvider>
+    </PlausibleProvider>
   )
 }
 
